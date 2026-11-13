@@ -1,0 +1,28 @@
+# Node / Vite
+node_modules/
+frontend/dist/
+frontend/dev-dist/
+frontend/e2e/shots/
+
+# Rahasia (JANGAN di-upload)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Data penelitian hasil ekspor (berisi data siswa, simpan di tempat aman)
+*.csv
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Dokumen pribadi: laporan wawancara asli berisi foto siswa
+*.pdf

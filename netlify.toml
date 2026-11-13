@@ -1,0 +1,19 @@
+# Deploy frontend ke Netlify (lihat docs/DEPLOYMENT.md).
+# Isi VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY di Netlify → Site configuration → Environment variables.
+[build]
+  base = "frontend"
+  command = "npm ci && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"

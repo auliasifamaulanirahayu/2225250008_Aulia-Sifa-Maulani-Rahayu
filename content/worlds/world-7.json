@@ -1,0 +1,1275 @@
+{
+  "world": 7,
+  "title": "Markas Literasi",
+  "topic": "Masalah literasi sehari-hari",
+  "emoji": "🛰️",
+  "color": "#C2255C",
+  "intro": [
+    {
+      "term": "Baca data",
+      "text": "Baca tabel dengan teliti. Tidak semua informasi selalu dipakai."
+    },
+    {
+      "term": "Tafsirkan",
+      "text": "Setelah dapat jawaban, pikirkan artinya di dunia nyata."
+    }
+  ],
+  "problems": [
+    {
+      "id": "w7-p01",
+      "world": 7,
+      "level": 2,
+      "type": "literacy",
+      "order": 1,
+      "emoji": "🚌",
+      "context": {
+        "pisa": "personal",
+        "setting": "angkot"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret",
+        "evaluate"
+      ],
+      "story": [
+        "Tarif angkot Rp5.000 saat naik.",
+        "Lalu ada tambahan Rp2.000 setiap 1 km.",
+        "Rani membayar Rp17.000 dari rumah ke sekolah."
+      ],
+      "question": "Berapa km jarak rumah Rani ke sekolah?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Tarif naik: Rp5.000",
+            "correct": true
+          },
+          {
+            "text": "Tarif tiap km: Rp2.000",
+            "correct": true
+          },
+          {
+            "text": "Total bayar: Rp17.000",
+            "correct": true
+          },
+          {
+            "text": "Jarak: 17 km",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Jarak rumah ke sekolah (km)",
+            "correct": true
+          },
+          {
+            "text": "Total ongkos Rani",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "jarak rumah ke sekolah (km)"
+        },
+        "variable_options": [
+          "jarak rumah ke sekolah (km)",
+          "tarif naik",
+          "total bayar"
+        ],
+        "equation": "5000 + 2000*x = 17000",
+        "equation_options": [
+          "5000 + 2000*x = 17000",
+          "5000*x + 2000 = 17000",
+          "2000*x = 17000 + 5000"
+        ]
+      },
+      "equation": "5000 + 2000*x = 17000",
+      "solve": {
+        "answer": "6",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "5000",
+            "result": "2000*x = 12000"
+          },
+          {
+            "op": "div",
+            "value": "2000",
+            "result": "x = 6"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "5000 + 2000*(6) = 17000",
+        "sense_question": "Apakah 6 km masuk akal untuk jarak ke sekolah?",
+        "answer_template": "Jadi, jarak rumah Rani ke sekolah {jawaban}.",
+        "answer_sentence": "Jadi, jarak rumah Rani ke sekolah 6 km.",
+        "unit": "km"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 5.000.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 2.000.",
+          "correct": true
+        },
+        {
+          "text": "5.000 pindah ke ruas lain tanpa berubah tanda.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 2.000.",
+          "correct": false
+        },
+        {
+          "text": "x adalah jarak rumah ke sekolah (km).",
+          "correct": true
+        },
+        {
+          "text": "x adalah tarif naik.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Tarif naik + Rp2.000 × jarak = total bayar.",
+        "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "2000*x = 22000",
+          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "10000",
+          "feedback": "2.000x artinya 2.000 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "interpret": {
+        "question": "Ojek tarif datar Rp15.000 untuk jarak yang sama. Mana yang lebih hemat?",
+        "options": [
+          "Ojek, hemat Rp2.000",
+          "Angkot, hemat Rp2.000",
+          "Sama saja"
+        ],
+        "answer": 0
+      }
+    },
+    {
+      "id": "w7-p02",
+      "world": 7,
+      "level": 2,
+      "type": "literacy",
+      "order": 2,
+      "emoji": "💰",
+      "context": {
+        "pisa": "societal",
+        "setting": "kas kelas"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret",
+        "evaluate"
+      ],
+      "story": [
+        "Setiap siswa kelas 7B membayar iuran kas yang sama.",
+        "Di kelas itu ada 32 siswa.",
+        "Wali kelas ikut menyumbang Rp40.000.",
+        "Kas yang terkumpul Rp200.000."
+      ],
+      "question": "Berapa iuran tiap siswa?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Banyak siswa: 32",
+            "correct": true
+          },
+          {
+            "text": "Sumbangan wali kelas: Rp40.000",
+            "correct": true
+          },
+          {
+            "text": "Kas terkumpul: Rp200.000",
+            "correct": true
+          },
+          {
+            "text": "Iuran tiap siswa: Rp40.000",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Iuran tiap siswa",
+            "correct": true
+          },
+          {
+            "text": "Banyak siswa",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "iuran tiap siswa (rupiah)"
+        },
+        "variable_options": [
+          "iuran tiap siswa (rupiah)",
+          "banyak siswa",
+          "sumbangan wali kelas"
+        ],
+        "equation": "32*x + 40000 = 200000",
+        "equation_options": [
+          "32*x + 40000 = 200000",
+          "32*x = 200000 + 40000",
+          "x + 40000 = 200000"
+        ]
+      },
+      "equation": "32*x + 40000 = 200000",
+      "solve": {
+        "answer": "5000",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "40000",
+            "result": "32*x = 160000"
+          },
+          {
+            "op": "div",
+            "value": "32",
+            "result": "x = 5000"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "32*(5000) + 40000 = 200000",
+        "sense_question": "Apakah Rp5.000 masuk akal untuk iuran kas?",
+        "answer_template": "Jadi, iuran tiap siswa {jawaban}.",
+        "answer_sentence": "Jadi, iuran tiap siswa Rp5.000.",
+        "unit": "rp"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 40.000.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 32.",
+          "correct": true
+        },
+        {
+          "text": "40.000 pindah ke ruas lain tanpa berubah tanda.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 32.",
+          "correct": false
+        },
+        {
+          "text": "x adalah iuran tiap siswa (rupiah).",
+          "correct": true
+        },
+        {
+          "text": "x adalah banyak siswa.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "32 × iuran + sumbangan wali kelas = kas terkumpul.",
+        "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "32*x = 240000",
+          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "159968",
+          "feedback": "32x artinya 32 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "table": {
+        "title": "Pilihan hadiah perpisahan",
+        "headers": [
+          "Hadiah",
+          "Harga"
+        ],
+        "rows": [
+          [
+            "Buku agenda",
+            "Rp75.000"
+          ],
+          [
+            "Tanaman hias",
+            "Rp120.000"
+          ],
+          [
+            "Jam dinding",
+            "Rp210.000"
+          ]
+        ]
+      },
+      "interpret": {
+        "question": "Kelas ingin membeli 1 hadiah dengan kas itu. Hadiah mana yang TIDAK bisa dibeli?",
+        "options": [
+          "Buku agenda",
+          "Tanaman hias",
+          "Jam dinding"
+        ],
+        "answer": 2
+      }
+    },
+    {
+      "id": "w7-p03",
+      "world": 7,
+      "level": 2,
+      "type": "literacy",
+      "order": 3,
+      "emoji": "🏔️",
+      "context": {
+        "pisa": "scientific",
+        "setting": "pendakian"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret",
+        "evaluate"
+      ],
+      "story": [
+        "Suhu di kaki gunung 24 °C.",
+        "Setiap naik 1 km, suhu turun 6 °C.",
+        "Suhu di pos pendakian 6 °C."
+      ],
+      "question": "Berapa km tinggi pos dari kaki gunung?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Suhu kaki gunung: 24 °C",
+            "correct": true
+          },
+          {
+            "text": "Suhu turun 6 °C tiap km",
+            "correct": true
+          },
+          {
+            "text": "Suhu di pos: 6 °C",
+            "correct": true
+          },
+          {
+            "text": "Tinggi pos: 6 km",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Tinggi pos dari kaki gunung (km)",
+            "correct": true
+          },
+          {
+            "text": "Suhu di pos",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "tinggi pos dari kaki gunung (km)"
+        },
+        "variable_options": [
+          "tinggi pos dari kaki gunung (km)",
+          "suhu di pos",
+          "suhu di kaki gunung"
+        ],
+        "equation": "24 - 6*x = 6",
+        "equation_options": [
+          "24 - 6*x = 6",
+          "24 + 6*x = 6",
+          "6*x - 24 = 6"
+        ]
+      },
+      "equation": "24 - 6*x = 6",
+      "solve": {
+        "answer": "3",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "24",
+            "result": "-6*x = -18"
+          },
+          {
+            "op": "div",
+            "value": "-6",
+            "result": "x = 3"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "24 - 6*(3) = 6",
+        "sense_question": "Apakah 3 km masuk akal untuk ketinggian pos?",
+        "answer_template": "Jadi, pos pendakian berada {jawaban} di atas kaki gunung.",
+        "answer_sentence": "Jadi, pos pendakian berada 3 km di atas kaki gunung.",
+        "unit": "km"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 24.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi −6.",
+          "correct": true
+        },
+        {
+          "text": "24 pindah ke ruas lain tanpa berubah tanda.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi −6.",
+          "correct": false
+        },
+        {
+          "text": "x adalah tinggi pos dari kaki gunung (km).",
+          "correct": true
+        },
+        {
+          "text": "x adalah suhu di pos.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Suhu awal − 6 × ketinggian = suhu di pos.",
+        "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "-6*x = 30",
+          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "-12",
+          "feedback": "−6x artinya −6 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "interpret": {
+        "question": "Pendaki disarankan memakai jaket jika suhu di bawah 10 °C. Perlukah jaket di pos?",
+        "options": [
+          "Perlu, karena 6 °C di bawah 10 °C",
+          "Tidak perlu",
+          "Hanya di kaki gunung"
+        ],
+        "answer": 0
+      }
+    },
+    {
+      "id": "w7-p04",
+      "world": 7,
+      "level": 2,
+      "type": "literacy",
+      "order": 4,
+      "emoji": "👟",
+      "context": {
+        "pisa": "personal",
+        "setting": "menabung"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret",
+        "evaluate"
+      ],
+      "story": [
+        "Harga sepatu olahraga Rp180.000.",
+        "Tia sudah punya uang Rp60.000.",
+        "Ia menabung Rp15.000 setiap minggu."
+      ],
+      "question": "Berapa minggu lagi uang Tia cukup untuk membeli sepatu?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Harga sepatu: Rp180.000",
+            "correct": true
+          },
+          {
+            "text": "Uang Tia sekarang: Rp60.000",
+            "correct": true
+          },
+          {
+            "text": "Tabungan per minggu: Rp15.000",
+            "correct": true
+          },
+          {
+            "text": "Lama menabung: 15 minggu",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Banyak minggu menabung",
+            "correct": true
+          },
+          {
+            "text": "Harga sepatu",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak minggu menabung"
+        },
+        "variable_options": [
+          "banyak minggu menabung",
+          "uang Tia sekarang",
+          "harga sepatu"
+        ],
+        "equation": "60000 + 15000*x = 180000",
+        "equation_options": [
+          "60000 + 15000*x = 180000",
+          "15000 + 60000*x = 180000",
+          "15000*x = 180000 + 60000"
+        ]
+      },
+      "equation": "60000 + 15000*x = 180000",
+      "solve": {
+        "answer": "8",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "60000",
+            "result": "15000*x = 120000"
+          },
+          {
+            "op": "div",
+            "value": "15000",
+            "result": "x = 8"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "60000 + 15000*(8) = 180000",
+        "sense_question": "Apakah 8 minggu (sekitar 2 bulan) masuk akal?",
+        "answer_template": "Jadi, Tia perlu menabung {jawaban} lagi.",
+        "answer_sentence": "Jadi, Tia perlu menabung 8 minggu lagi.",
+        "unit": "minggu"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 60.000.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 15.000.",
+          "correct": true
+        },
+        {
+          "text": "60.000 pindah ke ruas lain tanpa berubah tanda.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 15.000.",
+          "correct": false
+        },
+        {
+          "text": "x adalah banyak minggu menabung.",
+          "correct": true
+        },
+        {
+          "text": "x adalah uang Tia sekarang.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Uang sekarang + Rp15.000 × banyak minggu = harga sepatu.",
+        "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "15000*x = 240000",
+          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "105000",
+          "feedback": "15.000x artinya 15.000 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "interpret": {
+        "question": "Tia mulai menabung awal Desember. Kira-kira bulan apa uangnya cukup?",
+        "options": [
+          "Desember",
+          "Januari",
+          "Maret"
+        ],
+        "answer": 1
+      }
+    },
+    {
+      "id": "w7-p05",
+      "world": 7,
+      "level": 3,
+      "type": "literacy",
+      "order": 5,
+      "emoji": "🎭",
+      "context": {
+        "pisa": "societal",
+        "setting": "pentas seni"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret",
+        "evaluate"
+      ],
+      "story": [
+        "Aula sekolah punya 12 baris kursi yang sama banyak.",
+        "Ada 20 kursi tambahan di bagian depan.",
+        "Seluruhnya ada 260 kursi."
+      ],
+      "question": "Berapa kursi di setiap baris?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Banyak baris: 12",
+            "correct": true
+          },
+          {
+            "text": "Kursi tambahan: 20",
+            "correct": true
+          },
+          {
+            "text": "Jumlah kursi: 260",
+            "correct": true
+          },
+          {
+            "text": "Kursi per baris: 12",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Banyak kursi di setiap baris",
+            "correct": true
+          },
+          {
+            "text": "Banyak baris kursi",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak kursi per baris"
+        },
+        "variable_options": [
+          "banyak kursi per baris",
+          "banyak baris",
+          "kursi tambahan"
+        ],
+        "equation": "12*x + 20 = 260",
+        "equation_options": [
+          "12*x + 20 = 260",
+          "20*x + 12 = 260",
+          "12*x = 260 + 20"
+        ]
+      },
+      "equation": "12*x + 20 = 260",
+      "solve": {
+        "answer": "20",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "20",
+            "result": "12*x = 240"
+          },
+          {
+            "op": "div",
+            "value": "12",
+            "result": "x = 20"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "12*(20) + 20 = 260",
+        "sense_question": "Apakah 20 kursi per baris masuk akal?",
+        "answer_template": "Jadi, setiap baris ada {jawaban}.",
+        "answer_sentence": "Jadi, setiap baris ada 20 kursi.",
+        "unit": "kursi"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 20.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 12.",
+          "correct": true
+        },
+        {
+          "text": "20 pindah ke ruas lain tanpa berubah tanda.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 12.",
+          "correct": false
+        },
+        {
+          "text": "x adalah banyak kursi per baris.",
+          "correct": true
+        },
+        {
+          "text": "x adalah banyak baris.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "12 baris × kursi per baris + kursi tambahan = jumlah kursi.",
+        "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "12*x = 280",
+          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "228",
+          "feedback": "12x artinya 12 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "interpret": {
+        "question": "Pentas seni akan ditonton 250 orang. Apakah kursinya cukup?",
+        "options": [
+          "Cukup, sisa 10 kursi",
+          "Kurang 10 kursi",
+          "Pas, tidak ada sisa"
+        ],
+        "answer": 0
+      }
+    },
+    {
+      "id": "w7-p06",
+      "world": 7,
+      "level": 3,
+      "type": "literacy",
+      "order": 6,
+      "emoji": "🛒",
+      "context": {
+        "pisa": "personal",
+        "setting": "warung"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret",
+        "evaluate"
+      ],
+      "story": [
+        "Ibu membeli 2 kg gula dan beberapa kg tepung di warung.",
+        "Ibu membayar Rp68.000.",
+        "Lihat daftar harga di tabel."
+      ],
+      "question": "Berapa kg tepung yang dibeli Ibu?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Gula: 2 kg × Rp16.000",
+            "correct": true
+          },
+          {
+            "text": "Harga tepung: Rp12.000 per kg",
+            "correct": true
+          },
+          {
+            "text": "Total bayar: Rp68.000",
+            "correct": true
+          },
+          {
+            "text": "Harga telur: Rp28.000 per kg",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Banyak kg tepung",
+            "correct": true
+          },
+          {
+            "text": "Banyak kg gula",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak kg tepung"
+        },
+        "variable_options": [
+          "banyak kg tepung",
+          "harga tepung per kg",
+          "banyak kg gula"
+        ],
+        "equation": "2*16000 + 12000*x = 68000",
+        "equation_options": [
+          "2*16000 + 12000*x = 68000",
+          "16000 + 12000*x = 68000",
+          "2*16000 + 28000*x = 68000"
+        ]
+      },
+      "equation": "2*16000 + 12000*x = 68000",
+      "solve": {
+        "answer": "3",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "32000",
+            "result": "12000*x = 36000"
+          },
+          {
+            "op": "div",
+            "value": "12000",
+            "result": "x = 3"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "2*16000 + 12000*(3) = 68000",
+        "sense_question": "Apakah 3 kg tepung masuk akal?",
+        "answer_template": "Jadi, Ibu membeli {jawaban} tepung.",
+        "answer_sentence": "Jadi, Ibu membeli 3 kg tepung.",
+        "unit": "kg"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 32.000.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 12.000.",
+          "correct": true
+        },
+        {
+          "text": "32.000 pindah ke ruas lain tanpa berubah tanda.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 12.000.",
+          "correct": false
+        },
+        {
+          "text": "x adalah banyak kg tepung.",
+          "correct": true
+        },
+        {
+          "text": "x adalah harga tepung per kg.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Harga 2 kg gula + Rp12.000 × kg tepung = total bayar.",
+        "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "12000*x = 100000",
+          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "24000",
+          "feedback": "12.000x artinya 12.000 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "table": {
+        "title": "Daftar harga Warung Bu Siti",
+        "headers": [
+          "Barang",
+          "Harga per kg"
+        ],
+        "rows": [
+          [
+            "Gula",
+            "Rp16.000"
+          ],
+          [
+            "Telur",
+            "Rp28.000"
+          ],
+          [
+            "Tepung",
+            "Rp12.000"
+          ]
+        ]
+      },
+      "interpret": {
+        "question": "Ibu membayar dengan uang Rp100.000. Berapa kembaliannya?",
+        "options": [
+          "Rp32.000",
+          "Rp68.000",
+          "Rp22.000"
+        ],
+        "answer": 0
+      }
+    },
+    {
+      "id": "w7-p07",
+      "world": 7,
+      "level": 3,
+      "type": "literacy",
+      "order": 7,
+      "emoji": "💧",
+      "context": {
+        "pisa": "scientific",
+        "setting": "tandon air"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret",
+        "evaluate"
+      ],
+      "story": [
+        "Tandon air sekolah berisi 200 liter di pagi hari.",
+        "Setiap jam, air terpakai 25 liter.",
+        "Sekarang air di tandon tinggal 50 liter."
+      ],
+      "question": "Sudah berapa jam air dipakai?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Isi awal: 200 liter",
+            "correct": true
+          },
+          {
+            "text": "Pemakaian: 25 liter per jam",
+            "correct": true
+          },
+          {
+            "text": "Sisa air: 50 liter",
+            "correct": true
+          },
+          {
+            "text": "Lama pemakaian: 25 jam",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Lama air dipakai (jam)",
+            "correct": true
+          },
+          {
+            "text": "Sisa air",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "lama air dipakai (jam)"
+        },
+        "variable_options": [
+          "lama air dipakai (jam)",
+          "sisa air",
+          "isi awal tandon"
+        ],
+        "equation": "200 - 25*x = 50",
+        "equation_options": [
+          "200 - 25*x = 50",
+          "200 + 25*x = 50",
+          "25*x - 200 = 50"
+        ]
+      },
+      "equation": "200 - 25*x = 50",
+      "solve": {
+        "answer": "6",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "200",
+            "result": "-25*x = -150"
+          },
+          {
+            "op": "div",
+            "value": "-25",
+            "result": "x = 6"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "200 - 25*(6) = 50",
+        "sense_question": "Apakah 6 jam masuk akal untuk pemakaian sejak pagi?",
+        "answer_template": "Jadi, air sudah dipakai selama {jawaban}.",
+        "answer_sentence": "Jadi, air sudah dipakai selama 6 jam.",
+        "unit": "jam"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 200.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi −25.",
+          "correct": true
+        },
+        {
+          "text": "200 pindah ke ruas lain tanpa berubah tanda.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi −25.",
+          "correct": false
+        },
+        {
+          "text": "x adalah lama air dipakai (jam).",
+          "correct": true
+        },
+        {
+          "text": "x adalah sisa air.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Isi awal − 25 × lama pemakaian = sisa air.",
+        "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "-25*x = 250",
+          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "-125",
+          "feedback": "−25x artinya −25 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "interpret": {
+        "question": "Jika pemakaian tetap, berapa jam lagi tandon akan kosong?",
+        "options": [
+          "2 jam",
+          "6 jam",
+          "8 jam"
+        ],
+        "answer": 0
+      }
+    },
+    {
+      "id": "w7-p08",
+      "world": 7,
+      "level": 3,
+      "type": "literacy",
+      "order": 8,
+      "emoji": "⚽",
+      "context": {
+        "pisa": "societal",
+        "setting": "turnamen"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret",
+        "evaluate"
+      ],
+      "story": [
+        "Dalam turnamen, tim yang menang mendapat 3 poin.",
+        "Tim yang seri mendapat 1 poin.",
+        "Tim Garuda seri 4 kali dan tidak pernah kalah.",
+        "Poin Tim Garuda sekarang 25."
+      ],
+      "question": "Berapa kali Tim Garuda menang?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Poin menang: 3",
+            "correct": true
+          },
+          {
+            "text": "Poin seri: 1",
+            "correct": true
+          },
+          {
+            "text": "Banyak seri: 4",
+            "correct": true
+          },
+          {
+            "text": "Total poin: 25",
+            "correct": true
+          },
+          {
+            "text": "Banyak menang: 4",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Banyak kemenangan Tim Garuda",
+            "correct": true
+          },
+          {
+            "text": "Total poin Tim Garuda",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak kemenangan"
+        },
+        "variable_options": [
+          "banyak kemenangan",
+          "total poin",
+          "banyak seri"
+        ],
+        "equation": "3*x + 4 = 25",
+        "equation_options": [
+          "3*x + 4 = 25",
+          "3*x + 4*3 = 25",
+          "x + 4 = 25"
+        ]
+      },
+      "equation": "3*x + 4 = 25",
+      "solve": {
+        "answer": "7",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "4",
+            "result": "3*x = 21"
+          },
+          {
+            "op": "div",
+            "value": "3",
+            "result": "x = 7"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "3*(7) + 4 = 25",
+        "sense_question": "Apakah 7 kali menang masuk akal?",
+        "answer_template": "Jadi, Tim Garuda menang {jawaban}.",
+        "answer_sentence": "Jadi, Tim Garuda menang 7 kali.",
+        "unit": "kali"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 4.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 3.",
+          "correct": true
+        },
+        {
+          "text": "4 pindah ke ruas lain tanpa berubah tanda.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 3.",
+          "correct": false
+        },
+        {
+          "text": "x adalah banyak kemenangan.",
+          "correct": true
+        },
+        {
+          "text": "x adalah total poin.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "3 × banyak menang + 1 × banyak seri = total poin.",
+        "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "3*x = 29",
+          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "18",
+          "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "interpret": {
+        "question": "Berapa pertandingan yang sudah dimainkan Tim Garuda?",
+        "options": [
+          "7",
+          "11",
+          "25"
+        ],
+        "answer": 1
+      }
+    }
+  ]
+}
