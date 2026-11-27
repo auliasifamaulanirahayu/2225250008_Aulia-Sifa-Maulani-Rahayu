@@ -25,7 +25,7 @@ Tidak ada iklan atau analytics pihak ketiga. Satu-satunya data yang keluar ke pi
   Siswa boleh berhenti kapan saja tanpa konsekuensi nilai.
 - Mode penelitian (`research_mode`) hanya diaktifkan untuk kelas yang telah memberi persetujuan.
 - AI Tutor (`ai_tutor`) bawaannya **mati**; guru menyalakannya hanya setelah sekolah/orang tua setuju bahwa pesan
-  siswa (tanpa nama) dikirim ke layanan AI Google.
+  siswa (tanpa nama) dikirim ke layanan AI Groq.
 
 ## 3. Anonimisasi
 - Ekspor CSV memakai `anon_id` (UUID) dan `research_code`, tanpa nickname.
@@ -39,7 +39,7 @@ Tidak ada iklan atau analytics pihak ketiga. Satu-satunya data yang keluar ke pi
 - Row Level Security di semua tabel: guru hanya melihat kelas miliknya; siswa hanya melihat datanya sendiri, timnya,
   dan leaderboard kelasnya.
 - Data disimpan di Supabase region Asia-Pasifik (proyek saat ini: Sydney, ap-southeast-2); kunci `service_role` hanya di laptop peneliti dan di
-  lingkungan server Edge Function (otomatis dari Supabase), tidak di repo atau frontend. `GEMINI_API_KEY` disimpan
+  lingkungan server Edge Function (otomatis dari Supabase), tidak di repo atau frontend. `GROQ_API_KEY` disimpan
   sebagai *secret* Edge Function, tidak pernah dikirim ke HP siswa. File `.env` dan CSV data siswa dikecualikan dari git.
 
 ## 5. Retensi & penghapusan
@@ -55,20 +55,24 @@ Tidak ada iklan atau analytics pihak ketiga. Satu-satunya data yang keluar ke pi
 - Nama panggilan disaring dari kata tidak pantas (daftar kata terlarang) dan guru dapat mengubahnya.
 - Leaderboard per tim, bukan individu, untuk mengurangi tekanan dan perbandingan sosial.
 
-## 7. AI Math Tutor (Gemini)
-- **Alur data**: HP siswa → Edge Function `ai-tutor` (Supabase) → Google Gemini API. Yang dikirim ke Google hanya
-  teks soal dan percakapan; **tanpa nama, nickname, ID, atau kelas**. Email dan deret angka ≥ 9 digit (nomor HP)
-  disamarkan menjadi `[email]`/`[nomor]` sebelum dikirim. Permintaan memakai `store: false`.
-- **Free tier**: menurut halaman harga resmi Google, konten free tier **dipakai Google untuk meningkatkan produknya**
-  ("Used to improve our products": Yes); paid tier tidak. Untuk penelitian dengan anak, pertimbangkan paid tier atau
-  pastikan izin orang tua mencantumkan hal ini.
-- **Pemberitahuan di layar tutor**: "Jangan tulis nama lengkap, alamat, atau nomor HP. Pesanmu dikirim ke layanan AI
-  Google dan bisa dibaca gurumu."
+## 7. AI Math Tutor (Groq)
+- **Pemilihan penyedia** (dicek dari dokumen resmi, 2026-11-27):
+  - **Gemini API tidak dipakai**: Google AI Studio meminta pengembang menyatakan produknya untuk pengguna 18+, dan
+    konten free tier dipakai Google untuk meningkatkan produknya.
+  - **Groq dipakai**: Groq Services Agreement §6.3 mengakui aplikasi yang ditujukan untuk anak di bawah umur, dengan
+    pengembang bertanggung jawab atas kepatuhan hukum (di sini UU PDP); §4.2 menyatakan Groq tidak boleh memakai input
+    atau output untuk melatih model. Akun Groq dipegang pengembang (18+); siswa hanya memakai aplikasi.
+- **Alur data**: HP siswa → Edge Function `ai-tutor` (Supabase) → Groq API. Yang dikirim ke Groq hanya teks soal dan
+  percakapan; **tanpa nama, nickname, ID, atau kelas**. Email dan deret angka ≥ 9 digit (nomor HP) disamarkan menjadi
+  `[email]`/`[nomor]` sebelum dikirim.
+- **Pemberitahuan AI**: Kak Orbit selalu memperkenalkan diri sebagai **AI, bukan manusia**, dan layar tutor menulis:
+  "Kak Orbit adalah AI, bukan manusia. Jangan tulis nama lengkap, alamat, atau nomor HP. Pesanmu (tanpa namamu)
+  dikirim ke layanan AI Groq dan bisa dibaca gurumu."
 - **Keamanan isi**: instruksi tutor membatasi topik pada matematika, menolak menanyakan data pribadi, dan menyarankan
-  berbicara dengan guru/orang tua bila siswa menyebut tidak aman atau dirundung. Guru dapat membaca percakapan.
+  berbicara dengan guru/orang tua bila siswa menyebut tidak aman atau dirundung. Guru dapat membaca semua percakapan.
 - **Tanpa AI**: bila AI mati, offline, kuota habis, atau mode demo, tutor bawaan bekerja sepenuhnya di HP dan tidak
   mengirim apa pun.
-- **Batas**: maksimal `AI_DAILY_LIMIT` (bawaan 30) pesan per siswa per hari.
+- **Batas**: maksimal `AI_DAILY_LIMIT` (bawaan 30) pesan per siswa per hari; kuota gratis Groq per organisasi.
 
 ## 8. Pemberitahuan di aplikasi
 Halaman "Tentang & Privasi" berbahasa sederhana: "Aplikasi ini hanya menyimpan nama panggilan dan hasil

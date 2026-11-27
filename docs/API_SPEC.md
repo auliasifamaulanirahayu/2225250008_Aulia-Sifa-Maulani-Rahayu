@@ -121,10 +121,15 @@ Error: `401 UNAUTHENTICATED`, `403 ONLY_STUDENT`, `400 EMPTY|BAD_JSON`.
 Aturan server: hanya siswa; kelas harus `ai_tutor = true`; `mode: "full"` diturunkan ke `guide` bila `attempted`
 false; maksimal 10 pesan riwayat; kuota harian per siswa (`AI_DAILY_LIMIT`, hari WIB).
 
-Ke Google: **Interactions API** `POST https://generativelanguage.googleapis.com/v1beta/interactions`, header
-`x-goog-api-key` dan `Api-Revision: 2026-05-20`, body `{ model, system_instruction, input:[{type:"user_input"|"model_output",
-content:[{type:"text",text}]}], store:false, generation_config:{max_output_tokens} }`. Teks balasan diambil dari
-`steps[type=model_output].content[type=text].text`. (Diverifikasi dari dokumentasi resmi aistudio.google.com/docs,
-November 2026. Model gemini 3.6+ mengabaikan `temperature`, jadi tidak dikirim.)
+Ke Groq: **Chat Completions** `POST https://api.groq.com/openai/v1/chat/completions`, header
+`Authorization: Bearer <GROQ_API_KEY>`, body `{ model, messages:[{role:"system"|"user"|"assistant", content}],
+temperature, max_completion_tokens }`. Teks balasan: `choices[0].message.content`. Kuota habis: HTTP **429** (header
+`retry-after`) → `fallback: "quota"`. (Diverifikasi dari console.groq.com/docs/api-reference, November 2026.)
 
-Model bawaan `gemini-3.5-flash-lite` (free tier, belum ada jadwal penghentian). Ganti lewat secret `GEMINI_MODEL`.
+Model bawaan `openai/gpt-oss-20b` (multibahasa; model *reasoning*: dikirim `reasoning_effort: "low"`, batas token
+mencakup token berpikir: 900, pembahasan lengkap 1600). `llama-3.3-70b-versatile` ditolak untuk akun proyek ini (404
+`model_not_found`) walaupun tercantum di dokumentasi; cek model yang tersedia di dashboard Groq. Ganti lewat secret `GROQ_MODEL`.
+Kuota free tier berlaku **per organisasi Groq**, bukan per siswa; lihat angka pastinya di console.groq.com → Settings → Limits.
+
+Mengapa bukan Gemini: Gemini API mensyaratkan pengembang menyatakan produknya untuk pengguna 18+ (layar persetujuan
+Google AI Studio), sedangkan MATH-MISSION untuk siswa 12–13 tahun.

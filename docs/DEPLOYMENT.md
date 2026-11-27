@@ -116,23 +116,22 @@ python content/tools/export_research.py --class-code K7B3QZ --out data-7b.csv
 ```
 Hasil: CSV anonim + ringkasan tingkat kesalahan dan median waktu per tahap.
 
-## AI Math Tutor (opsional, Gemini)
+## AI Math Tutor (opsional, Groq)
 
-1. Jalankan migrasi **`supabase/migrations/0002_ai_tutor.sql`** di SQL Editor (setelah 0001).
-2. Buat API key di **Google AI Studio** (aistudio.google.com) → *Get API key*. Cek batas kuota free tier untuk proyekmu
-   di AI Studio (dokumentasi resmi tidak mencantumkan angkanya; berlaku per proyek, reset tengah malam waktu Pasifik).
-3. Pasang Supabase CLI, lalu dari root repo:
-   ```bash
-   supabase login
-   supabase link --project-ref <ref-proyek>
-   supabase secrets set GEMINI_API_KEY=<kunci> GEMINI_MODEL=gemini-3.5-flash-lite AI_DAILY_LIMIT=30
-   supabase functions deploy ai-tutor
-   ```
-   Kunci **tidak** ditaruh di `frontend/.env` (frontend publik).
-4. Di Mode Guru → kelas → nyalakan **🤖 AI Tutor (Gemini)** setelah ada izin sekolah/orang tua.
-5. Tanpa langkah 2–4, tutor tetap berjalan sebagai **tutor bawaan** (tanpa AI).
+1. Jalankan migrasi `0002_ai_tutor.sql` (dan `0004_grants.sql`) di SQL Editor.
+2. Buat API key di **console.groq.com** → *API Keys* → *Create API Key* (akun pengembang harus 18+; siswa tidak
+   memakai Groq langsung). Cek kuota gratis di *Settings → Limits*.
+3. **Pasang function lewat dashboard** (tanpa CLI): Supabase → Edge Functions → *Deploy a new function* → *Via Editor*
+   → nama `ai-tutor` → tempel isi `supabase/functions/ai-tutor/index.ts` → *Deploy function*.
+   Di *Settings* function: **matikan "Verify JWT with legacy secret"** (proyek baru menandatangani token dengan kunci
+   baru; function memeriksa siswa sendiri lewat `auth.getUser`).
+4. Supabase → Edge Functions → **Secrets**: `GROQ_API_KEY=<kunci>`; opsional `GROQ_MODEL=openai/gpt-oss-20b`,
+   `AI_DAILY_LIMIT=30` (turunkan, mis. 10, bila kuota gratis cepat habis). Kunci **tidak** ditaruh di `frontend/.env`.
+   Alternatif CLI: `supabase secrets set GROQ_API_KEY=<kunci>` lalu `supabase functions deploy ai-tutor`.
+5. Mode Guru → kelas → nyalakan **🤖 AI Tutor (Groq)** setelah ada izin sekolah/orang tua.
+6. Tanpa langkah 2–5, atau saat kuota habis (HTTP 429), tutor tetap berjalan sebagai **tutor bawaan** (tanpa AI).
 
-Catatan privasi free tier: lihat [PRIVACY_ETHICS.md §7](PRIVACY_ETHICS.md).
+Catatan privasi: lihat [PRIVACY_ETHICS.md §7](PRIVACY_ETHICS.md).
 
 ## Learning Zone & Challenge Zone
 

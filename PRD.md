@@ -127,7 +127,7 @@ efektivitas dan beban kognitif.
 | FR-23 | Login guru | Daftar/masuk guru dengan email + password (Supabase Auth); **lupa password** lewat tautan email → halaman buat password baru | Wajib |
 | FR-24 | Cadangan progres | XP, bintang, dan progres per soal dicadangkan ke Supabase dan dipulihkan saat masuk di HP lain | Wajib |
 | FR-25 | Hapus akun | Siswa dapat menghapus akun & seluruh datanya; guru dapat menghapus siswa atau kelas | Wajib |
-| FR-26 | AI Math Tutor | Tutor "Kak Orbit" (Gemini via Edge Function) membimbing 6 tahap (pahami, informasi, model, langkah, hitung, periksa), satu petunjuk per giliran, tanpa jawaban akhir; pembahasan lengkap hanya setelah siswa mencoba & meminta; dibuka dari Dashboard atau layar soal | Wajib |
+| FR-26 | AI Math Tutor | Tutor "Kak Orbit" (Groq via Edge Function; selalu menyatakan dirinya AI, bukan manusia) membimbing 6 tahap (pahami, informasi, model, langkah, hitung, periksa), satu petunjuk per giliran, tanpa jawaban akhir; pembahasan lengkap hanya setelah siswa mencoba & meminta; dibuka dari Dashboard atau layar soal | Wajib |
 | FR-27 | Fallback tutor | Tutor bawaan di HP saat AI mati/offline/kuota habis/demo, sehingga materi & latihan tetap jalan | Wajib |
 | FR-28 | Kendali guru AI | Guru menyalakan AI Tutor per kelas (bawaan mati) dan membaca percakapan siswanya | Wajib |
 | FR-29 | Learning Zone | 8 materi PLSV (pengertian, unsur, variabel/koefisien/konstanta/suku, kesetaraan, langkah, kedua ruas, perubahan tanda, soal cerita); tiap materi: penjelasan sederhana + visual, contoh bertahap, ringkasan, latihan pemahaman; satu bagian per layar; terbuka berurutan | Wajib |

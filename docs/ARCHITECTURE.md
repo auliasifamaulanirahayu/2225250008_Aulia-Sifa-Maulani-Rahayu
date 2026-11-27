@@ -202,7 +202,7 @@ Tanpa `VITE_SUPABASE_*`, aplikasi tetap berjalan dalam **mode demo siswa** (data
 flowchart LR
     UI["TutorChat.jsx"] -->|aiStatus() = ready| INV["supabase.functions.invoke('ai-tutor')"]
     INV --> EF["Edge Function ai-tutor<br/>cek siswa + kelas.ai_tutor + kuota harian<br/>samarkan email/nomor"]
-    EF -->|"store:false, tanpa identitas"| GEM["Gemini Interactions API"]
+    EF -->|"tanpa identitas"| GEM["Groq Chat Completions API"]
     EF -->|service role| DB[("ai_chat_sessions / ai_chat_messages")]
     UI -->|"demo / offline / mati / kuota / error"| FB["engine/tutorFallback.js<br/>(tutor bawaan, di HP)"]
     UI -->|mode bimbingan| GUARD["leaksAnswer(): balasan yang menyebut x = jawaban diganti petunjuk"]

@@ -25,7 +25,7 @@ Jika kode bertentangan dengan dokumen, tanyakan ke user dulu, lalu perbarui doku
 | PWA | `vite-plugin-pwa` (Workbox) |
 | Penyimpanan lokal | IndexedDB lewat `idb` |
 | Login & database | **Supabase** (`@supabase/supabase-js`): Auth + PostgreSQL + Row Level Security + fungsi RPC |
-| AI Tutor | **Google Gemini** (free tier) lewat **Supabase Edge Function**; API key hanya di server. Wajib ada fallback tanpa AI |
+| AI Tutor | **Groq** (free tier, model `openai/gpt-oss-20b`) lewat **Supabase Edge Function**; API key hanya di server. Wajib ada fallback tanpa AI. **Jangan pakai Gemini API**: syarat layanannya hanya untuk produk 18+ |
 | Tooling | **Python 3.11+**: SymPy (generator & validator soal), ekspor penelitian (pustaka standar) |
 | Uji | Vitest (unit), puppeteer-core (uji asap e2e dengan Chrome/Edge terpasang) |
 | CI | GitHub Actions (`.github/workflows/ci.yml`) |
@@ -41,7 +41,7 @@ atau pustaka CSS lain (selain Tailwind) tanpa persetujuan user: bundel harus tet
   White `#F5F7FF`. Glow dan animasi secukupnya; layar soal tetap bersih (aturan pedagogis 9).
 - **Database**: pertahankan tabel yang ada; tambahkan migrasi baru hanya untuk yang belum ada (mis. `ai_chat_sessions`,
   `ai_chat_messages`). Pemetaan nama tabel di ketentuan → tabel yang ada didokumentasikan di `docs/DATA_MODEL.md`.
-- **AI Tutor**: Gemini via Edge Function, pesan dikirim tanpa identitas siswa, pembahasan lengkap hanya sesuai aturan 6
+- **AI Tutor**: Groq via Edge Function (diganti dari Gemini 2026-11-27 karena syarat 18+), pesan dikirim tanpa identitas siswa, pembahasan lengkap hanya sesuai aturan 6
   dan ada fallback ke petunjuk bawaan bila kuota habis atau offline.
 - **Musik/suara**: musik latar bertema luar angkasa, tidak otomatis berbunyi, bisa dinyalakan/dimatikan, volume
   diatur; efek suara diatur terpisah.
@@ -60,7 +60,7 @@ content/worlds/*.json        DIHASILKAN oleh content/tools/build_worlds.py — j
 content/zones/*.json         Learning Zone (8 materi) & Challenge Zone (30 soal); juga DIHASILKAN build_worlds.py
 content/tools/               build_worlds.py, validate_content.py, export_research.py
 supabase/migrations/         skema SQL 0001–0004; perubahan skema = file migrasi BARU (0005_..., dst.) + GRANT bila tabel baru
-supabase/functions/ai-tutor/  Edge Function AI Tutor (Gemini; satu-satunya tempat GEMINI_API_KEY)
+supabase/functions/ai-tutor/  Edge Function AI Tutor (Groq; satu-satunya tempat GROQ_API_KEY)
 frontend/src/engine/         logika murni (tanpa React, DOM, atau jaringan) — wajib diuji
 frontend/src/components/     ui.jsx, Keypad.jsx, BalanceScale.jsx, GalaxyArt.jsx (planet), TutorChat.jsx
 frontend/src/screens/        Auth, Student, Team, Profile, Settings, Teacher, problem/{Problem,stages}.jsx
@@ -79,6 +79,7 @@ python content/tools/validate_content.py   # wajib lulus
 
 # frontend (dari frontend/)
 npm run dev | npm test | npm run build | npm run preview | npm run e2e
+# e2e menguji MODE DEMO: build tanpa frontend/.env (pindahkan sementara), agar tidak membuat akun di Supabase asli
 ```
 
 ## Konvensi kode

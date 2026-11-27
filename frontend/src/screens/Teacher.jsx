@@ -314,7 +314,7 @@ export function TeacherClass() {
           <input id="research" type="checkbox" checked={cls.research_mode} onChange={(e) => act(() => api.setResearch(id, e.target.checked))} />
         </label>
         <label className="toggle">
-          <span>🤖 AI Tutor (Gemini)</span>
+          <span>🤖 AI Tutor (Groq)</span>
           <input
             id="ai-tutor"
             type="checkbox"
@@ -323,7 +323,7 @@ export function TeacherClass() {
           />
         </label>
         <p className="muted small">
-          Nyalakan setelah ada izin sekolah/orang tua. Pesan siswa (tanpa nama) dikirim ke layanan AI Google. Bila mati,
+          Nyalakan setelah ada izin sekolah/orang tua. Pesan siswa (tanpa nama) dikirim ke layanan AI Groq dan tidak dipakai untuk melatih model. Bila mati,
           siswa tetap dibantu tutor bawaan tanpa AI.
         </p>
       </section>

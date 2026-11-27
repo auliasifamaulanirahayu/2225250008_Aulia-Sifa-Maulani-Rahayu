@@ -3,19 +3,24 @@
 //
 // Tugas:
 //  1. Memastikan pemanggil adalah SISWA yang masuk, dan guru sudah menyalakan AI Tutor untuk kelasnya.
-//  2. Membatasi pesan per siswa per hari (kuota gratis Gemini dipakai bersama satu proyek).
-//  3. Mengirim percakapan ke Gemini (Interactions API) TANPA identitas siswa; angka panjang & email disamarkan.
+//  2. Membatasi pesan per siswa per hari (kuota gratis Groq dipakai bersama satu akun/organisasi).
+//  3. Mengirim percakapan ke Groq (Chat Completions) TANPA identitas siswa; angka panjang & email disamarkan.
+//     Groq Services Agreement §4.2: input/output tidak dipakai untuk melatih model. §6.3: aplikasi untuk anak boleh,
+//     pengembang bertanggung jawab atas kepatuhan hukum (UU PDP). Gemini API TIDAK dipakai: syaratnya produk 18+.
 //  4. Menyimpan pesan siswa & balasan tutor ke ai_chat_messages (dibaca siswa & gurunya).
 // Bila AI tidak tersedia (belum diatur, kuota habis, error), balasan {fallback:true, reason} → aplikasi memakai
 // tutor bawaan (src/engine/tutorFallback.js), jadi siswa tetap bisa belajar.
 //
-// Rahasia (Supabase → Edge Functions → Secrets): GEMINI_API_KEY (wajib), GEMINI_MODEL (bawaan gemini-3.5-flash-lite),
-// AI_DAILY_LIMIT (bawaan 30). SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY tersedia otomatis.
+// Rahasia (Supabase → Edge Functions → Secrets): GROQ_API_KEY (wajib), GROQ_MODEL (bawaan openai/gpt-oss-20b),
+// AI_DAILY_LIMIT (bawaan 30). Model bawaan: openai/gpt-oss-20b. SUPABASE_URL dan SUPABASE_SECRET_KEYS (atau SUPABASE_SERVICE_ROLE_KEY lama) tersedia otomatis.
 
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/interactions';
-const MODEL = Deno.env.get('GEMINI_MODEL') || 'gemini-3.5-flash-lite';
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+// Model yang tersedia di akun Groq proyek ini (dashboard Groq, 2026-11-27). llama-3.3-70b-versatile ditolak (404 model_not_found).
+const MODEL = Deno.env.get('GROQ_MODEL') || 'openai/gpt-oss-20b';
+// Model reasoning (gpt-oss, qwen) berpikir dulu: tingkat berpikir rendah = cepat & hemat kuota token per menit.
+const IS_REASONING = /gpt-oss|qwen/i.test(MODEL);
 const DAILY_LIMIT = Number(Deno.env.get('AI_DAILY_LIMIT') || 30);
 const MAX_HISTORY = 10;
 
@@ -87,37 +92,47 @@ function redact(text) {
 
 const clip = (s, n) => String(s ?? '').trim().slice(0, n);
 
-// ---------------------------------------------------------------- Gemini
-async function askGemini(apiKey, body) {
-  const input = [
-    ...body.history.map((m) => ({
-      type: m.role === 'tutor' ? 'model_output' : 'user_input',
-      content: [{ type: 'text', text: redact(m.content) }],
-    })),
-    { type: 'user_input', content: [{ type: 'text', text: redact(body.message) }] },
+// ---------------------------------------------------------------- Groq (Chat Completions)
+// Format dari dokumentasi resmi Groq (console.groq.com/docs/api-reference, dicek 2026-11-27).
+async function askGroq(apiKey, body) {
+  const messages = [
+    { role: 'system', content: `${SYSTEM}\n\n${contextBlock(body)}` },
+    ...body.history.map((m) => ({ role: m.role === 'tutor' ? 'assistant' : 'user', content: redact(m.content) })),
+    { role: 'user', content: redact(body.message) },
   ];
-  const res = await fetch(GEMINI_URL, {
+  const res = await fetch(GROQ_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey, 'Api-Revision': '2026-05-20' },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
     body: JSON.stringify({
       model: MODEL,
-      system_instruction: `${SYSTEM}\n\n${contextBlock(body)}`,
-      input,
-      store: false, // riwayat dikirim dari aplikasi; Google tidak perlu menyimpan percakapan
-      generation_config: { max_output_tokens: body.mode === 'full' ? 700 : 250 },
+      messages,
+      temperature: 0.4, // stabil & ramah, tidak terlalu acak
+      // batas mencakup token berpikir model reasoning, jadi lebih longgar; panjang jawaban diatur instruksi sistem
+      max_completion_tokens: body.mode === 'full' ? 1600 : 900,
+      ...(IS_REASONING ? { reasoning_effort: 'low' } : {}),
     }),
   });
-  if (!res.ok) return { error: res.status === 429 ? 'quota' : `http_${res.status}` };
+  if (!res.ok) {
+    // Diagnosis di Logs: status + pesan error Groq (tanpa kunci, tanpa isi pesan siswa)
+    const detail = (await res.text().catch(() => '')).slice(0, 300);
+    console.error('groq_error', res.status, MODEL, detail);
+    return { error: res.status === 429 ? 'quota' : `http_${res.status}` }; // 429 = kuota gratis habis
+  }
   const data = await res.json();
-  if (data.status && data.status !== 'completed') return { error: `status_${data.status}` };
-  const text = (data.steps || [])
-    .filter((s) => s.type === 'model_output')
-    .flatMap((s) => s.content || [])
-    .filter((c) => c.type === 'text' && c.text)
-    .map((c) => c.text)
-    .join('\n')
-    .trim();
+  const text = String(data.choices?.[0]?.message?.content || '').trim();
   return text ? { text: text.slice(0, 1800) } : { error: 'empty' };
+}
+
+// ---------------------------------------------------------------- kunci server
+/** Kunci rahasia Supabase: sistem baru (SUPABASE_SECRET_KEYS, JSON {default: "sb_secret_…"}) atau kunci lama. */
+function secretKey() {
+  try {
+    const keys = JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS') || '{}');
+    if (keys.default) return keys.default;
+  } catch {
+    /* format tidak dikenal: pakai kunci lama */
+  }
+  return Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || null;
 }
 
 // ---------------------------------------------------------------- handler
@@ -126,15 +141,18 @@ Deno.serve(async (req) => {
   if (req.method !== 'POST') return json({ error: 'METHOD' }, 405);
 
   const url = Deno.env.get('SUPABASE_URL');
-  const authHeader = req.headers.get('Authorization') || '';
-  const userClient = createClient(url, Deno.env.get('SUPABASE_ANON_KEY'), {
-    global: { headers: { Authorization: authHeader } },
-  });
-  const { data: auth } = await userClient.auth.getUser();
+  const key = secretKey();
+  if (!url || !key) {
+    console.error('config_error', { hasUrl: !!url, hasSecretKey: !!key });
+    return fallback('error', { detail: 'server_key' });
+  }
+  const admin = createClient(url, key, { auth: { persistSession: false } });
+
+  // Identitas siswa dari token sesi di header Authorization (platform sudah memverifikasi JWT: verify_jwt = true).
+  const jwt = (req.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
+  const { data: auth } = jwt ? await admin.auth.getUser(jwt) : { data: null };
   const user = auth?.user;
   if (!user) return json({ error: 'UNAUTHENTICATED' }, 401);
-
-  const admin = createClient(url, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'));
   const { data: prof } = await admin
     .from('profiles')
     .select('role, classroom_id, classrooms:classroom_id (ai_tutor)')
@@ -186,7 +204,10 @@ Deno.serve(async (req) => {
       .insert({ student_id: user.id, problem_id: body.problem?.id || null })
       .select('id')
       .single();
-    if (error) return fallback('error');
+    if (error) {
+      console.error('db_error_session', error.code, error.message);
+      return fallback('error', { detail: 'db_session' });
+    }
     sessionId = s.id;
   } else {
     await admin.from('ai_chat_sessions').update({ last_at: new Date().toISOString() }).eq('id', sessionId);
@@ -201,16 +222,16 @@ Deno.serve(async (req) => {
     content: body.message,
   });
 
-  const apiKey = Deno.env.get('GEMINI_API_KEY');
+  const apiKey = Deno.env.get('GROQ_API_KEY');
   if (!apiKey) return fallback('not_configured', { session_id: sessionId });
 
   let out;
   try {
-    out = await askGemini(apiKey, body);
+    out = await askGroq(apiKey, body);
   } catch {
     out = { error: 'network' };
   }
-  if (out.error) return fallback(out.error === 'quota' ? 'quota' : 'error', { session_id: sessionId });
+  if (out.error) return fallback(out.error === 'quota' ? 'quota' : 'error', { session_id: sessionId, detail: out.error });
 
   await admin.from('ai_chat_messages').insert({
     session_id: sessionId,

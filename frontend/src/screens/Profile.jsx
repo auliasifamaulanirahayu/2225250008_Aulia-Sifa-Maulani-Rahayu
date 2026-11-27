@@ -185,7 +185,7 @@ export function About() {
           <li>Gurumu bisa melihat progresmu untuk membantumu belajar.</li>
           <li>Tidak ada iklan dan tidak ada pelacak.</li>
           <li>
-            Jika gurumu menyalakan AI Tutor, pesanmu ke tutor (tanpa namamu) dikirim ke layanan AI Google. Jangan tulis
+            Jika gurumu menyalakan AI Tutor, pesanmu ke tutor (tanpa namamu) dikirim ke layanan AI Groq. Kak Orbit adalah AI, bukan manusia. Jangan tulis
             nama lengkap, alamat, atau nomor HP di sana.
           </li>
           <li>Kamu bisa menghapus akun dan semua datamu kapan saja dari halaman Profil.</li>

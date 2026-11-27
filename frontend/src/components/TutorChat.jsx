@@ -39,8 +39,8 @@ function Bubble({ m }) {
 export function TutorChat({ problem = null, stage = '', hints = [], attempted = false, onFullSolution }) {
   const mission = problem?.world || 1;
   const greeting = problem
-    ? 'Hai! Aku Kak Orbit. Bagian mana dari soal ini yang membuatmu bingung?'
-    : 'Hai! Aku Kak Orbit, tutor PLSV-mu. Ceritakan apa yang membuatmu bingung.';
+    ? 'Hai! Aku Kak Orbit, tutor AI (bukan manusia). Bagian mana dari soal ini yang membuatmu bingung?'
+    : 'Hai! Aku Kak Orbit, tutor AI PLSV-mu (bukan manusia). Ceritakan apa yang membuatmu bingung.';
   const [msgs, setMsgs] = useState([{ role: 'tutor', content: greeting, intro: true }]);
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
@@ -173,7 +173,7 @@ export function TutorChat({ problem = null, stage = '', hints = [], attempted = 
 
       <p className="m-0 text-xs text-muted">
         {status === 'ready'
-          ? 'Jangan tulis nama lengkap, alamat, atau nomor HP. Pesanmu dikirim ke layanan AI Google dan bisa dibaca gurumu.'
+          ? 'Kak Orbit adalah AI, bukan manusia. Jangan tulis nama lengkap, alamat, atau nomor HP. Pesanmu (tanpa namamu) dikirim ke layanan AI Groq dan bisa dibaca gurumu.'
           : 'Tutor bawaan bekerja tanpa internet dan tidak mengirim pesanmu ke mana pun.'}
       </p>
     </div>

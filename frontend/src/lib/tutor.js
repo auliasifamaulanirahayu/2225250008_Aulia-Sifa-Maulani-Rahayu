@@ -1,4 +1,4 @@
-// Pemanggil AI Math Tutor (Supabase Edge Function `ai-tutor`). API key Gemini hanya ada di server.
+// Pemanggil AI Math Tutor (Supabase Edge Function `ai-tutor`). API key Groq hanya ada di server.
 // Selalu mengembalikan objek; bila AI tidak bisa dipakai → {fallback:true, reason} dan layar memakai tutor bawaan.
 
 import { supabase } from './supabase.js';
