@@ -38,7 +38,7 @@ Tidak ada iklan atau analytics pihak ketiga. Satu-satunya data yang keluar ke pi
 - HTTPS di semua koneksi; sesi dan batas percobaan login dikelola Supabase Auth.
 - Row Level Security di semua tabel: guru hanya melihat kelas miliknya; siswa hanya melihat datanya sendiri, timnya,
   dan leaderboard kelasnya.
-- Data disimpan di Supabase (pilih region Singapore); kunci `service_role` hanya di laptop peneliti dan di
+- Data disimpan di Supabase region Asia-Pasifik (proyek saat ini: Sydney, ap-southeast-2); kunci `service_role` hanya di laptop peneliti dan di
   lingkungan server Edge Function (otomatis dari Supabase), tidak di repo atau frontend. `GEMINI_API_KEY` disimpan
   sebagai *secret* Edge Function, tidak pernah dikirim ke HP siswa. File `.env` dan CSV data siswa dikecualikan dari git.
 

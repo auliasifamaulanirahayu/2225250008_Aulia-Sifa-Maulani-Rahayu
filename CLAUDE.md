@@ -59,7 +59,7 @@ atau pustaka CSS lain (selain Tailwind) tanpa persetujuan user: bundel harus tet
 content/worlds/*.json        DIHASILKAN oleh content/tools/build_worlds.py — jangan diedit manual
 content/zones/*.json         Learning Zone (8 materi) & Challenge Zone (30 soal); juga DIHASILKAN build_worlds.py
 content/tools/               build_worlds.py, validate_content.py, export_research.py
-supabase/migrations/         skema SQL; perubahan skema = file migrasi BARU (0003_..., dst.)
+supabase/migrations/         skema SQL 0001–0004; perubahan skema = file migrasi BARU (0005_..., dst.) + GRANT bila tabel baru
 supabase/functions/ai-tutor/  Edge Function AI Tutor (Gemini; satu-satunya tempat GEMINI_API_KEY)
 frontend/src/engine/         logika murni (tanpa React, DOM, atau jaringan) — wajib diuji
 frontend/src/components/     ui.jsx, Keypad.jsx, BalanceScale.jsx, GalaxyArt.jsx (planet), TutorChat.jsx

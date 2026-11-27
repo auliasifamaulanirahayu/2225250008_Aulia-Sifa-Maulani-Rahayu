@@ -31,7 +31,10 @@ Tanpa file `.env`, aplikasi berjalan dalam **mode demo siswa** (tanpa login, tan
 
 ## 3. Menyiapkan Supabase (sekali saja)
 1. Buat akun di supabase.com → **New project** (pilih region Singapore agar cepat dari Indonesia). Simpan password database.
-2. **SQL Editor → New query** → tempel seluruh isi `supabase/migrations/0001_init.sql` → **Run**. Pastikan tidak ada error.
+2. **SQL Editor → New query** → jalankan **berurutan**, satu tab per file: `0001_init.sql`, `0002_ai_tutor.sql`,
+   `0003_zones.sql`, `0004_grants.sql`. Setiap file harus menghasilkan *Success. No rows returned*.
+   `0004` wajib untuk proyek Supabase baru: tanpa GRANT, login berhasil tetapi muncul *permission denied for table
+   profiles*.
 3. **Authentication → Sign In / Providers → Email**:
    - aktifkan **Email** provider;
    - **matikan "Confirm email"** (wajib: akun siswa memakai email sintetis yang tidak bisa menerima email);
