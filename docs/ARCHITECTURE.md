@@ -80,7 +80,7 @@ Ukuran bundel produksi ± 170 KB gzip (React 54 KB, Supabase 60 KB, aplikasi 53 
       engine/                 logika murni (tanpa React/DOM)
       components/             ui.jsx, Keypad.jsx, BalanceScale.jsx
       screens/                Auth, Student, Team, Profile, Teacher, problem/{Problem,stages}.jsx
-      styles/main.css
+      styles/tailwind.css, main.css
 ```
 
 ## 4. Frontend
@@ -93,11 +93,14 @@ Ukuran bundel produksi ± 170 KB gzip (React 54 KB, Supabase 60 KB, aplikasi 53 
 | `#/guru` | Daftar / masuk guru | publik |
 | `#/home` | Beranda misi harian (FR-03) | siswa |
 | `#/warmup` | Pemanasan (FR-12) | siswa |
-| `#/map`, `#/world/:n` | Peta Dunia & daftar soal (FR-04) | siswa |
+| `#/map`, `#/world/:n` | Mission Map & halaman misi: tujuan, materi singkat, contoh, latihan (FR-04) | siswa |
+| `#/tutor` | AI Math Tutor umum; dari layar soal lewat tombol 🤖 (lembar bawah, tahu soalnya) | siswa |
 | `#/play/:id?m=main\|team` | Layar soal bertahap (FR-05–FR-11) | siswa |
 | `#/result` | Hasil: bintang, XP, lencana | siswa |
 | `#/team` | Tim & leaderboard (FR-14, FR-15) | siswa |
-| `#/profile` | Lencana, pengaturan, keluar, hapus akun | siswa |
+| `#/profile` | Statistik, lencana, hapus akun | siswa |
+| `#/settings` | Pengaturan: avatar, musik, efek suara, tema, info aplikasi, keluar (FR-20) | siswa & guru |
+| `#/reset-password` | Buat password baru dari tautan email (FR-23) | guru |
 | `#/teacher` | Daftar & buat kelas | guru |
 | `#/teacher/class/:id` | Dashboard kelas (FR-16, FR-19) | guru |
 | `#/install`, `#/about` | Panduan pasang, privasi | semua |
@@ -189,3 +192,20 @@ sequenceDiagram
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | hanya laptop peneliti | untuk `export_research.py`, **jangan** di-commit |
 
 Tanpa `VITE_SUPABASE_*`, aplikasi tetap berjalan dalam **mode demo siswa** (data hanya di HP, tanpa tim dan Mode Guru).
+
+## AI Math Tutor
+
+```mermaid
+flowchart LR
+    UI["TutorChat.jsx"] -->|aiStatus() = ready| INV["supabase.functions.invoke('ai-tutor')"]
+    INV --> EF["Edge Function ai-tutor<br/>cek siswa + kelas.ai_tutor + kuota harian<br/>samarkan email/nomor"]
+    EF -->|"store:false, tanpa identitas"| GEM["Gemini Interactions API"]
+    EF -->|service role| DB[("ai_chat_sessions / ai_chat_messages")]
+    UI -->|"demo / offline / mati / kuota / error"| FB["engine/tutorFallback.js<br/>(tutor bawaan, di HP)"]
+    UI -->|mode bimbingan| GUARD["leaksAnswer(): balasan yang menyebut x = jawaban diganti petunjuk"]
+```
+
+- Pembahasan lengkap (`mode: full`) hanya bila siswa sudah mencoba (tahap sebelumnya selesai atau sudah ada jawaban
+  di tahap ini) **dan** menekan "Minta pembahasan lengkap". Di layar soal hal ini menambah `hintsUsed` +3 sehingga soal
+  selesai dengan 1 bintang dan tanpa bonus "tanpa petunjuk" (aturan XP tidak diubah).
+- Musik latar dan tutor tidak menambah dependensi baru (bundel ± 71 KB gzip untuk kode aplikasi).

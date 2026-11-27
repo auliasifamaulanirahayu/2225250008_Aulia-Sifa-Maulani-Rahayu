@@ -1,50 +1,15 @@
-// Profil siswa, lencana, pengaturan; panduan pasang aplikasi; tentang & privasi.
+// Profil siswa: statistik, lencana, riwayat misi; panduan pasang aplikasi; tentang & privasi.
+// Pengaturan (musik, suara, tema, logout) ada di screens/Settings.jsx.
 
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppState, saveSettings } from '../state.js';
+import { useAppState } from '../state.js';
 import { BADGES } from '../engine/badges.js';
 import { levelInfo, visibleStreak, todayStr } from '../engine/xp.js';
 import { Screen, ConfirmButton, Feedback, toast } from '../components/ui.jsx';
 import { signOut } from '../lib/auth.js';
 import { rpc } from '../lib/supabase.js';
 import { canPrompt, onInstallable, promptInstall, isStandalone, isIos } from '../pwa.js';
-
-function Toggle({ label, checked, onChange }) {
-  return (
-    <label className="toggle">
-      <span>{label}</span>
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
-    </label>
-  );
-}
-
-export function Settings() {
-  const s = useAppState();
-  const set = (patch) => {
-    Object.assign(s.settings, patch);
-    saveSettings();
-  };
-  return (
-    <section className="card">
-      <h2>⚙️ Pengaturan</h2>
-      <Toggle label="Suara" checked={s.settings.sound !== false} onChange={(v) => set({ sound: v })} />
-      <Toggle label="Kontras tinggi" checked={!!s.settings.contrast} onChange={(v) => set({ contrast: v })} />
-      <p className="label">Ukuran huruf</p>
-      <div className="choices row">
-        {[
-          [1, 'Normal'],
-          [1.15, 'Besar'],
-          [1.3, 'Sangat besar'],
-        ].map(([v, l]) => (
-          <button key={v} type="button" className={`choice ${s.settings.fontScale === v ? 'on' : ''}`} aria-pressed={s.settings.fontScale === v} onClick={() => set({ fontScale: v })}>
-            {l}
-          </button>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 export function Profile() {
   const s = useAppState();
@@ -55,10 +20,6 @@ export function Profile() {
   const starsTotal = Object.values(progress).reduce((a, p) => a + (p.bestStars || 0), 0);
   const have = new Set(stats.badges);
 
-  const logout = async () => {
-    await signOut();
-    navigate('/welcome', { replace: true });
-  };
   const deleteAccount = async () => {
     try {
       if (!profile.demo) await rpc('delete_me');
@@ -123,16 +84,12 @@ export function Profile() {
           ))}
         </div>
       </section>
-      <Settings />
       <section className="card links">
+        <Link to="/settings">⚙️ Pengaturan: musik, suara, tema, avatar, keluar</Link>
         <Link to="/install">📲 Pasang aplikasi di HP</Link>
         <Link to="/about">ℹ️ Tentang & privasi</Link>
       </section>
       <section className="card">
-        <button type="button" className="btn btn-block" onClick={logout}>
-          Keluar dari akun
-        </button>
-        <p className="muted small">Saat keluar, data di HP ini dihapus. {profile.demo ? 'Mode demo tidak punya cadangan di server.' : 'Progresmu tersimpan di server dan kembali saat kamu masuk lagi.'}</p>
         <ConfirmButton label="Hapus akun & semua data" confirmLabel="Ketuk sekali lagi untuk menghapus" onConfirm={deleteAccount} className="btn btn-danger btn-block" />
       </section>
     </Screen>
@@ -227,6 +184,10 @@ export function About() {
           <li>Siswa tidak perlu email atau nomor HP.</li>
           <li>Gurumu bisa melihat progresmu untuk membantumu belajar.</li>
           <li>Tidak ada iklan dan tidak ada pelacak.</li>
+          <li>
+            Jika gurumu menyalakan AI Tutor, pesanmu ke tutor (tanpa namamu) dikirim ke layanan AI Google. Jangan tulis
+            nama lengkap, alamat, atau nomor HP di sana.
+          </li>
           <li>Kamu bisa menghapus akun dan semua datamu kapan saja dari halaman Profil.</li>
         </ul>
       </section>

@@ -1,21 +1,30 @@
 {
   "world": 2,
-  "title": "Pasar Timbangan",
-  "topic": "Kesetaraan pada kedua ruas",
-  "emoji": "⚖️",
-  "color": "#2B8A3E",
+  "title": "Memahami Variabel",
+  "topic": "Variabel, koefisien, dan konstanta",
+  "emoji": "📦",
+  "color": "#B79BFF",
+  "goal": [
+    "Memahami variabel sebagai wakil bilangan yang belum diketahui.",
+    "Menulis kalimat sehari-hari menjadi persamaan.",
+    "Menyelesaikan ax = b."
+  ],
   "intro": [
     {
-      "term": "Ruas",
-      "text": "Bagian kiri dan kanan tanda = disebut ruas."
+      "term": "Variabel",
+      "text": "Huruf seperti x mewakili bilangan yang belum diketahui. Bayangkan x sebagai kotak misteri."
     },
     {
-      "term": "Seimbang",
-      "text": "Apa pun yang kamu lakukan pada ruas kiri, lakukan juga pada ruas kanan."
+      "term": "Koefisien",
+      "text": "Angka di depan x. Pada 3x, koefisiennya 3. Artinya 3 dikali x."
     },
     {
-      "term": "Balon",
-      "text": "Bilangan negatif digambar sebagai balon yang menarik timbangan ke atas."
+      "term": "Konstanta",
+      "text": "Bilangan tanpa variabel, misalnya 5 pada x + 5."
+    },
+    {
+      "term": "Suku",
+      "text": "Bagian yang dipisah tanda + atau −. Pada 3x + 5 ada suku 3x dan 5."
     }
   ],
   "problems": [
@@ -64,7 +73,12 @@
           "wrong_answer": "8",
           "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
       "id": "w2-p01",
@@ -112,62 +126,19 @@
           "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
         }
       ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
       "given_steps": 1
     },
     {
       "id": "w2-p02",
       "world": 2,
-      "level": 2,
-      "type": "faded",
-      "order": 2,
-      "equation": "x + 4 = 1",
-      "solve": {
-        "answer": "-3",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "4",
-            "result": "x = -3"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(-3) + 4 = 1"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 4.",
-          "correct": true
-        },
-        {
-          "text": "4 pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 4.",
-        "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = 5",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ],
-      "given_steps": 1
-    },
-    {
-      "id": "w2-p03",
-      "world": 2,
       "level": 1,
-      "type": "balance",
-      "order": 3,
+      "type": "translate",
+      "order": 2,
       "equation": "x + 5 = 12",
       "solve": {
         "answer": "7",
@@ -188,7 +159,7 @@
           "correct": true
         },
         {
-          "text": "5 pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 5.",
           "correct": false
         },
         {
@@ -197,24 +168,409 @@
         }
       ],
       "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 5.",
-        "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5."
+        "Ganti kata \"sebuah bilangan\" dengan x.",
+        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
+        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
       ],
       "misconceptions": [
         {
           "code": "M1",
           "wrong_step": "x = 17",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
+      "story": [
+        "Sebuah bilangan ditambah 5 hasilnya 12."
+      ],
+      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
+      "model": {
+        "equation": "x + 5 = 12",
+        "equation_options": [
+          "x + 5 = 12",
+          "x - 5 = 12",
+          "5*x = 12"
+        ]
+      },
+      "context": {
+        "pisa": "personal",
+        "setting": "kalimat matematika"
+      },
+      "literacy": [
+        "formulate",
+        "employ"
+      ]
+    },
+    {
+      "id": "w2-p03",
+      "world": 2,
+      "level": 1,
+      "type": "translate",
+      "order": 3,
+      "equation": "x - 4 = 9",
+      "solve": {
+        "answer": "13",
+        "steps": [
+          {
+            "op": "add",
+            "value": "4",
+            "result": "x = 13"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "(13) - 4 = 9"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas ditambah 4.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang ditambah 4.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Ganti kata \"sebuah bilangan\" dengan x.",
+        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
+        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "x = 5",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
+      "story": [
+        "Sebuah bilangan dikurangi 4 hasilnya 9."
+      ],
+      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
+      "model": {
+        "equation": "x - 4 = 9",
+        "equation_options": [
+          "x - 4 = 9",
+          "x + 4 = 9",
+          "4 - x = 9"
+        ]
+      },
+      "context": {
+        "pisa": "personal",
+        "setting": "kalimat matematika"
+      },
+      "literacy": [
+        "formulate",
+        "employ"
       ]
     },
     {
       "id": "w2-p04",
       "world": 2,
       "level": 1,
-      "type": "balance",
+      "type": "translate",
       "order": 4,
+      "equation": "2*x = 14",
+      "solve": {
+        "answer": "7",
+        "steps": [
+          {
+            "op": "div",
+            "value": "2",
+            "result": "x = 7"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "2*(7) = 14"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dibagi 2.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dikurangi 2.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Ganti kata \"sebuah bilangan\" dengan x.",
+        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
+        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
+      ],
+      "misconceptions": [
+        {
+          "code": "M4",
+          "wrong_answer": "12",
+          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
+        }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
+      "story": [
+        "Dua kali sebuah bilangan sama dengan 14."
+      ],
+      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
+      "model": {
+        "equation": "2*x = 14",
+        "equation_options": [
+          "2*x = 14",
+          "x + 2 = 14",
+          "x/2 = 14"
+        ]
+      },
+      "context": {
+        "pisa": "personal",
+        "setting": "kalimat matematika"
+      },
+      "literacy": [
+        "formulate",
+        "employ"
+      ]
+    },
+    {
+      "id": "w2-p05",
+      "world": 2,
+      "level": 2,
+      "type": "translate",
+      "order": 5,
+      "equation": "x + 8 = 20",
+      "solve": {
+        "answer": "12",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "8",
+            "result": "x = 12"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "(12) + 8 = 20"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 8.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang dikurangi 8.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Ganti kata \"sebuah bilangan\" dengan x.",
+        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
+        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "x = 28",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
+      "story": [
+        "Sebuah bilangan ditambah 8 sama dengan 20."
+      ],
+      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
+      "model": {
+        "equation": "x + 8 = 20",
+        "equation_options": [
+          "x + 8 = 20",
+          "8*x = 20",
+          "x - 8 = 20"
+        ]
+      },
+      "context": {
+        "pisa": "personal",
+        "setting": "kalimat matematika"
+      },
+      "literacy": [
+        "formulate",
+        "employ"
+      ]
+    },
+    {
+      "id": "w2-p06",
+      "world": 2,
+      "level": 2,
+      "type": "translate",
+      "order": 6,
+      "equation": "3*x = 18",
+      "solve": {
+        "answer": "6",
+        "steps": [
+          {
+            "op": "div",
+            "value": "3",
+            "result": "x = 6"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "3*(6) = 18"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dibagi 3.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dikurangi 3.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Ganti kata \"sebuah bilangan\" dengan x.",
+        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
+        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
+      ],
+      "misconceptions": [
+        {
+          "code": "M4",
+          "wrong_answer": "15",
+          "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
+        }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
+      "story": [
+        "Tiga kali sebuah bilangan hasilnya 18."
+      ],
+      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
+      "model": {
+        "equation": "3*x = 18",
+        "equation_options": [
+          "3*x = 18",
+          "x + 3 = 18",
+          "x - 3 = 18"
+        ]
+      },
+      "context": {
+        "pisa": "personal",
+        "setting": "kalimat matematika"
+      },
+      "literacy": [
+        "formulate",
+        "employ"
+      ]
+    },
+    {
+      "id": "w2-p07",
+      "world": 2,
+      "level": 2,
+      "type": "translate",
+      "order": 7,
+      "equation": "x - 6 = 1",
+      "solve": {
+        "answer": "7",
+        "steps": [
+          {
+            "op": "add",
+            "value": "6",
+            "result": "x = 7"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "(7) - 6 = 1"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas ditambah 6.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang ditambah 6.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Ganti kata \"sebuah bilangan\" dengan x.",
+        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
+        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "x = -5",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
+      "story": [
+        "Sebuah bilangan dikurangi 6 hasilnya 1."
+      ],
+      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
+      "model": {
+        "equation": "x - 6 = 1",
+        "equation_options": [
+          "x - 6 = 1",
+          "6 - x = 1",
+          "x + 6 = 1"
+        ]
+      },
+      "context": {
+        "pisa": "personal",
+        "setting": "kalimat matematika"
+      },
+      "literacy": [
+        "formulate",
+        "employ"
+      ]
+    },
+    {
+      "id": "w2-p08",
+      "world": 2,
+      "level": 1,
+      "type": "balance",
+      "order": 8,
       "equation": "4*x = 20",
       "solve": {
         "answer": "5",
@@ -254,61 +610,19 @@
           "wrong_answer": "16",
           "feedback": "4x artinya 4 dikali x. Lawan dari kali adalah bagi."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
-      "id": "w2-p05",
+      "id": "w2-p09",
       "world": 2,
       "level": 1,
       "type": "balance",
-      "order": 5,
-      "equation": "x - 6 = 3",
-      "solve": {
-        "answer": "9",
-        "steps": [
-          {
-            "op": "add",
-            "value": "6",
-            "result": "x = 9"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(9) - 6 = 3"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas ditambah 6.",
-          "correct": true
-        },
-        {
-          "text": "Hanya satu ruas yang ditambah 6.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas ditambah 6.",
-        "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = -3",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ]
-    },
-    {
-      "id": "w2-p06",
-      "world": 2,
-      "level": 1,
-      "type": "balance",
-      "order": 6,
+      "order": 9,
       "equation": "5*x = 35",
       "solve": {
         "answer": "7",
@@ -348,148 +662,12 @@
           "wrong_answer": "30",
           "feedback": "5x artinya 5 dikali x. Lawan dari kali adalah bagi."
         }
-      ]
-    },
-    {
-      "id": "w2-p07",
-      "world": 2,
-      "level": 2,
-      "type": "balance",
-      "order": 7,
-      "equation": "x + 8 = 3",
-      "solve": {
-        "answer": "-5",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "8",
-            "result": "x = -5"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(-5) + 8 = 3"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 8.",
-          "correct": true
-        },
-        {
-          "text": "8 pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
       ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 8.",
-        "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = 11",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ]
-    },
-    {
-      "id": "w2-p08",
-      "world": 2,
-      "level": 2,
-      "type": "balance",
-      "order": 8,
-      "equation": "2*x = -8",
-      "solve": {
-        "answer": "-4",
-        "steps": [
-          {
-            "op": "div",
-            "value": "2",
-            "result": "x = -4"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "2*(-4) = -8"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dibagi 2.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dibagi 2.",
-        "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5."
-      ],
-      "misconceptions": [
-        {
-          "code": "M4",
-          "wrong_answer": "-10",
-          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w2-p09",
-      "world": 2,
-      "level": 2,
-      "type": "balance",
-      "order": 9,
-      "equation": "x - 4 = -1",
-      "solve": {
-        "answer": "3",
-        "steps": [
-          {
-            "op": "add",
-            "value": "4",
-            "result": "x = 3"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(3) - 4 = -1"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas ditambah 4.",
-          "correct": true
-        },
-        {
-          "text": "Hanya satu ruas yang ditambah 4.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas ditambah 4.",
-        "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = -5",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ]
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
       "id": "w2-p10",
@@ -536,7 +714,12 @@
           "wrong_answer": "36",
           "feedback": "6x artinya 6 dikali x. Lawan dari kali adalah bagi."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
       "id": "w2-p11",
@@ -544,53 +727,6 @@
       "level": 2,
       "type": "balance",
       "order": 11,
-      "equation": "x + 11 = 15",
-      "solve": {
-        "answer": "4",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "11",
-            "result": "x = 4"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(4) + 11 = 15"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 11.",
-          "correct": true
-        },
-        {
-          "text": "11 pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 11.",
-        "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = 26",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ]
-    },
-    {
-      "id": "w2-p12",
-      "world": 2,
-      "level": 3,
-      "type": "balance",
-      "order": 12,
       "equation": "3*x = 27",
       "solve": {
         "answer": "9",
@@ -630,61 +766,19 @@
           "wrong_answer": "24",
           "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
-      "id": "w2-p13",
+      "id": "w2-p12",
       "world": 2,
-      "level": 3,
+      "level": 2,
       "type": "balance",
-      "order": 13,
-      "equation": "x - 7 = -10",
-      "solve": {
-        "answer": "-3",
-        "steps": [
-          {
-            "op": "add",
-            "value": "7",
-            "result": "x = -3"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(-3) - 7 = -10"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas ditambah 7.",
-          "correct": true
-        },
-        {
-          "text": "Hanya satu ruas yang ditambah 7.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas ditambah 7.",
-        "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = -17",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ]
-    },
-    {
-      "id": "w2-p14",
-      "world": 2,
-      "level": 3,
-      "type": "balance",
-      "order": 14,
+      "order": 12,
       "equation": "7*x = 49",
       "solve": {
         "answer": "7",
@@ -724,7 +818,12 @@
           "wrong_answer": "42",
           "feedback": "7x artinya 7 dikali x. Lawan dari kali adalah bagi."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     }
   ]
 }

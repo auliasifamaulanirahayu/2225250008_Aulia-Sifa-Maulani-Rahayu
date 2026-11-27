@@ -1,381 +1,123 @@
 {
   "world": 4,
-  "title": "Menara Dua Ruas",
-  "topic": "Variabel di kedua ruas",
-  "emoji": "🗼",
-  "color": "#9C36B5",
+  "title": "Soal Cerita menjadi Persamaan",
+  "topic": "Memodelkan soal cerita",
+  "emoji": "🛰️",
+  "color": "#3156D9",
+  "goal": [
+    "Memisalkan hal yang ditanyakan dengan x.",
+    "Menyusun persamaan dari hubungan dalam cerita."
+  ],
   "intro": [
     {
-      "term": "Suku sejenis",
-      "text": "5x dan 2x sejenis. 5x dan 2 tidak sejenis."
+      "term": "Memisalkan",
+      "text": "Pilih x sebagai hal yang ditanyakan, misalnya harga 1 buku."
     },
     {
-      "term": "Strategi",
-      "text": "Kumpulkan suku x di satu ruas dan angka di ruas lainnya."
+      "term": "Kata kunci",
+      "text": "\"Lebih\" sering berarti +. \"Setiap\" atau \"per\" sering berarti dikali."
+    },
+    {
+      "term": "Cek model",
+      "text": "Bacakan persamaanmu dengan kata-kata. Apakah cocok dengan cerita?"
     }
   ],
   "problems": [
     {
       "id": "w4-p00",
       "world": 4,
-      "level": 1,
+      "level": 2,
       "type": "worked",
       "order": 0,
-      "equation": "3*x + 4 = x + 10",
-      "solve": {
-        "answer": "3",
-        "steps": [
+      "emoji": "📚",
+      "context": {
+        "pisa": "personal",
+        "setting": "toko buku"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret"
+      ],
+      "story": [
+        "Dina membeli 3 buku tulis yang harganya sama.",
+        "Dina juga membeli 1 pulpen seharga Rp4.000.",
+        "Dina membayar Rp25.000 seluruhnya."
+      ],
+      "question": "Berapa harga 1 buku tulis?",
+      "understand": {
+        "known_options": [
           {
-            "op": "sub",
-            "value": "x",
-            "result": "2*x + 4 = 10"
+            "text": "Banyak buku tulis: 3",
+            "correct": true
           },
           {
-            "op": "sub",
-            "value": "4",
-            "result": "2*x = 6"
+            "text": "Harga pulpen: Rp4.000",
+            "correct": true
           },
           {
-            "op": "div",
-            "value": "2",
-            "result": "x = 3"
+            "text": "Total bayar: Rp25.000",
+            "correct": true
+          },
+          {
+            "text": "Harga 1 buku tulis: Rp4.000",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Harga 1 buku tulis",
+            "correct": true
+          },
+          {
+            "text": "Total belanja Dina",
+            "correct": false
           }
         ]
       },
-      "check": {
-        "substitution": "3*(3) + 4 = (3) + 10"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi x.",
-          "correct": true
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "harga 1 buku tulis (rupiah)"
         },
-        {
-          "text": "Kedua ruas dikurangi 4.",
-          "correct": true
-        },
-        {
-          "text": "x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "2*x = 14",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "4",
-          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p01",
-      "world": 4,
-      "level": 1,
-      "type": "faded",
-      "order": 1,
-      "equation": "4*x + 1 = 2*x + 9",
-      "solve": {
-        "answer": "4",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "2*x",
-            "result": "2*x + 1 = 9"
-          },
-          {
-            "op": "sub",
-            "value": "1",
-            "result": "2*x = 8"
-          },
-          {
-            "op": "div",
-            "value": "2",
-            "result": "x = 4"
-          }
+        "variable_options": [
+          "harga 1 buku tulis (rupiah)",
+          "banyak buku tulis",
+          "harga pulpen"
+        ],
+        "equation": "3*x + 4000 = 25000",
+        "equation_options": [
+          "3*x + 4000 = 25000",
+          "3*x = 25000 + 4000",
+          "x + 4000 = 25000"
         ]
       },
-      "check": {
-        "substitution": "4*(4) + 1 = 2*(4) + 9"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 2x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dikurangi 1.",
-          "correct": true
-        },
-        {
-          "text": "2x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 2x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "2*x = 10",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "6",
-          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
-        }
-      ],
-      "given_steps": 1
-    },
-    {
-      "id": "w4-p02",
-      "world": 4,
-      "level": 1,
-      "type": "faded",
-      "order": 2,
-      "equation": "6*x - 3 = 2*x + 13",
+      "equation": "3*x + 4000 = 25000",
       "solve": {
-        "answer": "4",
+        "answer": "7000",
         "steps": [
           {
             "op": "sub",
-            "value": "2*x",
-            "result": "4*x - 3 = 13"
-          },
-          {
-            "op": "add",
-            "value": "3",
-            "result": "4*x = 16"
-          },
-          {
-            "op": "div",
-            "value": "4",
-            "result": "x = 4"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "6*(4) - 3 = 2*(4) + 13"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 2x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas ditambah 3.",
-          "correct": true
-        },
-        {
-          "text": "2x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 4.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 2x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "4*x = 10",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "12",
-          "feedback": "4x artinya 4 dikali x. Lawan dari kali adalah bagi."
-        }
-      ],
-      "given_steps": 2
-    },
-    {
-      "id": "w4-p03",
-      "world": 4,
-      "level": 1,
-      "type": "solve",
-      "order": 3,
-      "equation": "5*x + 2 = 2*x + 14",
-      "solve": {
-        "answer": "4",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "2*x",
-            "result": "3*x + 2 = 14"
-          },
-          {
-            "op": "sub",
-            "value": "2",
-            "result": "3*x = 12"
+            "value": "4000",
+            "result": "3*x = 21000"
           },
           {
             "op": "div",
             "value": "3",
-            "result": "x = 4"
+            "result": "x = 7000"
           }
         ]
       },
       "check": {
-        "substitution": "5*(4) + 2 = 2*(4) + 14"
+        "substitution": "3*(7000) + 4000 = 25000",
+        "sense_question": "Apakah Rp7.000 masuk akal untuk harga 1 buku tulis?",
+        "answer_template": "Jadi, harga 1 buku tulis adalah {jawaban}.",
+        "answer_sentence": "Jadi, harga 1 buku tulis adalah Rp7.000.",
+        "unit": "rp"
       },
       "explain_options": [
         {
-          "text": "Kedua ruas dikurangi 2x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": true
-        },
-        {
-          "text": "2x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 3.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 2x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "3*x = 16",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "9",
-          "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
-        }
-      ],
-      "source": "Lembar kerja S01 nomor 3"
-    },
-    {
-      "id": "w4-p04",
-      "world": 4,
-      "level": 1,
-      "type": "solve",
-      "order": 4,
-      "equation": "7*x - 5 = 3*x + 11",
-      "solve": {
-        "answer": "4",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "3*x",
-            "result": "4*x - 5 = 11"
-          },
-          {
-            "op": "add",
-            "value": "5",
-            "result": "4*x = 16"
-          },
-          {
-            "op": "div",
-            "value": "4",
-            "result": "x = 4"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "7*(4) - 5 = 3*(4) + 11"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 3x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas ditambah 5.",
-          "correct": true
-        },
-        {
-          "text": "3x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 4.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 3x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "4*x = 6",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "12",
-          "feedback": "4x artinya 4 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p05",
-      "world": 4,
-      "level": 1,
-      "type": "solve",
-      "order": 5,
-      "equation": "2*x + 9 = 5*x",
-      "solve": {
-        "answer": "3",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "2*x",
-            "result": "9 = 3*x"
-          },
-          {
-            "op": "div",
-            "value": "3",
-            "result": "3 = x"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "2*(3) + 9 = 5*(3)"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 2x.",
+          "text": "Kedua ruas dikurangi 4.000.",
           "correct": true
         },
         {
@@ -383,121 +125,869 @@
           "correct": true
         },
         {
-          "text": "2x pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 4.000.",
           "correct": false
         },
         {
           "text": "Kedua ruas dikurangi 3.",
           "correct": false
+        },
+        {
+          "text": "x adalah harga 1 buku tulis (rupiah).",
+          "correct": true
+        },
+        {
+          "text": "x adalah banyak buku tulis.",
+          "correct": false
         }
       ],
       "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 2x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Harga 3 buku + harga pulpen = total bayar.",
+        "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "3*x = 29000",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "20997",
+          "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "ui": {
+        "balance": false,
+        "op_only": false,
+        "term_keypad": false
+      },
+      "source": "Diadaptasi dari lembar kerja S01 nomor 4"
+    },
+    {
+      "id": "w4-p01",
+      "world": 4,
+      "level": 2,
+      "type": "faded",
+      "order": 1,
+      "emoji": "👧",
+      "context": {
+        "pisa": "personal",
+        "setting": "umur"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret"
+      ],
+      "story": [
+        "Umur kakak 4 tahun lebih tua dari 2 kali umur adiknya.",
+        "Umur kakak sekarang 14 tahun."
+      ],
+      "question": "Berapa umur adik?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Umur kakak: 14 tahun",
+            "correct": true
+          },
+          {
+            "text": "Kakak lebih tua 4 tahun dari 2 kali umur adik",
+            "correct": true
+          },
+          {
+            "text": "Umur adik: 4 tahun",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Umur adik",
+            "correct": true
+          },
+          {
+            "text": "Umur kakak",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "umur adik (tahun)"
+        },
+        "variable_options": [
+          "umur adik (tahun)",
+          "adik",
+          "umur kakak"
+        ],
+        "equation": "2*x + 4 = 14",
+        "equation_options": [
+          "2*x + 4 = 14",
+          "2*x - 4 = 14",
+          "x + 4 = 14"
+        ]
+      },
+      "equation": "2*x + 4 = 14",
+      "solve": {
+        "answer": "5",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "4",
+            "result": "2*x = 10"
+          },
+          {
+            "op": "div",
+            "value": "2",
+            "result": "x = 5"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "2*(5) + 4 = 14",
+        "sense_question": "Apakah 5 tahun masuk akal untuk umur adik?",
+        "answer_template": "Jadi, umur adik {jawaban}.",
+        "answer_sentence": "Jadi, umur adik 5 tahun.",
+        "unit": "tahun"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 4.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 2.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang dikurangi 4.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 2.",
+          "correct": false
+        },
+        {
+          "text": "x adalah umur adik (tahun).",
+          "correct": true
+        },
+        {
+          "text": "x adalah adik.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "2 kali umur adik + 4 tahun = umur kakak.",
+        "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "2*x = 18",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "8",
+          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "ui": {
+        "balance": false,
+        "op_only": false,
+        "term_keypad": false
+      },
+      "given_stages": [
+        "understand",
+        "solve"
+      ],
+      "source": "Diadaptasi dari lembar kerja S01 nomor 5"
+    },
+    {
+      "id": "w4-p02",
+      "world": 4,
+      "level": 2,
+      "type": "faded",
+      "order": 2,
+      "emoji": "🍊",
+      "context": {
+        "pisa": "occupational",
+        "setting": "pedagang buah"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret"
+      ],
+      "story": [
+        "Pak Joko membagi 50 jeruk ke dalam 6 keranjang sama banyak.",
+        "Setelah dibagi, sisa jeruk ada 2 buah."
+      ],
+      "question": "Berapa jeruk di setiap keranjang?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Jumlah jeruk: 50",
+            "correct": true
+          },
+          {
+            "text": "Banyak keranjang: 6",
+            "correct": true
+          },
+          {
+            "text": "Sisa jeruk: 2",
+            "correct": true
+          },
+          {
+            "text": "Isi 1 keranjang: 6 jeruk",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Banyak jeruk di setiap keranjang",
+            "correct": true
+          },
+          {
+            "text": "Banyak keranjang",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak jeruk di setiap keranjang"
+        },
+        "variable_options": [
+          "banyak jeruk di setiap keranjang",
+          "banyak keranjang",
+          "sisa jeruk"
+        ],
+        "equation": "6*x + 2 = 50",
+        "equation_options": [
+          "6*x + 2 = 50",
+          "6*x - 2 = 50",
+          "x + 6 + 2 = 50"
+        ]
+      },
+      "equation": "6*x + 2 = 50",
+      "solve": {
+        "answer": "8",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "2",
+            "result": "6*x = 48"
+          },
+          {
+            "op": "div",
+            "value": "6",
+            "result": "x = 8"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "6*(8) + 2 = 50",
+        "sense_question": "Apakah 8 jeruk per keranjang masuk akal?",
+        "answer_template": "Jadi, setiap keranjang berisi {jawaban}.",
+        "answer_sentence": "Jadi, setiap keranjang berisi 8 jeruk.",
+        "unit": "jeruk"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 2.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 6.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang dikurangi 2.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 6.",
+          "correct": false
+        },
+        {
+          "text": "x adalah banyak jeruk di setiap keranjang.",
+          "correct": true
+        },
+        {
+          "text": "x adalah banyak keranjang.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "6 keranjang × isi 1 keranjang + sisa = jumlah jeruk.",
+        "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "6*x = 52",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "42",
+          "feedback": "6x artinya 6 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "ui": {
+        "balance": false,
+        "op_only": false,
+        "term_keypad": false
+      },
+      "given_stages": [
+        "understand",
+        "solve"
+      ]
+    },
+    {
+      "id": "w4-p03",
+      "world": 4,
+      "level": 1,
+      "type": "story",
+      "order": 3,
+      "emoji": "✏️",
+      "context": {
+        "pisa": "personal",
+        "setting": "toko alat tulis"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret"
+      ],
+      "story": [
+        "Raka membeli 4 pensil yang harganya sama.",
+        "Raka membayar Rp12.000 seluruhnya."
+      ],
+      "question": "Berapa harga 1 pensil?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Banyak pensil: 4",
+            "correct": true
+          },
+          {
+            "text": "Total bayar: Rp12.000",
+            "correct": true
+          },
+          {
+            "text": "Harga 1 pensil: Rp12.000",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Harga 1 pensil",
+            "correct": true
+          },
+          {
+            "text": "Banyak pensil yang dibeli",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "harga 1 pensil (rupiah)"
+        },
+        "variable_options": [
+          "harga 1 pensil (rupiah)",
+          "banyak pensil",
+          "total bayar"
+        ],
+        "equation": "4*x = 12000",
+        "equation_options": [
+          "4*x = 12000",
+          "x + 4 = 12000",
+          "x = 12000*4"
+        ]
+      },
+      "equation": "4*x = 12000",
+      "solve": {
+        "answer": "3000",
+        "steps": [
+          {
+            "op": "div",
+            "value": "4",
+            "result": "x = 3000"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "4*(3000) = 12000",
+        "sense_question": "Apakah Rp3.000 masuk akal untuk harga 1 pensil?",
+        "answer_template": "Jadi, harga 1 pensil adalah {jawaban}.",
+        "answer_sentence": "Jadi, harga 1 pensil adalah Rp3.000.",
+        "unit": "rp"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dibagi 4.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dikurangi 4.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        },
+        {
+          "text": "x adalah harga 1 pensil (rupiah).",
+          "correct": true
+        },
+        {
+          "text": "x adalah banyak pensil.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Harga 4 pensil = total bayar, jadi 4 × x = 12.000.",
+        "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000."
       ],
       "misconceptions": [
         {
           "code": "M4",
-          "wrong_answer": "6",
-          "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
+          "wrong_answer": "11996",
+          "feedback": "4x artinya 4 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
         }
+      ],
+      "ui": {
+        "balance": false,
+        "op_only": false,
+        "term_keypad": false
+      },
+      "given_stages": [
+        "solve"
+      ]
+    },
+    {
+      "id": "w4-p04",
+      "world": 4,
+      "level": 2,
+      "type": "story",
+      "order": 4,
+      "emoji": "🅿️",
+      "context": {
+        "pisa": "occupational",
+        "setting": "parkir"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret"
+      ],
+      "story": [
+        "Tarif parkir motor Rp2.000 untuk jam pertama.",
+        "Setiap jam tambahan dikenai Rp1.000.",
+        "Pak Budi membayar Rp6.000."
+      ],
+      "question": "Berapa jam tambahan Pak Budi parkir?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Tarif jam pertama: Rp2.000",
+            "correct": true
+          },
+          {
+            "text": "Tarif tiap jam tambahan: Rp1.000",
+            "correct": true
+          },
+          {
+            "text": "Total bayar: Rp6.000",
+            "correct": true
+          },
+          {
+            "text": "Tarif jam tambahan: Rp2.000",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Banyak jam tambahan",
+            "correct": true
+          },
+          {
+            "text": "Tarif jam pertama",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak jam tambahan"
+        },
+        "variable_options": [
+          "banyak jam tambahan",
+          "tarif jam pertama",
+          "total bayar"
+        ],
+        "equation": "2000 + 1000*x = 6000",
+        "equation_options": [
+          "2000 + 1000*x = 6000",
+          "2000*x + 1000 = 6000",
+          "1000*x = 6000 + 2000"
+        ]
+      },
+      "equation": "2000 + 1000*x = 6000",
+      "solve": {
+        "answer": "4",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "2000",
+            "result": "1000*x = 4000"
+          },
+          {
+            "op": "div",
+            "value": "1000",
+            "result": "x = 4"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "2000 + 1000*(4) = 6000",
+        "sense_question": "Apakah 4 jam tambahan masuk akal?",
+        "answer_template": "Jadi, Pak Budi parkir {jawaban} tambahan setelah jam pertama.",
+        "answer_sentence": "Jadi, Pak Budi parkir 4 jam tambahan setelah jam pertama.",
+        "unit": "jam"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 2.000.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 1.000.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang dikurangi 2.000.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 1.000.",
+          "correct": false
+        },
+        {
+          "text": "x adalah banyak jam tambahan.",
+          "correct": true
+        },
+        {
+          "text": "x adalah tarif jam pertama.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Tarif jam pertama + Rp1.000 × banyak jam tambahan = total bayar.",
+        "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "1000*x = 8000",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "3000",
+          "feedback": "1.000x artinya 1.000 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "ui": {
+        "balance": false,
+        "op_only": false,
+        "term_keypad": false
+      },
+      "given_stages": [
+        "solve"
+      ]
+    },
+    {
+      "id": "w4-p05",
+      "world": 4,
+      "level": 2,
+      "type": "story",
+      "order": 5,
+      "emoji": "🐷",
+      "context": {
+        "pisa": "personal",
+        "setting": "tabungan"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret"
+      ],
+      "story": [
+        "Lina sudah punya tabungan Rp20.000.",
+        "Setiap minggu ia menabung Rp5.000.",
+        "Sekarang tabungannya Rp45.000."
+      ],
+      "question": "Sudah berapa minggu Lina menabung?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Tabungan awal: Rp20.000",
+            "correct": true
+          },
+          {
+            "text": "Tabungan tiap minggu: Rp5.000",
+            "correct": true
+          },
+          {
+            "text": "Tabungan sekarang: Rp45.000",
+            "correct": true
+          },
+          {
+            "text": "Tabungan tiap minggu: Rp20.000",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Lama Lina menabung (minggu)",
+            "correct": true
+          },
+          {
+            "text": "Tabungan Lina sekarang",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak minggu Lina menabung"
+        },
+        "variable_options": [
+          "banyak minggu Lina menabung",
+          "tabungan awal",
+          "tabungan sekarang"
+        ],
+        "equation": "20000 + 5000*x = 45000",
+        "equation_options": [
+          "20000 + 5000*x = 45000",
+          "5000 + 20000*x = 45000",
+          "5000*x = 45000 + 20000"
+        ]
+      },
+      "equation": "20000 + 5000*x = 45000",
+      "solve": {
+        "answer": "5",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "20000",
+            "result": "5000*x = 25000"
+          },
+          {
+            "op": "div",
+            "value": "5000",
+            "result": "x = 5"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "20000 + 5000*(5) = 45000",
+        "sense_question": "Apakah 5 minggu masuk akal?",
+        "answer_template": "Jadi, Lina sudah menabung selama {jawaban}.",
+        "answer_sentence": "Jadi, Lina sudah menabung selama 5 minggu.",
+        "unit": "minggu"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 20.000.",
+          "correct": true
+        },
+        {
+          "text": "Kedua ruas dibagi 5.000.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang dikurangi 20.000.",
+          "correct": false
+        },
+        {
+          "text": "Kedua ruas dikurangi 5.000.",
+          "correct": false
+        },
+        {
+          "text": "x adalah banyak minggu Lina menabung.",
+          "correct": true
+        },
+        {
+          "text": "x adalah tabungan awal.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Tabungan awal + Rp5.000 × banyak minggu = tabungan sekarang.",
+        "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "5000*x = 65000",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        },
+        {
+          "code": "M4",
+          "wrong_answer": "20000",
+          "feedback": "5.000x artinya 5.000 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
+        }
+      ],
+      "ui": {
+        "balance": false,
+        "op_only": false,
+        "term_keypad": false
+      },
+      "given_stages": [
+        "solve"
       ]
     },
     {
       "id": "w4-p06",
       "world": 4,
       "level": 2,
-      "type": "solve",
+      "type": "story",
       "order": 6,
-      "equation": "8*x - 6 = 5*x + 9",
+      "emoji": "🌶️",
+      "context": {
+        "pisa": "occupational",
+        "setting": "kebun"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret"
+      ],
+      "story": [
+        "Pak Tani menanam 3 baris pohon cabai dan 9 pohon tomat.",
+        "Setiap baris cabai jumlah pohonnya sama.",
+        "Seluruhnya ada 45 pohon di kebun."
+      ],
+      "question": "Berapa pohon cabai di setiap baris?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Banyak baris cabai: 3",
+            "correct": true
+          },
+          {
+            "text": "Pohon tomat: 9",
+            "correct": true
+          },
+          {
+            "text": "Jumlah semua pohon: 45",
+            "correct": true
+          },
+          {
+            "text": "Pohon cabai per baris: 9",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Banyak pohon cabai di setiap baris",
+            "correct": true
+          },
+          {
+            "text": "Banyak pohon tomat",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak pohon cabai per baris"
+        },
+        "variable_options": [
+          "banyak pohon cabai per baris",
+          "banyak baris cabai",
+          "banyak pohon tomat"
+        ],
+        "equation": "3*x + 9 = 45",
+        "equation_options": [
+          "3*x + 9 = 45",
+          "9*x + 3 = 45",
+          "3*x = 45 + 9"
+        ]
+      },
+      "equation": "3*x + 9 = 45",
       "solve": {
-        "answer": "5",
+        "answer": "12",
         "steps": [
           {
             "op": "sub",
-            "value": "5*x",
-            "result": "3*x - 6 = 9"
-          },
-          {
-            "op": "add",
-            "value": "6",
-            "result": "3*x = 15"
+            "value": "9",
+            "result": "3*x = 36"
           },
           {
             "op": "div",
             "value": "3",
-            "result": "x = 5"
+            "result": "x = 12"
           }
         ]
       },
       "check": {
-        "substitution": "8*(5) - 6 = 5*(5) + 9"
+        "substitution": "3*(12) + 9 = 45",
+        "sense_question": "Apakah 12 pohon cabai per baris masuk akal?",
+        "answer_template": "Jadi, setiap baris ada {jawaban} cabai.",
+        "answer_sentence": "Jadi, setiap baris ada 12 pohon cabai.",
+        "unit": "pohon"
       },
       "explain_options": [
         {
-          "text": "Kedua ruas dikurangi 5x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas ditambah 6.",
-          "correct": true
-        },
-        {
-          "text": "5x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 3.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 5x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "3*x = 3",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "12",
-          "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p07",
-      "world": 4,
-      "level": 2,
-      "type": "solve",
-      "order": 7,
-      "equation": "x + 12 = 4*x",
-      "solve": {
-        "answer": "4",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "x",
-            "result": "12 = 3*x"
-          },
-          {
-            "op": "div",
-            "value": "3",
-            "result": "4 = x"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(4) + 12 = 4*(4)"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi x.",
+          "text": "Kedua ruas dikurangi 9.",
           "correct": true
         },
         {
@@ -505,477 +995,200 @@
           "correct": true
         },
         {
-          "text": "x pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 9.",
           "correct": false
         },
         {
           "text": "Kedua ruas dikurangi 3.",
           "correct": false
+        },
+        {
+          "text": "x adalah banyak pohon cabai per baris.",
+          "correct": true
+        },
+        {
+          "text": "x adalah banyak baris cabai.",
+          "correct": false
         }
       ],
       "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "3 baris × pohon per baris + pohon tomat = semua pohon.",
+        "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000."
       ],
       "misconceptions": [
         {
+          "code": "M1",
+          "wrong_step": "3*x = 54",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        },
+        {
           "code": "M4",
-          "wrong_answer": "9",
+          "wrong_answer": "33",
           "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
         }
+      ],
+      "ui": {
+        "balance": false,
+        "op_only": false,
+        "term_keypad": false
+      },
+      "given_stages": [
+        "solve"
       ]
     },
     {
-      "id": "w4-p08",
+      "id": "w4-p07",
       "world": 4,
-      "level": 2,
-      "type": "solve",
-      "order": 8,
-      "equation": "3*x - 7 = x + 5",
+      "level": 3,
+      "type": "story",
+      "order": 7,
+      "emoji": "📶",
+      "context": {
+        "pisa": "personal",
+        "setting": "paket internet"
+      },
+      "literacy": [
+        "formulate",
+        "employ",
+        "interpret"
+      ],
+      "story": [
+        "Paket internet Kak Rina Rp30.000 per bulan untuk 10 GB.",
+        "Setiap tambahan 1 GB dikenai Rp4.000.",
+        "Tagihan bulan ini Rp54.000."
+      ],
+      "question": "Berapa GB tambahan yang dipakai Kak Rina?",
+      "understand": {
+        "known_options": [
+          {
+            "text": "Harga paket: Rp30.000",
+            "correct": true
+          },
+          {
+            "text": "Harga tiap 1 GB tambahan: Rp4.000",
+            "correct": true
+          },
+          {
+            "text": "Tagihan: Rp54.000",
+            "correct": true
+          },
+          {
+            "text": "Kuota tambahan: 10 GB",
+            "correct": false
+          }
+        ],
+        "asked_options": [
+          {
+            "text": "Banyak GB tambahan",
+            "correct": true
+          },
+          {
+            "text": "Kuota paket",
+            "correct": false
+          }
+        ]
+      },
+      "model": {
+        "variable": {
+          "symbol": "x",
+          "meaning": "banyak GB tambahan"
+        },
+        "variable_options": [
+          "banyak GB tambahan",
+          "kuota paket (10 GB)",
+          "tagihan bulan ini"
+        ],
+        "equation": "30000 + 4000*x = 54000",
+        "equation_options": [
+          "30000 + 4000*x = 54000",
+          "30000 + 4000*x + 10 = 54000",
+          "4000*x = 54000 + 30000"
+        ]
+      },
+      "equation": "30000 + 4000*x = 54000",
       "solve": {
         "answer": "6",
         "steps": [
           {
             "op": "sub",
-            "value": "x",
-            "result": "2*x - 7 = 5"
-          },
-          {
-            "op": "add",
-            "value": "7",
-            "result": "2*x = 12"
+            "value": "30000",
+            "result": "4000*x = 24000"
           },
           {
             "op": "div",
-            "value": "2",
+            "value": "4000",
             "result": "x = 6"
           }
         ]
       },
       "check": {
-        "substitution": "3*(6) - 7 = (6) + 5"
+        "substitution": "30000 + 4000*(6) = 54000",
+        "sense_question": "Total kuotanya menjadi 16 GB. Apakah masuk akal?",
+        "answer_template": "Jadi, Kak Rina memakai {jawaban} tambahan.",
+        "answer_sentence": "Jadi, Kak Rina memakai 6 GB tambahan.",
+        "unit": "GB"
       },
       "explain_options": [
         {
-          "text": "Kedua ruas dikurangi x.",
+          "text": "Kedua ruas dikurangi 30.000.",
           "correct": true
         },
         {
-          "text": "Kedua ruas ditambah 7.",
+          "text": "Kedua ruas dibagi 4.000.",
           "correct": true
         },
         {
-          "text": "x pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 30.000.",
           "correct": false
         },
         {
-          "text": "Kedua ruas dikurangi 2.",
+          "text": "Kedua ruas dikurangi 4.000.",
+          "correct": false
+        },
+        {
+          "text": "x adalah banyak GB tambahan.",
+          "correct": true
+        },
+        {
+          "text": "x adalah kuota paket (10 GB).",
           "correct": false
         }
       ],
       "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
+        "Apa yang ditanyakan? Itulah yang kita misalkan x.",
+        "Harga paket + Rp4.000 × GB tambahan = tagihan. Info 10 GB tidak dipakai.",
+        "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000."
       ],
       "misconceptions": [
         {
           "code": "M1",
-          "wrong_step": "2*x = -2",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "wrong_step": "4000*x = 84000",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         },
         {
           "code": "M4",
-          "wrong_answer": "10",
-          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p09",
-      "world": 4,
-      "level": 2,
-      "type": "solve",
-      "order": 9,
-      "equation": "9*x + 4 = 6*x + 19",
-      "solve": {
-        "answer": "5",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "6*x",
-            "result": "3*x + 4 = 19"
-          },
-          {
-            "op": "sub",
-            "value": "4",
-            "result": "3*x = 15"
-          },
-          {
-            "op": "div",
-            "value": "3",
-            "result": "x = 5"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "9*(5) + 4 = 6*(5) + 19"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 6x.",
-          "correct": true
+          "wrong_answer": "20000",
+          "feedback": "4.000x artinya 4.000 dikali x. Lawan dari kali adalah bagi."
         },
         {
-          "text": "Kedua ruas dikurangi 4.",
-          "correct": true
-        },
-        {
-          "text": "6x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 3.",
-          "correct": false
+          "code": "M8",
+          "wrong_answer_format": "no_unit",
+          "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."
         }
       ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 6x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "3*x = 23",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "12",
-          "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p10",
-      "world": 4,
-      "level": 2,
-      "type": "solve",
-      "order": 10,
-      "equation": "4*x - 10 = 2*x - 2",
-      "solve": {
-        "answer": "4",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "2*x",
-            "result": "2*x - 10 = -2"
-          },
-          {
-            "op": "add",
-            "value": "10",
-            "result": "2*x = 8"
-          },
-          {
-            "op": "div",
-            "value": "2",
-            "result": "x = 4"
-          }
-        ]
+      "ui": {
+        "balance": false,
+        "op_only": false,
+        "term_keypad": false
       },
-      "check": {
-        "substitution": "4*(4) - 10 = 2*(4) - 2"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 2x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas ditambah 10.",
-          "correct": true
-        },
-        {
-          "text": "2x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 2x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "2*x = -12",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "6",
-          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p11",
-      "world": 4,
-      "level": 3,
-      "type": "solve",
-      "order": 11,
-      "equation": "10 - x = x + 2",
-      "solve": {
-        "answer": "4",
-        "steps": [
-          {
-            "op": "add",
-            "value": "x",
-            "result": "10 = 2*x + 2"
-          },
-          {
-            "op": "sub",
-            "value": "2",
-            "result": "8 = 2*x"
-          },
-          {
-            "op": "div",
-            "value": "2",
-            "result": "4 = x"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "10 - (4) = (4) + 2"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas ditambah x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": true
-        },
-        {
-          "text": "Hanya satu ruas yang ditambah x.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas ditambah x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "12 = 2*x",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "6",
-          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p12",
-      "world": 4,
-      "level": 3,
-      "type": "solve",
-      "order": 12,
-      "equation": "5*x + 3 = 3*x - 7",
-      "solve": {
-        "answer": "-5",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "3*x",
-            "result": "2*x + 3 = -7"
-          },
-          {
-            "op": "sub",
-            "value": "3",
-            "result": "2*x = -10"
-          },
-          {
-            "op": "div",
-            "value": "2",
-            "result": "x = -5"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "5*(-5) + 3 = 3*(-5) - 7"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 3x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dikurangi 3.",
-          "correct": true
-        },
-        {
-          "text": "3x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 3x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "2*x = -4",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "-12",
-          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p13",
-      "world": 4,
-      "level": 3,
-      "type": "solve",
-      "order": 13,
-      "equation": "6*x = 2*x + 20",
-      "solve": {
-        "answer": "5",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "2*x",
-            "result": "4*x = 20"
-          },
-          {
-            "op": "div",
-            "value": "4",
-            "result": "x = 5"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "6*(5) = 2*(5) + 20"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 2x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dibagi 4.",
-          "correct": true
-        },
-        {
-          "text": "2x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 4.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 2x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M4",
-          "wrong_answer": "16",
-          "feedback": "4x artinya 4 dikali x. Lawan dari kali adalah bagi."
-        }
-      ]
-    },
-    {
-      "id": "w4-p14",
-      "world": 4,
-      "level": 3,
-      "type": "solve",
-      "order": 14,
-      "equation": "2*x - 3 = 7*x + 12",
-      "solve": {
-        "answer": "-3",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "2*x",
-            "result": "-3 = 5*x + 12"
-          },
-          {
-            "op": "sub",
-            "value": "12",
-            "result": "-15 = 5*x"
-          },
-          {
-            "op": "div",
-            "value": "5",
-            "result": "-3 = x"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "2*(-3) - 3 = 7*(-3) + 12"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 2x.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dikurangi 12.",
-          "correct": true
-        },
-        {
-          "text": "2x pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Kedua ruas dikurangi 5.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Tujuan kita: membuat x sendirian di satu ruas.",
-        "Langkah pertama: kedua ruas dikurangi 2x.",
-        "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "9 = 5*x",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        },
-        {
-          "code": "M4",
-          "wrong_answer": "-20",
-          "feedback": "5x artinya 5 dikali x. Lawan dari kali adalah bagi."
-        }
+      "given_stages": [
+        "solve"
       ]
     }
   ]

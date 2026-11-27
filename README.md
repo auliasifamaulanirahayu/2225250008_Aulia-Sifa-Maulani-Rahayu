@@ -6,7 +6,7 @@
 - Berjalan di **browser HP dan laptop**, dioptimalkan untuk HP Android.
 - **Bisa di-install tanpa Play Store/App Store** (Progressive Web App).
 - **Offline-first**: setelah dibuka sekali, 98 soal bisa dikerjakan tanpa internet; progres dikirim saat online.
-- **Mode Siswa** (misi harian, 7 dunia, timbangan interaktif, XP, lencana, tim) dan **Mode Guru** (kelas, kode kelas,
+- **Mode Siswa** (misi harian, Mission Map 7 misi, timbangan interaktif, XP, lencana, tim) dan **Mode Guru** (kelas, kode kelas,
   tim, tantangan, progres per tahap, miskonsepsi, ekspor CSV penelitian).
 - **Login & penyimpanan data di server dengan Supabase**. Siswa masuk dengan kode kelas + nama panggilan + PIN, tanpa email.
 - Teknologi: **React + Vite** (frontend), **Supabase** (Auth + PostgreSQL), **Python** (generator & validator soal
@@ -65,7 +65,7 @@ cerita**, **mengubahnya ke bentuk matematika**, dan **memindahkan ruas/mengubah 
 | [PRD.md](PRD.md) | Tujuan, persona, fitur (FR), non-fungsional (NFR), matriks keterlacakan |
 | [CLAUDE.md](CLAUDE.md) | Panduan teknis & aturan pengembangan |
 | [docs/LEARNING_DESIGN.md](docs/LEARNING_DESIGN.md) | CP & TP, sintaks PBL, literasi matematika, strategi Cognitive Load Theory |
-| [docs/GAME_DESIGN.md](docs/GAME_DESIGN.md) | Misi harian, dunia, XP, lencana, streak, tim, leaderboard |
+| [docs/GAME_DESIGN.md](docs/GAME_DESIGN.md) | Misi harian, Mission Map, XP, lencana, streak, tim, leaderboard |
 | [docs/CONTENT_BANK.md](docs/CONTENT_BANK.md) | Peta konten, skema JSON soal, generator & validator |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Arsitektur React + Supabase, offline & sinkronisasi |
 | [docs/DATA_MODEL.md](docs/DATA_MODEL.md) | Tabel Supabase, ERD, RLS |

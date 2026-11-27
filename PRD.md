@@ -41,7 +41,7 @@ PLSV menjadi tahap-tahap kecil dan memberi umpan balik langsung.
 | ID | Tujuan | Indikator keberhasilan (KPI) |
 |---|---|---|
 | G1 | Siswa memahami konsep kesetaraan dan operasi pada kedua ruas | Rata-rata skor post-test bagian prosedur naik ≥ 20% dari pre-test |
-| G2 | Siswa mampu memodelkan soal cerita menjadi PLSV | ≥ 70% siswa benar pada tahap "Modelkan" di Dunia 6 |
+| G2 | Siswa mampu memodelkan soal cerita menjadi PLSV | ≥ 70% siswa benar pada tahap "Modelkan" di Mission 04 |
 | G3 | Literasi matematika meningkat | N-gain pre/post-test literasi ≥ 0,3 (kategori sedang) |
 | G4 | Beban kognitif ekstrinsik rendah | Skor EL pada kuesioner cognitive load ≤ 3 dari 10 |
 | G5 | Siswa terlibat rutin | ≥ 60% siswa menyelesaikan misi harian ≥ 4 hari/minggu selama uji coba |
@@ -64,7 +64,7 @@ efektivitas dan beban kognitif.
 ### MVP (rilis uji coba)
 - PWA yang bisa di-install dan berjalan offline.
 - **Mode Siswa** dan **Mode Guru** dalam satu aplikasi, dengan login dan penyimpanan data di Supabase.
-- Dunia 1–6 dengan minimal 15 soal per dunia; Dunia 7 minimal 8 soal literasi.
+- Mission Map 7 misi (Mengenal PLSV → Tantangan PLSV), 101 soal; Mission 07 memuat 8 soal literasi.
 - Alur soal 4 tahap, Timbangan Seimbang, worked/faded example, petunjuk bertingkat, cek substitusi.
 - Misi harian (3 misi), XP, level, lencana, streak.
 - Kelas, tim, Tantangan Tim, leaderboard kelas mingguan.
@@ -105,7 +105,7 @@ efektivitas dan beban kognitif.
 | FR-01 | Onboarding & profil | 3 layar pengenalan singkat, pilih avatar dan nama panggilan | Wajib |
 | FR-02 | Login siswa | Daftar/masuk dengan kode kelas 6 karakter + nama panggilan + PIN 6 angka (Supabase Auth, tanpa email asli). Mode demo tanpa akun hanya tersedia bila server belum diatur | Wajib |
 | FR-03 | Misi harian | Setiap hari 3 misi: Pemanasan, Misi Utama (PBL), Tantangan Tim; dipilih otomatis sesuai progres | Wajib |
-| FR-04 | Peta Dunia | 7 dunia berurutan; dunia berikutnya terbuka setelah ≥ 70% soal dunia sebelumnya selesai | Wajib |
+| FR-04 | Mission Map | 7 misi berurutan (galaxy); misi berikutnya terbuka setelah ≥ 70% soal misi sebelumnya selesai; misi terkunci menampilkan alasannya; tiap misi punya tujuan, materi singkat, contoh, latihan, status | Wajib |
 | FR-05 | Alur soal 4 tahap | Pahami → Modelkan → Selesaikan → Periksa; satu tahap per layar | Wajib |
 | FR-06 | Timbangan Seimbang | Model visual persamaan; operasi dilakukan pada kedua ruas dengan animasi | Wajib |
 | FR-07 | Contoh bertahap | Worked example → faded example (langkah dikosongkan bertahap) → soal mandiri | Wajib |
@@ -121,12 +121,15 @@ efektivitas dan beban kognitif.
 | FR-17 | Offline & sinkronisasi | Semua soal tersimpan lokal; percobaan diantrikan lalu dikirim saat online | Wajib |
 | FR-18 | Install PWA | Tombol "Pasang Aplikasi" dan panduan install Android/iPhone | Wajib |
 | FR-19 | Ekspor data penelitian | CSV anonim per percobaan, hanya untuk akun guru/peneliti | Wajib |
-| FR-20 | Pengaturan | Suara on/off, ukuran huruf, mode kontras tinggi, keluar akun | Sebaiknya |
+| FR-20 | Pengaturan | Halaman `#/settings` (siswa & guru): profil/avatar, **musik latar** luar angkasa (nyala/mati + volume, bawaan mati, tidak berbunyi sendiri, berhenti di layar soal kecuali diizinkan), **efek suara** terpisah (nyala/mati + volume), **tema** Galaxy/Terang, ukuran huruf, kontras tinggi, informasi aplikasi, keluar akun | Wajib |
 | FR-21 | Bacakan soal | Tombol membacakan kalimat soal (Web Speech API, bila tersedia) | Sebaiknya |
 | FR-22 | Pilih mode | Layar awal menampilkan pilihan **Mode Siswa** dan **Mode Guru**; rute dijaga sesuai peran | Wajib |
-| FR-23 | Login guru | Daftar/masuk guru dengan email + password (Supabase Auth) | Wajib |
+| FR-23 | Login guru | Daftar/masuk guru dengan email + password (Supabase Auth); **lupa password** lewat tautan email → halaman buat password baru | Wajib |
 | FR-24 | Cadangan progres | XP, bintang, dan progres per soal dicadangkan ke Supabase dan dipulihkan saat masuk di HP lain | Wajib |
 | FR-25 | Hapus akun | Siswa dapat menghapus akun & seluruh datanya; guru dapat menghapus siswa atau kelas | Wajib |
+| FR-26 | AI Math Tutor | Tutor "Kak Orbit" (Gemini via Edge Function) membimbing 6 tahap (pahami, informasi, model, langkah, hitung, periksa), satu petunjuk per giliran, tanpa jawaban akhir; pembahasan lengkap hanya setelah siswa mencoba & meminta; dibuka dari Dashboard atau layar soal | Wajib |
+| FR-27 | Fallback tutor | Tutor bawaan di HP saat AI mati/offline/kuota habis/demo, sehingga materi & latihan tetap jalan | Wajib |
+| FR-28 | Kendali guru AI | Guru menyalakan AI Tutor per kelas (bawaan mati) dan membaca percakapan siswanya | Wajib |
 
 ## 8. Kebutuhan non-fungsional
 
@@ -134,7 +137,7 @@ efektivitas dan beban kognitif.
 |---|---|
 | NFR-01 | **Mobile-first**: nyaman di layar 360×640 px, satu tangan, target sentuh ≥ 48 px |
 | NFR-02 | **Ringan**: muat pertama < 3 detik pada 3G cepat; ukuran bundel awal < 500 KB (gzip, di luar ilustrasi) |
-| NFR-03 | **Offline**: semua dunia dan soal yang sudah diunduh dapat dimainkan tanpa internet |
+| NFR-03 | **Offline**: semua misi dan soal yang sudah diunduh dapat dimainkan tanpa internet |
 | NFR-04 | **Kompatibilitas**: Chrome Android 8+, Safari iOS 16.4+, Chrome/Edge/Firefox desktop versi terbaru |
 | NFR-05 | **Lighthouse**: Performance ≥ 85, Accessibility ≥ 90, PWA installable lolos |
 | NFR-06 | **Privasi anak**: tanpa email/nomor HP siswa, tanpa iklan dan pelacak pihak ketiga |
@@ -148,9 +151,9 @@ efektivitas dan beban kognitif.
 | Kode | Temuan S01 | Kode CLT | Fitur yang menjawab |
 |---|---|---|---|
 | S1 | Belajar PLSV semester 1 kelas VII | K | Sasaran kelas VII, konten sesuai Fase D |
-| S2 | Ingat bentuk persamaan dengan huruf x, y, z | IL | Dunia 1 memperkuat makna variabel (FR-04) |
-| S3 | Ingat soal harga buku dan pulpen | IL | Konteks belanja dipakai di Dunia 6–7 (CONTENT_BANK) |
-| K1 | Bingung huruf dan angka bersamaan | IL, GL | "Kotak misteri" → x di Dunia 1; bertanya → petunjuk bertingkat (FR-08) |
+| S2 | Ingat bentuk persamaan dengan huruf x, y, z | IL | Mission 02 memperkuat makna variabel (FR-04) |
+| S3 | Ingat soal harga buku dan pulpen | IL | Konteks belanja dipakai di Mission 03–04 & 07 (CONTENT_BANK) |
+| K1 | Bingung huruf dan angka bersamaan | IL, GL | "Kotak misteri" → x di Mission 02; bertanya → petunjuk bertingkat (FR-08) |
 | K2 | Mengikuti langkah contoh | EL, GL | Worked → faded example (FR-07) |
 | K3 | Ragu pindah ruas, lupa perubahan tanda | IL | Timbangan Seimbang (FR-06), umpan balik salah tanda (FR-09) |
 | A1 | Soal cerita & pindah ruas paling sulit | IL | Alur 4 tahap (FR-05), Timbangan (FR-06) |
@@ -167,7 +170,7 @@ efektivitas dan beban kognitif.
 | C2 | Tahu benar hanya dari koreksi guru | GL | Cek substitusi (FR-10), umpan balik langsung (FR-09) |
 | C3 | Terbantu belajar bersama teman | GL | Tim & Tantangan Tim (FR-14) |
 | C4 | Pernah menjelaskan ke teman pada soal mudah | GL | Jelaskan ke temanmu, mulai dari soal mudah (FR-11) |
-| C5 | Terbantu contoh soal dulu | GL | Worked example di awal tiap dunia (FR-07) |
+| C5 | Terbantu contoh soal dulu | GL | Worked example di awal tiap misi (FR-07) |
 | D1 | Menarik, ilustrasi berwarna, bahasa SMP, mudah, main bersama, banyak latihan | DS | UI_UX, FR-13–15, bank soal ≥ 98 soal |
 | D2 | Memahami soal dan langkah hitung perlu dijelaskan pelan | DS | Alur 4 tahap (FR-05) + contoh bertahap (FR-07) |
 | D3 | Jangan ada soal/instruksi terlalu panjang | DS | NFR-08, aturan penulisan soal |

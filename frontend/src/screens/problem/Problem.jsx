@@ -7,6 +7,7 @@ import { parseEquation, nextStep, explainStep } from '../../engine/equation.js';
 import { Fraction } from '../../engine/fraction.js';
 import { recordAttempt, finishProblem, xpForStage } from '../../game.js';
 import { Screen, Sheet, EmptyState } from '../../components/ui.jsx';
+import { TutorChat } from '../../components/TutorChat.jsx';
 import { sfx } from '../../sound.js';
 import { STAGES } from './stages.jsx';
 
@@ -69,7 +70,10 @@ function hintsFor(name, p, eq) {
       return [
         'Ingat langkah yang kamu lakukan di tahap Selesaikan.',
         'Langkah yang benar selalu dilakukan pada KEDUA ruas.',
-        'Pindah ruas = mengubah tanda, karena kita menambah atau mengurangi kedua ruas.',
+        // "pindah ruas" baru dikenalkan sebagai jalan pintas mulai Mission 06 (CLAUDE.md aturan 2)
+        p.world >= 6
+          ? 'Pindah ruas = mengubah tanda, karena kita menambah atau mengurangi kedua ruas.'
+          : 'Pilih alasan yang menyebut operasi pada kedua ruas.',
       ];
   }
 }
@@ -105,6 +109,7 @@ function ProblemRunner({ p, mission }) {
   const busy = useRef(false);
   const [idx, setIdx] = useState(0);
   const [hintOpen, setHintOpen] = useState(false);
+  const [tutor, setTutor] = useState(null); // {attempted} saat lembar AI Tutor terbuka
   const [hintLevel, setHintLevel] = useState(0);
   const name = stages[idx];
   const isGiven = given.has(name);
@@ -192,13 +197,25 @@ function ProblemRunner({ p, mission }) {
           <small>{mission === 'main' ? 'Misi Utama' : mission === 'team' ? 'Tantangan Tim' : world.title}</small>
           <strong>{TYPE_LABEL[p.type]}</strong>
         </div>
-        {name !== 'worked' && !isGiven ? (
-          <button type="button" className="icon-btn hint-btn" aria-label="Petunjuk" onClick={openHint}>
-            💡
-          </button>
-        ) : (
-          <span className="icon-btn" aria-hidden="true" />
-        )}
+        <div className="flex gap-2">
+          {name !== 'worked' && (
+            <button
+              type="button"
+              className="icon-btn"
+              aria-label="Tanya AI Tutor"
+              onClick={() => setTutor({ attempted: idx > 0 || cur.current.attempts > 0 })}
+            >
+              🤖
+            </button>
+          )}
+          {name !== 'worked' && !isGiven ? (
+            <button type="button" className="icon-btn hint-btn" aria-label="Petunjuk" onClick={openHint}>
+              💡
+            </button>
+          ) : (
+            <span className="icon-btn" aria-hidden="true" />
+          )}
+        </div>
       </header>
       <ol className="stage-dots" aria-label="Tahap soal">
         {stages.map((s, i) => (
@@ -211,6 +228,21 @@ function ProblemRunner({ p, mission }) {
       <main className="stage-body">
         <Stage key={idx} ctx={ctx} isGiven={isGiven} />
       </main>
+      {tutor && (
+        <Sheet title="🤖 Tanya Kak Orbit" onClose={() => setTutor(null)}>
+          <TutorChat
+            problem={p}
+            stage={STAGE_LABEL[name]}
+            hints={hints}
+            attempted={tutor.attempted}
+            onFullSolution={() => {
+              // pembahasan lengkap: soal tetap bisa diselesaikan, tapi tanpa bintang penuh & tanpa bonus "tanpa petunjuk"
+              run.current.hintsUsed += 3;
+              run.current.tutorFull = true;
+            }}
+          />
+        </Sheet>
+      )}
       {hintOpen && (
         <Sheet title="💡 Petunjuk" onClose={() => setHintOpen(false)}>
           <div className="hint-list">

@@ -7,6 +7,10 @@ const key = import.meta.env?.VITE_SUPABASE_ANON_KEY;
 
 export const supabaseReady = Boolean(url && key);
 
+// Tautan "lupa password" dari email membawa token di hash (#access_token=…&type=recovery).
+// Ditangkap SEBELUM klien dibuat, karena klien langsung membersihkan hash dan HashRouter juga memakai hash.
+export const recoveryLink = typeof location !== 'undefined' && /type=recovery/.test(location.hash);
+
 export const supabase = supabaseReady
   ? createClient(url, key, {
       auth: { persistSession: true, autoRefreshToken: true, storageKey: 'math-mission-auth' },

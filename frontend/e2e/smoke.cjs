@@ -74,12 +74,13 @@ function findBrowser() {
 
   // 1. awal
   await page.goto(base, { waitUntil: 'networkidle0' });
-  await waitText('Mode Siswa');
+  await waitText('Mulai Misi');
+  await waitText('Mode Guru');
   await shot('01-welcome');
-  log('Layar awal: Mode Siswa & Mode Guru tampil');
+  log('Landing page: Mulai Misi, Login, dan Mode Guru tampil');
 
   // 2. demo siswa
-  await click('Mode Siswa');
+  await click('Mulai Misi');
   await page.type('#nick', 'Raka');
   await click('Mulai demo');
   await waitText('Misi hari ini');
@@ -99,11 +100,11 @@ function findBrowser() {
   await shot('04-result');
   log('Contoh lengkap → Jelaskan → Hasil: OK');
 
-  // 4. w3-p03 dengan kesalahan tanda (M1)
-  await page.goto(base + '#/play/w3-p03');
+  // 4. w5-p03 (3x − 5 = 16, lembar kerja S01 no. 2) dengan kesalahan tanda (M1)
+  await page.goto(base + '#/play/w5-p03');
   await waitText('Buat x sendirian');
   await typeLine('3x=16-5');
-  await waitText('tandanya berubah');
+  await waitText('Lihat tandanya');
   await shot('05-misconception-M1');
   log('Miskonsepsi M1 terdeteksi pada "3x = 16 − 5"');
   await typeLine('3x=21');
@@ -116,13 +117,13 @@ function findBrowser() {
   await waitText('Jawabanmu benar');
   await shot('06-check');
   await click('Lanjut ▸', true);
-  await explain('w3-p03');
+  await explain('w5-p03');
   await waitText('Soal selesai!');
-  log('Soal simbolik w3-p03 selesai (tulis langkah + substitusi)');
+  log('Soal simbolik w5-p03 selesai (tulis langkah + substitusi)');
 
-  // 5. soal cerita w6-p05 (lembar kerja S01 no. 4)
-  const s = P('w6-p05');
-  await page.goto(base + '#/play/w6-p05');
+  // 5. soal cerita w3-p05 (Mission 03: ada informasi yang tidak dipakai)
+  const s = P('w3-p05');
+  await page.goto(base + '#/play/w3-p05');
   await waitText(s.story[0]);
   await click('Lanjut baca');
   await click('Lanjut baca');
@@ -134,32 +135,36 @@ function findBrowser() {
   await shot('07-understand');
   await click('Cek', true);
   await waitText('Misalkan x adalah');
-  await click('banyak buku tulis', true);
-  await click('3x + 4.000 = 25.000', true);
+  await click(s.model.variable_options[1], true);
+  await click('5x = 20.000', true);
   await click('Cek', true);
   await waitText('x sebaiknya hal yang DITANYA');
   await click(s.model.variable.meaning, true);
   await shot('08-model');
   await click('Cek', true);
   await waitText('Buat x sendirian');
-  await typeLine('3x=21000');
-  await waitText('Benar!');
-  await typeLine('x=7000');
+  await typeLine('x=4000');
   await waitText('Hebat!');
   await click('Lanjut ke Periksa');
-  await typeLine('25000');
+  await typeLine('20000');
   await waitText('Masuk akal?');
   await click('Ya', true);
   await waitText('Tulis jawabanmu');
-  await typeLine('7000');
+  await typeLine('4000');
   await waitText('Jelaskan ke temanmu');
-  await explain('w6-p05');
+  await explain('w3-p05');
   await waitText('Soal selesai!');
   await shot('09-story-result');
-  log('Soal cerita w6-p05: Pahami → Modelkan → Selesaikan → Periksa → Jelaskan: OK');
+  log('Soal cerita w3-p05: Pahami → Modelkan → Selesaikan → Periksa → Jelaskan: OK');
 
-  // 6. timbangan (mode operasi) w2-p03: x + 5 = 12
-  await page.goto(base + '#/play/w2-p03');
+  // 5b. Mission 04: tahap Selesaikan sudah diisi (fokus memodelkan)
+  await page.goto(base + '#/play/w4-p03');
+  await waitText(P('w4-p03').story[0]);
+  await shot('09b-mission4');
+  log('Mission 04 (Selesaikan diberikan) terbuka');
+
+  // 6. timbangan (mode operasi) w1-p06: x + 5 = 12
+  await page.goto(base + '#/play/w1-p06');
   await waitText('Pilih operasi');
   await click('− Kurangi');
   await typeLine('5');
@@ -199,13 +204,50 @@ function findBrowser() {
   await page.setOfflineMode(true);
   await page.reload({ waitUntil: 'domcontentloaded' });
   await waitText('Misi hari ini', 8000);
-  const xp = await page.evaluate(() => document.querySelector('.xp-row small')?.textContent);
+  const xp = await page.evaluate(() => document.querySelector('[data-xp]')?.textContent);
+  if (!/^[1-9]\d* XP$/.test(xp || '')) throw new Error('XP tidak tampil saat offline: ' + xp);
   await shot('17-offline');
   log(`Service worker aktif: ${sw}; dibuka OFFLINE: OK, progres tetap ada (${xp})`);
   await page.setOfflineMode(false);
 
   // 10. Mode Guru demo
-  await page.goto(base + '#/profile', { waitUntil: 'networkidle0' });
+  // 9a. AI Math Tutor (mode demo -> tutor bawaan, tanpa jaringan)
+  await page.goto(base + '#/tutor', { waitUntil: 'networkidle0' });
+  await waitText('Kak Orbit');
+  await waitText('Mode demo');
+  await click('Apa itu PLSV?');
+  await waitText('PLSV adalah');
+  await page.type('#tutor-input', 'jawabannya berapa?');
+  await click('Kirim', true);
+  await waitText('Bagian mana');
+  await shot('17a-tutor');
+  await page.goto(base + '#/play/w4-p03');
+  await waitText(P('w4-p03').story[0]);
+  await page.click('[aria-label="Tanya AI Tutor"]');
+  await waitText('Bagian mana dari soal ini');
+  await click('Langkah berikutnya apa?');
+  await waitText('Petunjuk pertama');
+  if (await page.evaluate(() => document.body.innerText.includes('Minta pembahasan lengkap'))) throw new Error('Pembahasan lengkap muncul sebelum siswa mencoba');
+  await shot('17a2-tutor-problem');
+  log('AI Tutor (tutor bawaan): umum & dari soal, petunjuk bertingkat, tanpa pembahasan sebelum mencoba: OK');
+
+  // 9b. Pengaturan: tema, musik, logout
+  await page.goto(base + '#/settings', { waitUntil: 'networkidle0' });
+  await waitText('Musik luar angkasa');
+  await click('☀️ Terang');
+  await page.waitForFunction(() => document.documentElement.dataset.theme === 'light', { timeout: 3000 });
+  await shot('17b-settings-light');
+  await click('🌌 Galaxy');
+  await page.waitForFunction(() => !document.documentElement.dataset.theme, { timeout: 3000 });
+  await page.click('#music');
+  await page
+    .waitForFunction(() => document.querySelector('#music')?.getAttribute('aria-checked') === 'true', { timeout: 3000 })
+    .catch(() => {
+      throw new Error('Musik tidak menyala');
+    });
+  await page.click('#music');
+  await shot('17c-settings');
+  log('Pengaturan: tema terang/galaxy, musik nyala/mati: OK');
   await click('Keluar dari akun');
   await waitText('Mode Guru');
   await click('Mode Guru');
@@ -218,6 +260,13 @@ function findBrowser() {
   await click('VII B (contoh)');
   await waitText('Tingkat kesalahan per tahap');
   await waitText('Miskonsepsi terbanyak');
+  await page.click('#ai-tutor');
+  await waitText('AI Tutor dinyalakan');
+  await click('Tampilkan percakapan terbaru');
+  await waitText('pertanyaan');
+  await page.evaluate(() => document.querySelector('details')?.setAttribute('open', ''));
+  await waitText('Aku bingung cara mengerjakan soal cerita ini.');
+  log('Mode Guru: saklar AI Tutor & membaca percakapan siswa: OK');
   await page.select('#metric', 'xp');
   await page.evaluate(() => {
     const t = document.querySelector('#target');

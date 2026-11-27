@@ -36,7 +36,10 @@ Tanpa file `.env`, aplikasi berjalan dalam **mode demo siswa** (tanpa login, tan
    - aktifkan **Email** provider;
    - **matikan "Confirm email"** (wajib: akun siswa memakai email sintetis yang tidak bisa menerima email);
    - panjang password minimum biarkan **6** (PIN siswa 6 angka).
-4. **Authentication → URL Configuration**: isi *Site URL* dengan URL Netlify (mis. `https://math-mission.netlify.app`).
+4. **Authentication → URL Configuration**: isi *Site URL* dengan URL Netlify (mis. `https://math-mission.netlify.app`),
+   lalu tambahkan URL yang sama ke **Redirect URLs** (tanpa `#`). Ini dipakai tautan **lupa password guru**: email
+   reset membuka aplikasi, lalu aplikasi menampilkan halaman *Buat password baru* (`#/reset-password`).
+   Siswa tidak memakai email, jadi lupa PIN siswa diatasi oleh guru.
 5. **Project Settings → API**: salin **Project URL** dan kunci **anon public** ke `frontend/.env`:
    ```
    VITE_SUPABASE_URL=https://xxxx.supabase.co
@@ -109,3 +112,21 @@ python content/tools/export_research.py --list
 python content/tools/export_research.py --class-code K7B3QZ --out data-7b.csv
 ```
 Hasil: CSV anonim + ringkasan tingkat kesalahan dan median waktu per tahap.
+
+## AI Math Tutor (opsional, Gemini)
+
+1. Jalankan migrasi **`supabase/migrations/0002_ai_tutor.sql`** di SQL Editor (setelah 0001).
+2. Buat API key di **Google AI Studio** (aistudio.google.com) → *Get API key*. Cek batas kuota free tier untuk proyekmu
+   di AI Studio (dokumentasi resmi tidak mencantumkan angkanya; berlaku per proyek, reset tengah malam waktu Pasifik).
+3. Pasang Supabase CLI, lalu dari root repo:
+   ```bash
+   supabase login
+   supabase link --project-ref <ref-proyek>
+   supabase secrets set GEMINI_API_KEY=<kunci> GEMINI_MODEL=gemini-3.5-flash-lite AI_DAILY_LIMIT=30
+   supabase functions deploy ai-tutor
+   ```
+   Kunci **tidak** ditaruh di `frontend/.env` (frontend publik).
+4. Di Mode Guru → kelas → nyalakan **🤖 AI Tutor (Gemini)** setelah ada izin sekolah/orang tua.
+5. Tanpa langkah 2–4, tutor tetap berjalan sebagai **tutor bawaan** (tanpa AI).
+
+Catatan privasi free tier: lihat [PRIVACY_ETHICS.md §7](PRIVACY_ETHICS.md).

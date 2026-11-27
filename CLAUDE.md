@@ -21,26 +21,48 @@ Jika kode bertentangan dengan dokumen, tanyakan ke user dulu, lalu perbarui doku
 ## Tech stack
 | Bagian | Teknologi |
 |---|---|
-| Frontend | **React 18 + Vite 6**, React Router (HashRouter), CSS biasa dengan custom properties |
+| Frontend | **React 18 + Vite 6**, React Router (HashRouter), **Tailwind CSS** (migrasi bertahap dari CSS biasa; tema galaxy) |
 | PWA | `vite-plugin-pwa` (Workbox) |
 | Penyimpanan lokal | IndexedDB lewat `idb` |
 | Login & database | **Supabase** (`@supabase/supabase-js`): Auth + PostgreSQL + Row Level Security + fungsi RPC |
+| AI Tutor | **Google Gemini** (free tier) lewat **Supabase Edge Function**; API key hanya di server. Wajib ada fallback tanpa AI |
 | Tooling | **Python 3.11+**: SymPy (generator & validator soal), ekspor penelitian (pustaka standar) |
 | Uji | Vitest (unit), puppeteer-core (uji asap e2e dengan Chrome/Edge terpasang) |
 | CI | GitHub Actions (`.github/workflows/ci.yml`) |
 
-Tidak ada server backend sendiri. Jangan menambah framework UI lain, pustaka state global, atau pustaka CSS tanpa
-persetujuan user: bundel harus tetap kecil (NFR-02, saat ini ± 170 KB gzip).
+Tidak ada server backend sendiri selain Supabase Edge Functions. Jangan menambah framework UI lain, pustaka state global,
+atau pustaka CSS lain (selain Tailwind) tanpa persetujuan user: bundel harus tetap kecil (NFR-02, saat ini ± 170 KB gzip).
+
+### Keputusan ketentuan baru (2026-11-27)
+- **Login**: siswa memakai nama panggilan + kode kelas + password (Supabase Auth asli, email sintetis); lupa password
+  siswa direset guru. Guru memakai email + password + lupa password via email. Tidak boleh ada login palsu.
+- **Tailwind**: halaman baru langsung Tailwind; halaman lama dipindah sambil didesain ulang ke tema galaxy.
+  Warna: Deep Navy `#080B2A`, Dark Blue `#111A52`, Royal Blue `#3156D9`, Purple `#7652D8`, Neon Cyan `#52D9FF`,
+  White `#F5F7FF`. Glow dan animasi secukupnya; layar soal tetap bersih (aturan pedagogis 9).
+- **Database**: pertahankan tabel yang ada; tambahkan migrasi baru hanya untuk yang belum ada (mis. `ai_chat_sessions`,
+  `ai_chat_messages`). Pemetaan nama tabel di ketentuan → tabel yang ada didokumentasikan di `docs/DATA_MODEL.md`.
+- **AI Tutor**: Gemini via Edge Function, pesan dikirim tanpa identitas siswa, pembahasan lengkap hanya sesuai aturan 6
+  dan ada fallback ke petunjuk bawaan bila kuota habis atau offline.
+- **Musik/suara**: musik latar bertema luar angkasa, tidak otomatis berbunyi, bisa dinyalakan/dimatikan, volume
+  diatur; efek suara diatur terpisah.
+- **Mission Map**: 7 misi sesuai ketentuan — 01 Mengenal PLSV, 02 Memahami Variabel, 03 Mengenali Informasi dalam Soal,
+  04 Soal Cerita → Persamaan, 05 Menyelesaikan Persamaan, 06 Memahami Perubahan Tanda, 07 Tantangan PLSV. Soal lama
+  dipindah ke misi yang cocok lewat `build_worlds.py`; unlock berurutan.
+- **Zona**: Learning Zone (8 materi kecil, satu bagian per layar), Challenge Zone (Easy/Medium/Advanced), AI Tutor.
+- **Chat AI Tutor** disimpan di database; dapat dibaca siswa pemiliknya dan guru kelasnya (siswa diberi tahu di layar).
+- **Deployment**: Vercel atau Netlify, harus bisa dibuka di browser desktop dan HP.
 
 ## Struktur folder (ringkas)
 ```
 content/worlds/*.json        DIHASILKAN oleh content/tools/build_worlds.py — jangan diedit manual
 content/tools/               build_worlds.py, validate_content.py, export_research.py
-supabase/migrations/         skema SQL; perubahan skema = file migrasi BARU (0002_..., dst.)
+supabase/migrations/         skema SQL; perubahan skema = file migrasi BARU (0003_..., dst.)
+supabase/functions/ai-tutor/  Edge Function AI Tutor (Gemini; satu-satunya tempat GEMINI_API_KEY)
 frontend/src/engine/         logika murni (tanpa React, DOM, atau jaringan) — wajib diuji
-frontend/src/components/     ui.jsx, Keypad.jsx, BalanceScale.jsx
-frontend/src/screens/        Auth, Student, Team, Profile, Teacher, problem/{Problem,stages}.jsx
-frontend/src/lib/            supabase.js, auth.js
+frontend/src/components/     ui.jsx, Keypad.jsx, BalanceScale.jsx, GalaxyArt.jsx (planet), TutorChat.jsx
+frontend/src/screens/        Auth, Student, Team, Profile, Settings, Teacher, problem/{Problem,stages}.jsx
+frontend/src/lib/            supabase.js, auth.js, tutor.js (panggil Edge Function)
+frontend/src/music.js        musik latar WebAudio; sound.js = efek suara
 frontend/src/store/          db.js (IndexedDB), sync.js (outbox → Supabase)
 frontend/src/game.js         misi harian, XP, bintang, lencana, pencatatan percobaan
 frontend/src/state.js        state + hook useAppState(); panggil notify() setelah mengubah state
@@ -71,13 +93,17 @@ npm run dev | npm test | npm run build | npm run preview | npm run e2e
   Supabase tidak boleh ada di frontend.
 
 ## Aturan pedagogis (tidak boleh dilanggar)
-1. **Satu tahap per layar**: Pahami → Modelkan → Selesaikan → Periksa (→ Tafsirkan) → Jelaskan (FR-05).
-2. Operasi diajarkan sebagai **"lakukan hal yang sama pada kedua ruas"**. "Pindah ruas" hanya disebut sebagai jalan
-   pintas, mulai Dunia 3.
+1. **Satu tahap per layar**: Pahami → Modelkan → Selesaikan → Periksa (→ Tafsirkan) → Jelaskan (FR-05). Alur 5 tahap
+   ini wajib untuk **Misi Utama**. Challenge Zone boleh format cepat (pilihan ganda, isian, menentukan langkah), satu soal
+   per layar.
+2. Operasi diajarkan sebagai **"lakukan hal yang sama pada kedua ruas"**. "Pindah ruas"/perubahan tanda hanya diajarkan
+   sebagai jalan pintas hasil operasi kedua ruas, mulai **Mission 06 (Perubahan Tanda)**.
 3. Setiap dunia dimulai dengan **contoh lengkap**, lalu **contoh bertahap**, lalu soal mandiri (FR-07).
-4. Tahap **Periksa (substitusi)** wajib sebelum soal selesai (FR-10).
+4. Tahap **Periksa (substitusi)** wajib sebelum soal selesai (FR-10), termasuk soal cerita di Challenge Zone.
 5. Umpan balik salah menjelaskan **mengapa**, maksimal 2 kalimat, tidak menyalahkan ("Hampir! …").
-6. Petunjuk bertingkat; petunjuk tidak pernah memberi jawaban akhir soal itu.
+6. Petunjuk bertingkat; petunjuk bawaan tidak pernah memberi jawaban akhir soal itu. **AI Tutor** boleh memberi
+   pembahasan lengkap hanya jika siswa **sudah mencoba menjawab DAN meminta pembahasan**; soal Misi Utama yang dibahas AI
+   tetap selesai tetapi tanpa bintang/XP penuh.
 7. Misi Utama **tanpa batas waktu**.
 8. Leaderboard menampilkan **tim**, bukan peringkat individu.
 9. Tidak ada dekorasi/animasi yang tidak relevan di layar soal (prinsip koherensi).

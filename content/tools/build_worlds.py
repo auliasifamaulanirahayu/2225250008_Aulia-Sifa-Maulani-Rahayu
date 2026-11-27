@@ -137,7 +137,7 @@ def explain_text(step: dict[str, str]) -> tuple[str, str]:
     v = disp(step["value"])
     return {
         "add": (f"Kedua ruas ditambah {v}.", f"Hanya satu ruas yang ditambah {v}."),
-        "sub": (f"Kedua ruas dikurangi {v}.", f"{v} pindah ke ruas lain tanpa berubah tanda."),
+        "sub": (f"Kedua ruas dikurangi {v}.", f"Hanya satu ruas yang dikurangi {v}."),
         "mul": (f"Kedua ruas dikali {v}.", f"Hanya satu ruas yang dikali {v}."),
         "div": (f"Kedua ruas dibagi {v}.", f"Kedua ruas dikurangi {v}."),
         "expand": (
@@ -173,7 +173,7 @@ def auto_misconceptions(steps: list[dict[str, str]], states: list[Lin], ans: sp.
             out.append({
                 "code": "M1",
                 "wrong_step": fmt_state(wrong),
-                "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas.",
+                "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi.",
             })
             break
     if steps and steps[-1]["op"] == "div":
@@ -202,12 +202,25 @@ def fmt_answer(ans: sp.Rational, unit: str) -> str:
 EXAMPLE_HINT = {
     1: "Contoh: x + 2 = 9 → kurangi 2 di kedua ruas → x = 7.",
     2: "Contoh: 3x = 15 → bagi kedua ruas dengan 3 → x = 5.",
-    3: "Contoh: 2x + 3 = 11 → kurangi 3: 2x = 8 → bagi 2: x = 4.",
-    4: "Contoh: 4x + 1 = x + 10 → kurangi x: 3x + 1 = 10 → kurangi 1: 3x = 9 → x = 3.",
-    5: "Contoh: 3(x + 1) = 12 → jabarkan: 3x + 3 = 12 → kurangi 3: 3x = 9 → x = 3.",
-    6: "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000.",
-    7: "Contoh: 2 tas sama harga + Rp5.000 = Rp25.000 → 2x + 5.000 = 25.000 → x = 10.000.",
+    3: "Contoh: 3 roti sama harga, bayar Rp9.000 → 3x = 9.000 → x = 3.000.",
+    4: "Contoh: 3 buku sama harga + pulpen Rp4.000 = Rp25.000 → 3x + 4.000 = 25.000.",
+    5: "Contoh: 2x + 3 = 11 → kurangi 3: 2x = 8 → bagi 2: x = 4.",
+    6: "Contoh: x + 8 = 3 → kurangi 8 di kedua ruas → x = −5.",
+    7: "Contoh: 3(x + 1) = 12 → jabarkan: 3x + 3 = 12 → kurangi 3: 3x = 9 → x = 3.",
 }
+
+
+def ui_flags(eq: str, mission: int, is_story: bool) -> dict[str, bool]:
+    """Alat bantu di layar Selesaikan (dulu ditentukan nomor dunia)."""
+    left, right = eq.split("=")
+    both = "x" in left and "x" in right
+    complex_ = "(" in eq or "/" in eq
+    return {
+        "balance": not is_story and not complex_ and not both,  # gambar timbangan di contoh lengkap
+        "op_only": mission <= 2,                                # hanya pilih operasi (belum menulis langkah)
+        "term_keypad": both or complex_,                        # keypad bisa mengetik suku x (mis. 2x)
+    }
+
 
 
 # ---------------------------------------------------------------- pembuat soal
@@ -228,6 +241,7 @@ def symbolic(pid: str, world: int, level: int, order: int, ptype: str, eq: str,
             EXAMPLE_HINT[world],
         ],
         "misconceptions": auto_misconceptions(steps, states, ans),
+        "ui": ui_flags(eq, world, False),
     }
     if given:
         p["given_steps"] = given
@@ -236,8 +250,8 @@ def symbolic(pid: str, world: int, level: int, order: int, ptype: str, eq: str,
     return p
 
 
-def translate(pid: str, level: int, order: int, sentence: str, eq: str, wrong: list[str]) -> dict:
-    p = symbolic(pid, 1, level, order, "translate", eq)
+def translate(pid: str, world: int, level: int, order: int, sentence: str, eq: str, wrong: list[str]) -> dict:
+    p = symbolic(pid, world, level, order, "translate", eq)
     p["story"] = [sentence]
     p["question"] = "Pilih bentuk matematikanya, lalu cari nilai x."
     p["model"] = {"equation": eq, "equation_options": [eq, *wrong]}
@@ -255,7 +269,7 @@ def story(d: dict) -> dict:
     eq = d["eq"]
     steps, states = gen_steps(eq)
     ans = solve(eq)
-    world = d.get("world", 6)
+    world = d["world"]
     answer_text = fmt_answer(ans, d["unit"])
     p: dict[str, Any] = {
         "id": d["id"], "world": world, "level": d["level"], "type": d.get("type", "story"),
@@ -298,6 +312,7 @@ def story(d: dict) -> dict:
             {"code": "M8", "wrong_answer_format": "no_unit",
              "feedback": "Tafsirkan jawabannya ke cerita, lengkap dengan satuannya."},
         ],
+        "ui": ui_flags(eq, world, True),
     }
     if d.get("given_stages"):
         p["given_stages"] = d["given_stages"]
@@ -307,54 +322,111 @@ def story(d: dict) -> dict:
     return p
 
 
-# ---------------------------------------------------------------- definisi dunia
+# ---------------------------------------------------------------- definisi misi (Mission Map)
+# Field "world" pada soal = nomor misi (1–7). Nama field tidak diubah agar skema database & ekspor penelitian tetap.
 WORLD_META = {
-    1: {"title": "Desa Kotak Misteri", "topic": "Variabel & kalimat terbuka", "emoji": "📦", "color": "#3B5BDB",
+    1: {"title": "Mengenal PLSV", "topic": "Bentuk PLSV dan timbangan seimbang", "emoji": "🪐", "color": "#52D9FF",
+        "goal": ["Mengenali bentuk PLSV.", "Menyelesaikan x + a = b dengan menjaga kedua ruas seimbang."],
         "intro": [
-            {"term": "Variabel", "text": "Huruf seperti x mewakili bilangan yang belum diketahui. Bayangkan x sebagai kotak misteri."},
-            {"term": "Persamaan", "text": "Kalimat matematika dengan tanda =. Nilai ruas kiri sama dengan ruas kanan."},
-        ]},
-    2: {"title": "Pasar Timbangan", "topic": "Kesetaraan pada kedua ruas", "emoji": "⚖️", "color": "#2B8A3E",
-        "intro": [
+            {"term": "PLSV", "text": "Persamaan Linear Satu Variabel: ada tanda =, satu variabel, dan pangkat variabelnya satu."},
+            {"term": "Contoh", "text": "x + 3 = 10 adalah PLSV. x² = 9 bukan PLSV, karena pangkat x dua."},
             {"term": "Ruas", "text": "Bagian kiri dan kanan tanda = disebut ruas."},
             {"term": "Seimbang", "text": "Apa pun yang kamu lakukan pada ruas kiri, lakukan juga pada ruas kanan."},
-            {"term": "Balon", "text": "Bilangan negatif digambar sebagai balon yang menarik timbangan ke atas."},
         ]},
-    3: {"title": "Jembatan Satu Langkah", "topic": "Bentuk ax + b = c", "emoji": "🌉", "color": "#E67700",
+    2: {"title": "Memahami Variabel", "topic": "Variabel, koefisien, dan konstanta", "emoji": "📦", "color": "#B79BFF",
+        "goal": ["Memahami variabel sebagai wakil bilangan yang belum diketahui.",
+                 "Menulis kalimat sehari-hari menjadi persamaan.", "Menyelesaikan ax = b."],
         "intro": [
-            {"term": "Koefisien", "text": "Angka di depan x. Pada 3x, koefisiennya 3."},
-            {"term": "Konstanta", "text": "Bilangan tanpa x, misalnya 5 pada 3x − 5."},
-            {"term": "Jalan pintas", "text": "+5 pindah ruas menjadi −5. Itu sama dengan mengurangi 5 di kedua ruas."},
+            {"term": "Variabel", "text": "Huruf seperti x mewakili bilangan yang belum diketahui. Bayangkan x sebagai kotak misteri."},
+            {"term": "Koefisien", "text": "Angka di depan x. Pada 3x, koefisiennya 3. Artinya 3 dikali x."},
+            {"term": "Konstanta", "text": "Bilangan tanpa variabel, misalnya 5 pada x + 5."},
+            {"term": "Suku", "text": "Bagian yang dipisah tanda + atau −. Pada 3x + 5 ada suku 3x dan 5."},
         ]},
-    4: {"title": "Menara Dua Ruas", "topic": "Variabel di kedua ruas", "emoji": "🗼", "color": "#9C36B5",
+    3: {"title": "Mengenali Informasi dalam Soal", "topic": "Diketahui dan ditanya", "emoji": "🔭", "color": "#8EA6FF",
+        "goal": ["Menemukan informasi yang diketahui dalam soal cerita.", "Menentukan apa yang ditanyakan.",
+                 "Memilah informasi yang tidak dipakai."],
         "intro": [
+            {"term": "Diketahui", "text": "Informasi berupa angka yang tertulis di cerita."},
+            {"term": "Ditanya", "text": "Hal yang dicari. Biasanya ada di kalimat yang dimulai dengan \"Berapa\"."},
+            {"term": "Teliti", "text": "Tidak semua informasi selalu dipakai. Pilih yang berhubungan dengan pertanyaan."},
+        ]},
+    4: {"title": "Soal Cerita menjadi Persamaan", "topic": "Memodelkan soal cerita", "emoji": "🛰️", "color": "#3156D9",
+        "goal": ["Memisalkan hal yang ditanyakan dengan x.", "Menyusun persamaan dari hubungan dalam cerita."],
+        "intro": [
+            {"term": "Memisalkan", "text": "Pilih x sebagai hal yang ditanyakan, misalnya harga 1 buku."},
+            {"term": "Kata kunci", "text": "\"Lebih\" sering berarti +. \"Setiap\" atau \"per\" sering berarti dikali."},
+            {"term": "Cek model", "text": "Bacakan persamaanmu dengan kata-kata. Apakah cocok dengan cerita?"},
+        ]},
+    5: {"title": "Menyelesaikan Persamaan", "topic": "Operasi pada kedua ruas", "emoji": "⚖️", "color": "#5EE6A0",
+        "goal": ["Menyelesaikan ax + b = c dengan operasi pada kedua ruas.",
+                 "Menyelesaikan persamaan dengan x di kedua ruas.", "Memeriksa jawaban dengan substitusi."],
+        "intro": [
+            {"term": "Urutan", "text": "Hilangkan konstanta di ruas x dulu. Setelah itu, bagi dengan koefisien."},
             {"term": "Suku sejenis", "text": "5x dan 2x sejenis. 5x dan 2 tidak sejenis."},
-            {"term": "Strategi", "text": "Kumpulkan suku x di satu ruas dan angka di ruas lainnya."},
+            {"term": "x di kedua ruas", "text": "Kumpulkan suku x di satu ruas dan angka di ruas lainnya."},
         ]},
-    5: {"title": "Gua Kurung & Pecahan", "topic": "Tanda kurung dan pecahan", "emoji": "🔦", "color": "#D9480F",
+    6: {"title": "Memahami Perubahan Tanda", "topic": "Bilangan negatif dan jalan pintas pindah ruas", "emoji": "🔄",
+        "color": "#FFB26B",
+        "goal": ["Menyelesaikan persamaan yang memuat bilangan negatif.",
+                 "Memahami jalan pintas pindah ruas sebagai hasil operasi kedua ruas."],
+        "intro": [
+            {"term": "Balon", "text": "Bilangan negatif digambar sebagai balon yang menarik timbangan ke atas."},
+            {"term": "Jalan pintas", "text": "+5 pindah ruas menjadi −5. Itu sama dengan mengurangi 5 di kedua ruas."},
+            {"term": "Hati-hati", "text": "−2x = 6 dibagi −2, jadi x = −3. Tanda ikut dibagi."},
+        ]},
+    7: {"title": "Tantangan PLSV", "topic": "Kurung, pecahan, dan masalah literasi", "emoji": "🏆", "color": "#C9B8FF",
+        "goal": ["Menyelesaikan PLSV dengan tanda kurung dan pecahan.",
+                 "Memecahkan masalah sehari-hari dan menafsirkan jawabannya."],
         "intro": [
             {"term": "Jabarkan", "text": "2(x + 3) artinya 2 dikali x dan 2 dikali 3, jadi 2x + 6."},
             {"term": "Pecahan", "text": "x/4 artinya x dibagi 4. Kalikan kedua ruas dengan 4 untuk menghilangkannya."},
-        ]},
-    6: {"title": "Kota Cerita", "topic": "Memodelkan soal cerita", "emoji": "🏙️", "color": "#0C8599",
-        "intro": [
-            {"term": "4 langkah", "text": "Pahami → Modelkan → Selesaikan → Periksa."},
-            {"term": "Memisalkan", "text": "Pilih x sebagai hal yang ditanyakan, misalnya harga 1 buku."},
-        ]},
-    7: {"title": "Markas Literasi", "topic": "Masalah literasi sehari-hari", "emoji": "🛰️", "color": "#C2255C",
-        "intro": [
-            {"term": "Baca data", "text": "Baca tabel dengan teliti. Tidak semua informasi selalu dipakai."},
             {"term": "Tafsirkan", "text": "Setelah dapat jawaban, pikirkan artinya di dunia nyata."},
         ]},
 }
 
 
-def world_1() -> list[dict]:
-    w = 1
+def pid(m: int, order: int) -> str:
+    return f"w{m}-p{order:02d}"
+
+
+def sym_list(m: int, start: int, items: list[tuple], ptype: str = "solve") -> list[dict]:
+    """items: (persamaan, level) atau (persamaan, level, sumber)."""
+    out = []
+    for i, it in enumerate(items):
+        eq, level, *src = it
+        out.append(symbolic(pid(m, start + i), m, level, start + i, ptype, eq, source=src[0] if src else None))
+    return out
+
+
+def stories(m: int, start: int, items: list[tuple[dict, dict]]) -> list[dict]:
+    """items: (dict cerita, perubahan). id, world, dan order diatur ulang sesuai misi."""
+    out = []
+    for i, (d, over) in enumerate(items):
+        nd = {**d, **over, "id": pid(m, start + i), "world": m, "order": start + i}
+        if "given_stages" not in over:
+            nd.pop("given_stages", None)
+        out.append(story(nd))
+    return out
+
+
+def mission_1() -> list[dict]:
+    m = 1
     ps = [
-        symbolic("w1-p00", w, 1, 0, "worked", "x + 3 = 10"),
-        symbolic("w1-p01", w, 1, 1, "faded", "x + 4 = 9", given=1),
-        symbolic("w1-p02", w, 1, 2, "faded", "x - 2 = 6", given=1),
+        symbolic(pid(m, 0), m, 1, 0, "worked", "x + 3 = 10"),
+        symbolic(pid(m, 1), m, 1, 1, "faded", "x + 4 = 9", given=1),
+        symbolic(pid(m, 2), m, 1, 2, "faded", "x - 2 = 6", given=1),
+    ]
+    ps += sym_list(m, 3, [("x + 7 = 15", 1, "Lembar kerja S01 nomor 1"), ("x + 9 = 11", 1), ("x - 3 = 5", 1),
+                          ("x + 5 = 12", 1), ("x - 1 = 10", 2), ("x + 12 = 20", 2), ("x - 6 = 3", 2),
+                          ("x - 5 = 2", 2), ("x + 11 = 15", 2)], "balance")
+    return ps
+
+
+def mission_2() -> list[dict]:
+    m = 2
+    ps = [
+        symbolic(pid(m, 0), m, 1, 0, "worked", "2*x = 10"),
+        symbolic(pid(m, 1), m, 1, 1, "faded", "3*x = 12", given=1),
     ]
     tr = [
         ("Sebuah bilangan ditambah 5 hasilnya 12.", "x + 5 = 12", ["x - 5 = 12", "5*x = 12"]),
@@ -365,79 +437,162 @@ def world_1() -> list[dict]:
         ("Sebuah bilangan dikurangi 6 hasilnya 1.", "x - 6 = 1", ["6 - x = 1", "x + 6 = 1"]),
     ]
     for i, (s, eq, wrong) in enumerate(tr):
-        ps.append(translate(f"w1-p{3 + i:02d}", 1 if i < 3 else 2, 3 + i, s, eq, wrong))
-    sv = ["x + 7 = 15", "x + 9 = 11", "x - 3 = 5", "x - 1 = 10", "x + 12 = 20", "x - 5 = 2"]
-    for i, eq in enumerate(sv):
-        src = "Lembar kerja S01 nomor 1" if eq == "x + 7 = 15" else None
-        ps.append(symbolic(f"w1-p{9 + i:02d}", w, 1 if i < 3 else 2, 9 + i, "balance", eq, source=src))
+        ps.append(translate(pid(m, 2 + i), m, 1 if i < 3 else 2, 2 + i, s, eq, wrong))
+    ps += sym_list(m, 8, [("4*x = 20", 1), ("5*x = 35", 1), ("6*x = 42", 2), ("3*x = 27", 2), ("7*x = 49", 2)],
+                   "balance")
     return ps
 
 
-def world_2() -> list[dict]:
-    w = 2
+def mission_3() -> list[dict]:
+    m = 3
+    given_ms = {"type": "faded", "given_stages": ["model", "solve"]}
+    return stories(m, 0, [
+        (M3_WORKED, {}),
+        (S["w6-p01"], given_ms),
+        (S["w6-p02"], given_ms),
+        (S["w6-p03"], {}),
+        (S["w6-p04"], {}),
+        *[(d, {}) for d in M3_NEW],
+    ])
+
+
+def mission_4() -> list[dict]:
+    m = 4
+    faded = {"type": "faded", "given_stages": ["understand", "solve"]}
+    practice = {"type": "story", "given_stages": ["solve"]}
+    return stories(m, 0, [
+        (S["w6-p05"], {"type": "worked"}),
+        (S["w6-p06"], faded),
+        (S["w6-p09"], faded),
+        (S["w6-p00"], {**practice, "level": 1}),
+        (S["w6-p07"], practice),
+        (S["w6-p08"], practice),
+        (S["w6-p14"], {**practice, "level": 2}),
+        (S["w6-p13"], practice),
+    ])
+
+
+def mission_5() -> list[dict]:
+    m = 5
     ps = [
-        symbolic("w2-p00", w, 1, 0, "worked", "2*x = 10"),
-        symbolic("w2-p01", w, 1, 1, "faded", "3*x = 12", given=1),
-        symbolic("w2-p02", w, 2, 2, "faded", "x + 4 = 1", given=1),
+        symbolic(pid(m, 0), m, 1, 0, "worked", "4*x + 6 = 30"),
+        symbolic(pid(m, 1), m, 1, 1, "faded", "2*x + 3 = 11", given=1),
+        symbolic(pid(m, 2), m, 1, 2, "faded", "5*x - 4 = 21", given=1),
     ]
-    eqs = ["x + 5 = 12", "4*x = 20", "x - 6 = 3", "5*x = 35", "x + 8 = 3", "2*x = -8",
-           "x - 4 = -1", "6*x = 42", "x + 11 = 15", "3*x = 27", "x - 7 = -10", "7*x = 49"]
-    levels = [1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3]
-    for i, eq in enumerate(eqs):
-        ps.append(symbolic(f"w2-p{3 + i:02d}", w, levels[i], 3 + i, "balance", eq))
+    ps += sym_list(m, 3, [("3*x - 5 = 16", 1, "Lembar kerja S01 nomor 2"), ("2*x + 7 = 15", 1), ("4*x - 3 = 13", 1),
+                          ("6*x + 2 = 26", 2), ("5*x - 9 = 6", 2), ("7*x + 1 = 22", 2), ("16 = 3*x - 5", 2),
+                          ("20 = 4*x + 8", 3), ("9*x - 7 = 29", 3)])
+    ps.append(symbolic(pid(m, 12), m, 2, 12, "faded", "4*x + 1 = 2*x + 9", given=1))
+    ps += sym_list(m, 13, [("5*x + 2 = 2*x + 14", 2, "Lembar kerja S01 nomor 3"), ("7*x - 5 = 3*x + 11", 2),
+                           ("2*x + 9 = 5*x", 3), ("8*x - 6 = 5*x + 9", 3)])
     return ps
 
 
-def world_3() -> list[dict]:
-    w = 3
+def mission_6() -> list[dict]:
+    m = 6
     ps = [
-        symbolic("w3-p00", w, 1, 0, "worked", "4*x + 6 = 30"),
-        symbolic("w3-p01", w, 1, 1, "faded", "2*x + 3 = 11", given=1),
-        symbolic("w3-p02", w, 1, 2, "faded", "5*x - 4 = 21", given=1),
+        symbolic(pid(m, 0), m, 1, 0, "worked", "x + 8 = 3"),
+        symbolic(pid(m, 1), m, 1, 1, "faded", "x - 4 = -1", given=1),
+        symbolic(pid(m, 2), m, 1, 2, "faded", "3*x + 8 = 2", given=1),
     ]
-    eqs = ["3*x - 5 = 16", "2*x + 7 = 15", "4*x - 3 = 13", "6*x + 2 = 26", "3*x + 8 = 2",
-           "5*x - 9 = 6", "7*x + 1 = 22", "2*x - 11 = -3", "16 = 3*x - 5", "20 = 4*x + 8",
-           "9*x - 7 = 29", "-2*x + 5 = 11"]
-    levels = [1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3]
-    for i, eq in enumerate(eqs):
-        src = "Lembar kerja S01 nomor 2" if eq == "3*x - 5 = 16" else None
-        ps.append(symbolic(f"w3-p{3 + i:02d}", w, levels[i], 3 + i, "solve", eq, source=src))
+    ps += sym_list(m, 3, [("2*x = -8", 1), ("x - 7 = -10", 1), ("2*x - 11 = -3", 1), ("-2*x + 5 = 11", 2),
+                          ("x + 12 = 4*x", 2), ("3*x - 7 = x + 5", 2), ("9*x + 4 = 6*x + 19", 2),
+                          ("4*x - 10 = 2*x - 2", 2), ("10 - x = x + 2", 3), ("5*x + 3 = 3*x - 7", 3),
+                          ("6*x = 2*x + 20", 3), ("2*x - 3 = 7*x + 12", 3)])
     return ps
 
 
-def world_4() -> list[dict]:
-    w = 4
+def mission_7() -> list[dict]:
+    m = 7
     ps = [
-        symbolic("w4-p00", w, 1, 0, "worked", "3*x + 4 = x + 10"),
-        symbolic("w4-p01", w, 1, 1, "faded", "4*x + 1 = 2*x + 9", given=1),
-        symbolic("w4-p02", w, 1, 2, "faded", "6*x - 3 = 2*x + 13", given=2),
+        symbolic(pid(m, 0), m, 1, 0, "worked", "2*(x + 3) = 18"),
+        symbolic(pid(m, 1), m, 1, 1, "faded", "3*(x - 2) = 12", given=1),
+        symbolic(pid(m, 2), m, 1, 2, "faded", "x/4 + 2 = 5", given=1),
     ]
-    eqs = ["5*x + 2 = 2*x + 14", "7*x - 5 = 3*x + 11", "2*x + 9 = 5*x", "8*x - 6 = 5*x + 9",
-           "x + 12 = 4*x", "3*x - 7 = x + 5", "9*x + 4 = 6*x + 19", "4*x - 10 = 2*x - 2",
-           "10 - x = x + 2", "5*x + 3 = 3*x - 7", "6*x = 2*x + 20", "2*x - 3 = 7*x + 12"]
-    levels = [1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3]
-    for i, eq in enumerate(eqs):
-        src = "Lembar kerja S01 nomor 3" if eq == "5*x + 2 = 2*x + 14" else None
-        ps.append(symbolic(f"w4-p{3 + i:02d}", w, levels[i], 3 + i, "solve", eq, source=src))
+    ps += sym_list(m, 3, [("4*(x + 1) = 20", 1), ("2*(x - 5) = 6", 1), ("x/3 = 5", 1), ("x/2 + 4 = 9", 1),
+                          ("5*(x + 2) = 3*x + 16", 2), ("x/5 - 1 = 3", 2), ("(x + 4)/3 = 5", 2),
+                          ("3*(2*x - 1) = 15", 2), ("2*x/3 = 8", 2), ("(x - 2)/4 = 3", 3),
+                          ("6*(x + 1) = 4*(x + 3)", 3), ("x/2 + x/3 = 10", 3)])
+    ps += stories(m, 15, [(S["w6-p10"], {}), (S["w6-p11"], {}), (S["w6-p12"], {})])
+    ps += stories(m, 18, [(d, {}) for d in LITERACY])
     return ps
 
 
-def world_5() -> list[dict]:
-    w = 5
-    ps = [
-        symbolic("w5-p00", w, 1, 0, "worked", "2*(x + 3) = 18"),
-        symbolic("w5-p01", w, 1, 1, "faded", "3*(x - 2) = 12", given=1),
-        symbolic("w5-p02", w, 1, 2, "faded", "x/4 + 2 = 5", given=1),
-    ]
-    eqs = ["4*(x + 1) = 20", "2*(x - 5) = 6", "x/3 = 5", "x/2 + 4 = 9", "5*(x + 2) = 3*x + 16",
-           "x/5 - 1 = 3", "(x + 4)/3 = 5", "3*(2*x - 1) = 15", "2*x/3 = 8", "(x - 2)/4 = 3",
-           "6*(x + 1) = 4*(x + 3)", "x/2 + x/3 = 10"]
-    levels = [1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3]
-    for i, eq in enumerate(eqs):
-        ps.append(symbolic(f"w5-p{3 + i:02d}", w, levels[i], 3 + i, "solve", eq))
-    return ps
+# ---------------------------------------------------------------- cerita baru Mission 03 (mengenali informasi)
+M3_WORKED = dict(type="worked", level=1, emoji="🥐", pisa="personal", setting="kantin",
+                 lines=["Kiki membeli 3 roti di kantin dengan harga sama.", "Kiki membayar Rp9.000 seluruhnya."],
+                 q="Berapa harga 1 roti?",
+                 known=["Banyak roti: 3", "Total bayar: Rp9.000"], known_wrong=["Harga 1 roti: Rp9.000"],
+                 asked="Harga 1 roti", asked_wrong=["Banyak roti yang dibeli"],
+                 var="harga 1 roti (rupiah)", var_wrong=["banyak roti", "total bayar"],
+                 eq="3*x = 9000", eq_wrong=["x + 3 = 9000", "x = 9000*3"],
+                 relation="3 roti × harga 1 roti = total bayar.",
+                 unit="rp", template="Jadi, harga 1 roti adalah {jawaban}.",
+                 sense="Apakah Rp3.000 masuk akal untuk harga 1 roti?")
+
+M3_NEW: list[dict] = [
+    dict(level=2, emoji="🚐", pisa="personal", setting="angkot",
+         lines=["Ongkos angkot Nanda ke sekolah sama setiap hari.", "Dalam 5 hari, Nanda membayar Rp20.000.",
+                "Jarak rumahnya ke sekolah 3 km."],
+         q="Berapa ongkos angkot Nanda setiap hari?",
+         known=["Banyak hari: 5", "Total ongkos: Rp20.000", "Jarak ke sekolah: 3 km"],
+         known_wrong=["Ongkos per hari: Rp20.000"],
+         asked="Ongkos angkot per hari", asked_wrong=["Jarak rumah ke sekolah"],
+         var="ongkos angkot per hari (rupiah)", var_wrong=["banyak hari", "jarak rumah ke sekolah"],
+         eq="5*x = 20000", eq_wrong=["x + 5 = 20000", "3*x = 20000"],
+         relation="5 hari × ongkos per hari = total ongkos. Info jarak tidak dipakai.",
+         unit="rp", template="Jadi, ongkos angkot Nanda setiap hari {jawaban}.",
+         sense="Apakah Rp4.000 sehari masuk akal untuk ongkos angkot?"),
+    dict(level=2, emoji="🧒", pisa="personal", setting="umur",
+         lines=["Tinggi badan Yoga 150 cm.", "Yoga 7 tahun lebih tua dari adiknya.", "Umur Yoga sekarang 13 tahun."],
+         q="Berapa umur adik Yoga?",
+         known=["Selisih umur: 7 tahun", "Umur Yoga: 13 tahun", "Tinggi Yoga: 150 cm"],
+         known_wrong=["Umur adik: 7 tahun"],
+         asked="Umur adik Yoga", asked_wrong=["Tinggi badan Yoga"],
+         var="umur adik Yoga (tahun)", var_wrong=["adik Yoga", "umur Yoga"],
+         eq="x + 7 = 13", eq_wrong=["x - 7 = 13", "x + 150 = 13"],
+         relation="Umur adik + 7 tahun = umur Yoga. Info tinggi badan tidak dipakai.",
+         unit="tahun", template="Jadi, umur adik Yoga {jawaban}.",
+         sense="Apakah 6 tahun masuk akal untuk umur adik?"),
+    dict(level=2, emoji="🌱", pisa="societal", setting="kegiatan sekolah",
+         lines=["Kelas 7A menanam 24 pohon di halaman sekolah.", "Setiap kelompok menanam pohon sama banyak.",
+                "Ada 6 kelompok di kelas itu."],
+         q="Berapa pohon yang ditanam setiap kelompok?",
+         known=["Jumlah pohon: 24", "Banyak kelompok: 6"], known_wrong=["Pohon per kelompok: 6"],
+         asked="Banyak pohon per kelompok", asked_wrong=["Banyak kelompok"],
+         var="banyak pohon per kelompok", var_wrong=["banyak kelompok", "jumlah pohon"],
+         eq="6*x = 24", eq_wrong=["x + 6 = 24", "x = 24*6"],
+         relation="6 kelompok × pohon per kelompok = jumlah pohon.",
+         unit="pohon", template="Jadi, setiap kelompok menanam {jawaban}.",
+         sense="Apakah 4 pohon per kelompok masuk akal?"),
+    dict(level=2, emoji="🛍️", pisa="personal", setting="belanja",
+         lines=["Bu Wati membeli sekarung beras dan 1 kg gula.", "Harga 1 kg gula Rp16.000.",
+                "Bu Wati membayar Rp76.000 seluruhnya."],
+         q="Berapa harga sekarung beras?",
+         known=["Harga 1 kg gula: Rp16.000", "Total bayar: Rp76.000"], known_wrong=["Harga beras: Rp16.000"],
+         asked="Harga sekarung beras", asked_wrong=["Harga 1 kg gula"],
+         var="harga sekarung beras (rupiah)", var_wrong=["harga gula", "total bayar"],
+         eq="x + 16000 = 76000", eq_wrong=["x - 16000 = 76000", "16000*x = 76000"],
+         relation="Harga beras + harga gula = total bayar.",
+         unit="rp", template="Jadi, harga sekarung beras {jawaban}.",
+         sense="Apakah Rp60.000 masuk akal untuk harga sekarung beras?"),
+    dict(level=3, emoji="🏀", pisa="personal", setting="olahraga",
+         lines=["Tim basket sekolah bermain 4 pertandingan.",
+                "Di setiap pertandingan, Fajar mencetak poin sama banyak.",
+                "Pertandingan selalu dimulai pukul 15.00.", "Total poin Fajar 48."],
+         q="Berapa poin Fajar di setiap pertandingan?",
+         known=["Banyak pertandingan: 4", "Total poin Fajar: 48", "Jam mulai: 15.00"],
+         known_wrong=["Poin per pertandingan: 4"],
+         asked="Poin Fajar per pertandingan", asked_wrong=["Jam mulai pertandingan"],
+         var="poin Fajar per pertandingan", var_wrong=["banyak pertandingan", "total poin"],
+         eq="4*x = 48", eq_wrong=["x + 4 = 48", "15*x = 48"],
+         relation="4 pertandingan × poin per pertandingan = total poin. Jam mulai tidak dipakai.",
+         unit="poin", template="Jadi, Fajar mencetak {jawaban} di setiap pertandingan.",
+         sense="Apakah 12 poin per pertandingan masuk akal?"),
+]
 
 
+# ---------------------------------------------------------------- bank cerita (dipakai ulang oleh misi)
 WORLD6_STORIES: list[dict] = [
     dict(id="w6-p00", type="worked", level=1, order=0, emoji="✏️", pisa="personal", setting="toko alat tulis",
          lines=["Raka membeli 4 pensil yang harganya sama.", "Raka membayar Rp12.000 seluruhnya."],
@@ -734,11 +889,13 @@ WORLD7_STORIES: list[dict] = [
 ]
 
 
+S: dict[str, dict] = {d["id"]: d for d in WORLD6_STORIES}
+LITERACY: list[dict] = WORLD7_STORIES
+
+
 def main() -> None:
     builders = {
-        1: world_1, 2: world_2, 3: world_3, 4: world_4, 5: world_5,
-        6: lambda: [story(d) for d in WORLD6_STORIES],
-        7: lambda: [story(d) for d in WORLD7_STORIES],
+        1: mission_1, 2: mission_2, 3: mission_3, 4: mission_4, 5: mission_5, 6: mission_6, 7: mission_7,
     }
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     total = 0
@@ -748,7 +905,7 @@ def main() -> None:
         data = {"world": n, **WORLD_META[n], "problems": problems}
         path = OUT_DIR / f"world-{n}.json"
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(f"{path.name}: {len(problems)} soal")
+        print(f"{path.name}: Mission {n:02d} {WORLD_META[n]['title']} — {len(problems)} soal")
     print(f"Total: {total} soal")
 
 

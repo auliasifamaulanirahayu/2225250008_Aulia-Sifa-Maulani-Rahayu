@@ -10,9 +10,10 @@ import zlib
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parents[1] / "public" / "icons"
-BLUE = (59, 91, 219)
+BLUE = (17, 26, 82)  # Dark Blue #111A52 (tema galaxy)
 WHITE = (255, 255, 255)
-ORANGE = (245, 159, 0)
+PURPLE = (118, 82, 216)  # Purple #7652D8
+ORANGE = (82, 217, 255)  # Neon Cyan #52D9FF
 SS = 3  # supersampling untuk tepi halus
 
 
@@ -85,7 +86,7 @@ def render(size: int, maskable: bool) -> bytearray:
         segment(cx, 0.31, cx + 0.12, 0.60, 0.018, WHITE)
         rect(cx - 0.14, 0.59, cx + 0.14, 0.63, WHITE, r=0.02)
     # kotak misteri "x" (kiri) dan beban (kanan)
-    rect(0.18, 0.44, 0.32, 0.585, ORANGE, r=0.02)
+    rect(0.18, 0.44, 0.32, 0.585, PURPLE, r=0.02)
     segment(0.215, 0.475, 0.285, 0.55, 0.022, WHITE)
     segment(0.285, 0.475, 0.215, 0.55, 0.022, WHITE)
     rect(0.67, 0.47, 0.83, 0.585, WHITE, r=0.02)

@@ -39,6 +39,21 @@ const supabaseApi = {
   async setResearch(id, on) {
     must(await supabase.from('classrooms').update({ research_mode: on }).eq('id', id));
   },
+  async setAiTutor(id, on) {
+    must(await supabase.from('classrooms').update({ ai_tutor: on }).eq('id', id));
+  },
+  /** Percakapan AI Tutor siswa di kelas ini (RLS: hanya siswa milik guru ini). */
+  async tutorChats(studentIds) {
+    if (!studentIds.length) return [];
+    return must(
+      await supabase
+        .from('ai_chat_messages')
+        .select('id, session_id, student_id, role, content, mode, created_at')
+        .in('student_id', studentIds)
+        .order('id', { ascending: false })
+        .limit(300),
+    );
+  },
   assignTeam: (student, team) => rpc('assign_team', { p_student: student, p_team: team }),
   setResearchCode: (student, code) => rpc('set_research_code', { p_student: student, p_code: code }),
   autoTeams: (id, size) => rpc('auto_teams', { p_classroom: id, p_size: size }),
@@ -212,6 +227,28 @@ const demoApi = {
     const s = await load();
     s.classes.find((c) => c.id === id).research_mode = on;
     await save();
+  },
+  async setAiTutor(id, on) {
+    const s = await load();
+    s.classes.find((c) => c.id === id).ai_tutor = on;
+    await save();
+  },
+  async tutorChats(studentIds) {
+    // contoh percakapan (data CONTOH) agar fitur bisa dipresentasikan tanpa server
+    const sid = studentIds[0];
+    if (!sid) return [];
+    const t = (min) => new Date(Date.now() - min * 60e3).toISOString();
+    const rows = [
+      ['student', 'Aku bingung cara mengerjakan soal cerita ini.', 9],
+      ['tutor', 'Tidak apa-apa. Kita pahami dulu ceritanya. Menurutmu, informasi apa saja yang diketahui dari soal tersebut?', 9],
+      ['student', 'Jumlah uangnya 25.000.', 8],
+      ['tutor', 'Bagus. Sekarang, apa yang ingin dicari dari soal itu?', 8],
+      ['student', 'Harga 1 buku tulis.', 7],
+      ['tutor', 'Tepat! Kita misalkan harga 1 buku tulis = x. Berapa buku yang dibeli Dina?', 7],
+    ];
+    return rows
+      .map(([role, content, m], i) => ({ id: i + 1, session_id: 'demo-1', student_id: sid, role, content, mode: 'guide', created_at: t(m) }))
+      .reverse();
   },
   async assignTeam(student, team) {
     const s = await load();

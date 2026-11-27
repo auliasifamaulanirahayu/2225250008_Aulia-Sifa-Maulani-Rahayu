@@ -73,7 +73,7 @@ Kriteria: persentase skor ≥ 61% layak, ≥ 81% sangat layak (sesuaikan dengan 
 ### 3.3 Beban kognitif
 - Instrumen: adaptasi kuesioner **Leppink dkk. (2013)** — 10 butir, skala 0–10: 3 butir IL, 3 butir EL, 4 butir GL,
   diterjemahkan dan disederhanakan untuk siswa SMP (uji keterbacaan dulu).
-- Diberikan setelah sesi Dunia 3 dan Dunia 6.
+- Diberikan setelah sesi Mission 03 dan Mission 06.
 - Didukung data log aplikasi: waktu per tahap, petunjuk dipakai, tahap dengan kesalahan terbanyak.
 - Wawancara lanjutan singkat dengan beberapa siswa memakai panduan yang sama dengan wawancara S01
   (kode S, K, A, B, C, D) untuk membandingkan sebelum/sesudah.

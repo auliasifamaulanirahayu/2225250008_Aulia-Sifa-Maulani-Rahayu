@@ -22,6 +22,7 @@ import { starsFor, levelFromXp, levelInfo, updateStreak, visibleStreak, dayDiff 
 import { pickDaily, unlockedWorlds, missionComplete } from '../src/engine/mission-picker.js';
 import { makeWarmup } from '../src/engine/warmup.js';
 import { newBadges } from '../src/engine/badges.js';
+import { fallbackReply, leaksAnswer, fullSolution } from '../src/engine/tutorFallback.js';
 
 const contentDir = resolve(__dirname, '../../content/worlds');
 const WORLDS = readdirSync(contentDir)
@@ -98,8 +99,36 @@ describe('operasi kedua ruas', () => {
   });
 });
 
+describe('Mission Map', () => {
+  it('7 misi sesuai ketentuan, masing-masing punya tujuan & materi', () => {
+    expect(WORLDS.map((w) => w.world)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(WORLDS[5].title).toBe('Memahami Perubahan Tanda');
+    for (const w of WORLDS) {
+      expect(w.goal.length).toBeGreaterThan(0);
+      expect(w.intro.length).toBeGreaterThan(0);
+    }
+  });
+  it('setiap misi dimulai contoh lengkap lalu contoh bertahap (aturan 3)', () => {
+    for (const w of WORLDS) {
+      const first = [...w.problems].sort((a, b) => a.order - b.order).slice(0, 2);
+      expect(first.map((p) => p.type)).toEqual(['worked', 'faded']);
+    }
+  });
+  it('"pindah ruas" tidak disebut sebelum Mission 06 (aturan 2)', () => {
+    const early = JSON.stringify(WORLDS.filter((w) => w.world < 6));
+    expect(early.toLowerCase()).not.toContain('pindah');
+  });
+  it('setiap soal punya penanda alat bantu', () => {
+    for (const p of ALL) expect(p.ui).toEqual(expect.objectContaining({ balance: expect.any(Boolean), op_only: expect.any(Boolean) }));
+  });
+  it('lencana misi tuntas', () => {
+    const got = newBadges({ counters: { mission3Done: 1 }, badges: [], maxStreak: 0 });
+    expect(got.map((b) => b.code)).toContain('mission-3');
+  });
+});
+
 describe('seluruh bank soal', () => {
-  it('ada 98 soal', () => expect(ALL.length).toBe(98));
+  it('ada 101 soal', () => expect(ALL.length).toBe(101));
 
   for (const p of ALL) {
     it(`${p.id}: langkah konten konsisten & nextStep menyelesaikan`, () => {
@@ -174,7 +203,7 @@ describe('pemeriksa & miskonsepsi', () => {
     expect(checkLine(orig, '7x = 14', orig).misconception.code).toBe('M5');
   });
   it('pola khusus soal dari konten', () => {
-    const p = ALL.find((q) => q.id === 'w6-p05');
+    const p = ALL.find((q) => q.id === 'w4-p00'); // Dina, lembar kerja S01 no. 4
     const orig = eq(p.equation);
     const r = detectMisconception(orig, eq('3x = 29000'), p);
     expect(r.code).toBe('M1');
@@ -250,5 +279,50 @@ describe('misi harian', () => {
   it('lencana', () => {
     const b = newBadges({ badges: [], counters: { problemsDone: 1 }, maxStreak: 0 });
     expect(b.map((x) => x.code)).toEqual(['misi-pertama']);
+  });
+});
+
+describe('AI Tutor: tutor bawaan & pengaman', () => {
+  const dina = () => ALL.find((q) => q.id === 'w4-p00'); // 3x + 4.000 = 25.000 -> 7.000
+  it('petunjuk bertingkat untuk soal, satu per giliran', () => {
+    const hints = ['A', 'B', 'C'];
+    const p = ALL.find((q) => q.id === 'w5-p03');
+    const r1 = fallbackReply({ message: 'Langkah berikutnya apa?', problem: p, hints, turn: 0 });
+    expect(r1.text).toContain('A');
+    const r2 = fallbackReply({ message: 'Langkah berikutnya apa?', problem: p, hints, turn: r1.turn });
+    expect(r2.text).toContain('B');
+    const r3 = fallbackReply({ message: 'bingung', problem: p, hints, turn: 9 });
+    expect(r3.text).toContain('C');
+  });
+  it('tidak memberi jawaban sebelum siswa mencoba', () => {
+    const p = dina();
+    const r = fallbackReply({ message: 'jawabannya berapa?', problem: p, hints: ['h'], attempted: false });
+    expect(r.text).toContain('Coba kerjakan dulu');
+    expect(leaksAnswer(r.text, p.solve.answer)).toBe(false);
+    const full = fallbackReply({ message: 'x', problem: p, mode: 'full', attempted: false });
+    expect(full.text).not.toContain('Langkah 1');
+  });
+  it('pembahasan lengkap setelah mencoba & meminta', () => {
+    const p = dina();
+    const r = fallbackReply({ message: 'tolong', problem: p, mode: 'full', attempted: true });
+    expect(r.text).toContain('Langkah 1');
+    expect(r.text).toContain('Rp7.000');
+    expect(fullSolution(p)).toContain('25.000');
+  });
+  it('"pindah ruas" hanya disebut mulai Mission 06', () => {
+    expect(fallbackReply({ message: 'kenapa tandanya berubah?', mission: 2 }).text.toLowerCase()).not.toContain('pindah');
+    expect(fallbackReply({ message: 'kenapa tandanya berubah?', mission: 6 }).text).toContain('kedua ruas');
+  });
+  it('topik umum tanpa soal', () => {
+    expect(fallbackReply({ message: 'Apa itu PLSV?' }).text).toContain('PLSV adalah');
+    expect(fallbackReply({ message: 'halo' }).text).toContain('Bagian mana');
+  });
+  it('mendeteksi balasan yang menyebut jawaban akhir', () => {
+    expect(leaksAnswer('Jadi x = 7.000, bagus!', '7000')).toBe(true);
+    expect(leaksAnswer('Hasilnya x=−5.', '-5')).toBe(true);
+    expect(leaksAnswer('Jadi x = 11/3', '11/3')).toBe(true);
+    expect(leaksAnswer('Kurangi 4.000 di kedua ruas: 3x = 21.000', '7000')).toBe(false);
+    expect(leaksAnswer('x = 70', '7')).toBe(false);
+    expect(leaksAnswer('x = 7', '-7')).toBe(false);
   });
 });

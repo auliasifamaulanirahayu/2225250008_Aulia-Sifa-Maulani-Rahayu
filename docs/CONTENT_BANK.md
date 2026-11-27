@@ -2,20 +2,25 @@
 
 ## 1. Peta konten
 
-| Dunia | Topik | Bentuk soal | Representasi utama | Target jumlah |
+| Misi | Nama | Fokus | Bentuk soal | Jumlah |
 |---|---|---|---|---|
-| 1 Desa Kotak Misteri | Variabel, kalimat terbuka, menerjemahkan kalimat ke simbol | x + a = b, kalimat → simbol | Kotak misteri, kartu kalimat | 15 |
-| 2 Pasar Timbangan | Kesetaraan, operasi pada kedua ruas | x ± a = b, ax = b | Timbangan interaktif | 15 |
-| 3 Jembatan Satu Langkah | ax + b = c | 3x − 5 = 16 | Timbangan opsional + simbol | 15 |
-| 4 Menara Dua Ruas | Variabel di kedua ruas | 5x + 2 = 2x + 14 | Simbol | 15 |
-| 5 Gua Kurung & Pecahan | Distributif, pecahan | 2(x + 3) = 18, x/4 + 2 = 5 | Simbol | 15 |
-| 6 Kota Cerita | Memodelkan soal cerita | cerita pendek → sedang | Alur 4 tahap penuh | 15 |
-| 7 Markas Literasi | Masalah literasi kontekstual | cerita + tabel/gambar, menilai kewajaran | Alur 4 tahap + data | 8 |
-| Pemanasan | Bilangan bulat, 1 langkah PLSV | −3 + 8, 4 − (−2), x + 2 = 5 | Kartu cepat | 60 |
+| 01 | Mengenal PLSV | Bentuk PLSV, ruas, timbangan seimbang | x ± a = b (mode timbangan) | 12 |
+| 02 | Memahami Variabel | Variabel, koefisien, konstanta, suku; kalimat → simbol | kalimat → persamaan, ax = b | 13 |
+| 03 | Mengenali Informasi dalam Soal | Diketahui, ditanya, informasi tak terpakai | cerita 1 langkah | 10 |
+| 04 | Soal Cerita menjadi Persamaan | Memisalkan x dan menyusun persamaan | cerita 2 langkah; tahap Selesaikan **diberikan** | 8 |
+| 05 | Menyelesaikan Persamaan | Operasi pada kedua ruas | ax + b = c, x di kedua ruas | 17 |
+| 06 | Memahami Perubahan Tanda | Bilangan negatif; **jalan pintas pindah ruas** | negatif, x di kedua ruas | 15 |
+| 07 | Tantangan PLSV | Kurung, pecahan, masalah literasi | 2(x + 3) = 18, x/4 + 2 = 5, cerita + tabel | 26 |
+| Pemanasan | Bilangan bulat, 1 langkah PLSV | −3 + 8, 4 − (−2), x + 2 = 5 (kartu cepat) | dibangkitkan | 60 |
 
-Kenaikan kesulitan di dalam dunia: level 1 (bilangan kecil, positif) → level 2 (bilangan negatif/lebih besar) →
-level 3 (bentuk tidak biasa, mis. konstanta di kiri: 16 = 3x − 5). Panjang cerita di Dunia 6: level 1 ≤ 2 kalimat,
-level 2 ≤ 3 kalimat, level 3 ≤ 4 kalimat (A4). Dunia 7 boleh ≤ 5 kalimat plus tabel kecil.
+File `content/worlds/world-N.json` = Mission N. ID soal `wN-pXX` (N = nomor misi).
+
+Kenaikan kesulitan di dalam misi: level 1 (bilangan kecil, positif) → level 2 (bilangan negatif/lebih besar) →
+level 3 (bentuk tidak biasa, mis. konstanta di kiri: 16 = 3x − 5). Panjang cerita: level 1 ≤ 2 kalimat,
+level 2 ≤ 3 kalimat, level 3 ≤ 4 kalimat (A4). Soal literasi (Mission 07) boleh ≤ 5 kalimat plus tabel kecil.
+
+"Pindah ruas" hanya boleh disebut mulai Mission 06 (diuji otomatis di `engine.test.js`). Validator juga
+memastikan setiap misi dimulai dengan contoh lengkap lalu contoh bertahap, serta punya `title`, `goal`, `intro`.
 
 ## 2. Tipe soal
 
@@ -105,7 +110,8 @@ Contoh di atas disederhanakan. File yang dihasilkan `build_worlds.py` juga memua
   untuk tahap menulis jawaban;
 - `given_steps` (contoh bertahap simbolik: banyak langkah yang sudah diisi) atau `given_stages`
   (contoh bertahap cerita: tahap yang sudah diisi, mis. `["understand", "model"]`);
-- `table` (`{title, headers, rows}`) dan `interpret` (`{question, options, answer}`) untuk soal literasi Dunia 7.
+- `table` (`{title, headers, rows}`) dan `interpret` (`{question, options, answer}`) untuk soal literasi Mission 07.
+- `ui` (`{balance, op_only, term_keypad}`): alat bantu di tahap Selesaikan, dihitung generator dari bentuk persamaan.
 
 Aturan field:
 - `equation`, `result`, `substitution` ditulis dalam sintaks SymPy (`*` untuk kali, `/` untuk bagi).
@@ -142,9 +148,10 @@ Skrip Python memeriksa setiap soal:
 
 Skrip keluar dengan kode ≠ 0 bila ada kesalahan, sehingga bisa dipakai di CI.
 
-## 5. Contoh soal per dunia (kunci sudah diperiksa)
+## 5. Contoh soal (kunci sudah diperiksa)
 
-Status saat ini: **98 soal** (Dunia 1–6 masing-masing 15, Dunia 7 berisi 8) lolos validasi. Soal Pemanasan dibangkitkan
+Status saat ini: **101 soal** di 7 misi lolos validasi. ID di tabel contoh di bawah memakai penomoran lama (sebelum
+Mission Map); persamaannya tetap ada di misi yang sesuai. Soal Pemanasan dibangkitkan
 otomatis setiap hari oleh `frontend/src/engine/warmup.js` (5 soal, lebih banyak soal tanda bila siswa sering salah tanda).
 Nomor ID pada tabel di bawah adalah rancangan awal; ID final ada di file JSON.
 
@@ -172,9 +179,9 @@ w6-p01 (M1, M4, M8), w6-p04 (M7: memaknai x sebagai "adik", bukan "umur adik").
 
 - Kalimat aktif, pendek, satu informasi per kalimat.
 - Angka dan satuan konsisten; uang memakai "Rp" dan titik ribuan.
-- Hindari informasi pengecoh pada level 1–2; boleh ada 1 informasi tak terpakai di level 3 dan Dunia 7
+- Hindari informasi pengecoh pada level 1–2; informasi tak terpakai sengaja dilatih di Mission 03 dan boleh ada di Mission 04 & 07
   (melatih memilah informasi).
-- Variasi konteks dalam satu dunia minimal 4 konteks berbeda (B1).
+- Variasi konteks dalam satu misi minimal 4 konteks berbeda (B1).
 - Setiap soal cerita harus punya pertanyaan kewajaran di tahap Periksa.
 - Soal yang diadaptasi dari buku atau lembar kerja ditulis sumbernya di field `source`.
 - Setiap soal baru ditinjau minimal oleh 1 rekan atau dosen sebelum masuk rilis.

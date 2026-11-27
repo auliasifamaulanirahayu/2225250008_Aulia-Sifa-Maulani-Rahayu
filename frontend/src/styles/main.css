@@ -1,81 +1,75 @@
 /* MATH-MISSION — gaya mobile-first (docs/UI_UX.md) */
 
+/* Tema bawaan: GALAXY (gelap). Palet: Deep Navy #080B2A, Dark Blue #111A52, Royal Blue #3156D9,
+   Purple #7652D8, Neon Cyan #52D9FF, White #F5F7FF. --c-primary dipakai untuk teks/tautan (versi terang dari
+   Royal Blue agar kontras di latar gelap); --c-btn untuk latar tombol utama. */
 :root {
-  --c-primary: #3b5bdb;
+  --g-navy: #080b2a;
+  --g-dark: #111a52;
+  --g-royal: #3156d9;
+  --g-purple: #7652d8;
+  --g-cyan: #52d9ff;
+  --g-white: #f5f7ff;
+
+  --c-primary: #8ea6ff;
+  --c-btn: #3156d9;
+  --c-primary-ink: #ffffff;
+  --c-primary-soft: #1b2a78;
+  --c-accent: #52d9ff;
+  --c-success: #5ee6a0;
+  --c-success-soft: #0f3b3a;
+  --c-warn: #ffb26b;
+  --c-warn-soft: #3a2342;
+  --c-info-soft: #16245f;
+  --c-team: #b79bff;
+  --c-bg: #080b2a;
+  --c-surface: #111a52;
+  --c-surface-2: #18236a;
+  --c-text: #f5f7ff;
+  --c-muted: #b4bde6;
+  --c-border: #2a3683;
+  --c-x: #52d9ff;
+  --c-weight: #a9b3d9;
+  --c-balloon: #ffb26b;
+  --shadow: 0 4px 18px rgb(3 5 25 / 55%);
+  --glow: 0 0 18px rgb(82 217 255 / 22%);
+  --radius: 16px;
+  --font-scale: 1;
+  --font: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+
+/* Tema terang (dipilih di Pengaturan). */
+:root[data-theme='light'] {
+  --c-primary: #3156d9;
+  --c-btn: #3156d9;
   --c-primary-ink: #ffffff;
   --c-primary-soft: #e7ecff;
-  --c-accent: #f59f00;
+  --c-accent: #7652d8;
   --c-success: #2b8a3e;
   --c-success-soft: #e6f6ea;
   --c-warn: #d9480f;
   --c-warn-soft: #fff0e6;
   --c-info-soft: #e7f5ff;
-  --c-team: #9c36b5;
-  --c-bg: #f6f7fb;
+  --c-team: #7652d8;
+  --c-bg: #f5f7ff;
   --c-surface: #ffffff;
-  --c-surface-2: #f1f3f9;
-  --c-text: #1f2430;
-  --c-muted: #5c6475;
-  --c-border: #dde1ea;
-  --c-x: #3b5bdb;
+  --c-surface-2: #eef1fb;
+  --c-text: #111a52;
+  --c-muted: #4d5683;
+  --c-border: #d8ddf0;
+  --c-x: #3156d9;
   --c-weight: #6b7280;
   --c-balloon: #f08c00;
-  --shadow: 0 2px 10px rgb(31 36 48 / 8%);
-  --radius: 16px;
-  --font-scale: 1;
-  --font: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --shadow: 0 2px 10px rgb(17 26 82 / 10%);
+  --glow: none;
   color-scheme: light;
 }
 
-/* Tema gelap: mengikuti sistem, kecuali pengguna/host memilih tema lewat data-theme. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --c-primary: #748ffc;
-    --c-primary-ink: #0f1424;
-    --c-primary-soft: #1f2747;
-    --c-accent: #ffc94d;
-    --c-success: #69db7c;
-    --c-success-soft: #17301d;
-    --c-warn: #ff922b;
-    --c-warn-soft: #3a2414;
-    --c-info-soft: #16283a;
-    --c-bg: #12151d;
-    --c-surface: #1c212c;
-    --c-surface-2: #252b38;
-    --c-text: #e9ecf2;
-    --c-muted: #a3abbd;
-    --c-border: #323a4a;
-    --c-x: #748ffc;
-    --c-weight: #9aa3b5;
-    --c-balloon: #ffa94d;
-    --shadow: 0 2px 10px rgb(0 0 0 / 35%);
-    color-scheme: dark;
-  }
+[data-theme='light'] body {
+  background-image: none;
 }
-:root[data-theme='dark'] {
-  --c-primary: #748ffc;
-  --c-primary-ink: #0f1424;
-  --c-primary-soft: #1f2747;
-  --c-accent: #ffc94d;
-  --c-success: #69db7c;
-  --c-success-soft: #17301d;
-  --c-warn: #ff922b;
-  --c-warn-soft: #3a2414;
-  --c-info-soft: #16283a;
-  --c-bg: #12151d;
-  --c-surface: #1c212c;
-  --c-surface-2: #252b38;
-  --c-text: #e9ecf2;
-  --c-muted: #a3abbd;
-  --c-border: #323a4a;
-  --c-x: #748ffc;
-  --c-weight: #9aa3b5;
-  --c-balloon: #ffa94d;
-  --shadow: 0 2px 10px rgb(0 0 0 / 35%);
-  color-scheme: dark;
-}
-
 .high-contrast {
   --c-text: #000;
   --c-muted: #222;
@@ -97,6 +91,9 @@ body {
   margin: 0;
   font-family: var(--font);
   background: var(--c-bg);
+  background-image: radial-gradient(ellipse at 15% -10%, rgb(118 82 216 / 28%), transparent 55%),
+    radial-gradient(ellipse at 110% 10%, rgb(49 86 217 / 25%), transparent 50%);
+  background-attachment: fixed;
   color: var(--c-text);
   line-height: 1.5;
   -webkit-tap-highlight-color: transparent;
@@ -285,7 +282,7 @@ img {
   cursor: default;
 }
 .btn-primary {
-  background: var(--c-primary);
+  background: var(--c-btn);
   color: var(--c-primary-ink);
 }
 .btn-ghost {
@@ -506,7 +503,7 @@ img {
   background: var(--c-info-soft);
 }
 .fb-info .fb-icon {
-  background: var(--c-primary);
+  background: var(--c-btn);
 }
 .speech {
   display: flex;
@@ -880,7 +877,7 @@ img {
   font-weight: 800;
 }
 .stage-dots li.current .dot {
-  background: var(--c-primary);
+  background: var(--c-btn);
   color: var(--c-primary-ink);
 }
 .stage-dots li.done .dot {
@@ -1046,7 +1043,7 @@ img {
   cursor: pointer;
 }
 .op-btn.on {
-  background: var(--c-primary);
+  background: var(--c-btn);
   color: var(--c-primary-ink);
 }
 .op-prompt {
@@ -1196,7 +1193,7 @@ img {
 }
 .key-ok {
   flex: 2;
-  background: var(--c-primary);
+  background: var(--c-btn);
   color: var(--c-primary-ink);
   font-size: 1.05rem;
 }

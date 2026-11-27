@@ -112,7 +112,7 @@ export async function finishProblem(run) {
   if (run.stages.check && !run.stages.check.given) bump('checkDone');
   if (run.stages.explain) bump('explainDone');
   if (run.stages.understand && !run.stages.understand.given && run.stages.understand.firstTry) bump('understandFirstTry');
-  if (p.world === 2 && run.stages.solve?.firstTry) bump('world2Clean');
+  if (p.type === 'balance' && run.stages.solve?.firstTry) bump('world2Clean'); // nama penghitung lama dipertahankan
   if (run.misconceptions.has('M1')) {
     state.stats.counters.signCleanStreak = 0;
     state.stats.recentM1 = (state.stats.recentM1 || 0) + 1;
@@ -121,6 +121,11 @@ export async function finishProblem(run) {
     state.stats.recentM1 = Math.max(0, (state.stats.recentM1 || 0) - 1);
   }
   if (played.some(([, s]) => s.attempts >= 3)) bump('persevere');
+
+  // reward misi tuntas: semua soal di misi ini selesai untuk pertama kali
+  const world = WORLDS.find((w) => w.world === p.world);
+  const missionDone = !prev?.done && world.problems.every((q) => q.id === p.id || state.progress[q.id]?.done);
+  if (missionDone) bump(`mission${p.world}Done`);
 
   const levelUp = addXp(stageXpTotal + bonus);
   const badges = newBadges(state.stats);
@@ -156,6 +161,7 @@ export async function finishProblem(run) {
     total: stageXpTotal + bonus,
     levelUp,
     badges,
+    missionDone,
     nextId: nextProblemId(p),
   };
   notify();
@@ -199,3 +205,22 @@ export function nextProblemId(p) {
 }
 
 export const problemById = (id) => PROBLEMS.get(id);
+
+/**
+ * Rekomendasi aktivitas berikutnya untuk Dashboard.
+ * Urutan: Misi Utama hari ini → soal berikutnya di misi aktif → ulangi soal berbintang rendah.
+ */
+export function recommendation(daily) {
+  const open = unlocked();
+  if (daily && !daily.main.done) {
+    const p = PROBLEMS.get(daily.main.problemId);
+    if (p) return { kind: 'main', problem: p, to: `/play/${p.id}?m=main` };
+  }
+  for (const n of [...open].sort((a, b) => b - a)) {
+    const w = WORLDS.find((x) => x.world === n);
+    const p = w.problems.find((q) => !state.progress[q.id]?.done);
+    if (p) return { kind: 'next', problem: p, to: `/play/${p.id}` };
+  }
+  const weak = [...PROBLEMS.values()].find((q) => q.type !== 'worked' && (state.progress[q.id]?.bestStars || 0) < 3);
+  return weak ? { kind: 'review', problem: weak, to: `/play/${weak.id}` } : null;
+}

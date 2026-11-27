@@ -95,3 +95,36 @@ Semua fungsi guru memeriksa `is_teacher_of(...)`; bila bukan pemilik kelas → e
 Kolom: `anon_id, research_code, team, problem_id, world, stage, correct, misconception_code, hints_used, attempt_no,
 duration_ms, stars, client_time`. **Tidak** memuat nama panggilan. Bisa diunduh dari dashboard guru atau lewat
 `python content/tools/export_research.py --class-code K7B3QZ`.
+
+## Edge Function `ai-tutor` (AI Math Tutor)
+
+`POST {SUPABASE_URL}/functions/v1/ai-tutor` dengan header `Authorization: Bearer <JWT siswa>` (dipanggil lewat
+`supabase.functions.invoke` di `src/lib/tutor.js`). Kode: [`supabase/functions/ai-tutor/index.ts`](../supabase/functions/ai-tutor/index.ts).
+
+Permintaan:
+```json
+{
+  "session_id": "uuid atau null",
+  "message": "Aku bingung soal tanda",
+  "history": [{ "role": "student|tutor", "content": "..." }],
+  "problem": { "id": "w4-p03", "text": "cerita + pertanyaan (tanpa kunci)", "stage": "Pahami" },
+  "attempted": true,
+  "mode": "guide | full",
+  "mission": 4
+}
+```
+Balasan sukses: `{ "session_id": "...", "reply": "...", "mode": "guide" }`.
+Balasan fallback (HTTP 200): `{ "fallback": true, "reason": "disabled|limit|quota|not_configured|error" }` →
+aplikasi memakai tutor bawaan (`src/engine/tutorFallback.js`).
+Error: `401 UNAUTHENTICATED`, `403 ONLY_STUDENT`, `400 EMPTY|BAD_JSON`.
+
+Aturan server: hanya siswa; kelas harus `ai_tutor = true`; `mode: "full"` diturunkan ke `guide` bila `attempted`
+false; maksimal 10 pesan riwayat; kuota harian per siswa (`AI_DAILY_LIMIT`, hari WIB).
+
+Ke Google: **Interactions API** `POST https://generativelanguage.googleapis.com/v1beta/interactions`, header
+`x-goog-api-key` dan `Api-Revision: 2026-05-20`, body `{ model, system_instruction, input:[{type:"user_input"|"model_output",
+content:[{type:"text",text}]}], store:false, generation_config:{max_output_tokens} }`. Teks balasan diambil dari
+`steps[type=model_output].content[type=text].text`. (Diverifikasi dari dokumentasi resmi aistudio.google.com/docs,
+November 2026. Model gemini 3.6+ mengabaikan `temperature`, jadi tidak dikirim.)
+
+Model bawaan `gemini-3.5-flash-lite` (free tier, belum ada jadwal penghentian). Ganti lewat secret `GEMINI_MODEL`.

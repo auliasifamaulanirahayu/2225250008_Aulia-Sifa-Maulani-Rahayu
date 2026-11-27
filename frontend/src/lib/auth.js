@@ -3,7 +3,7 @@
 // - Siswa: kode kelas + nama panggilan + PIN 6 angka, TANPA email asli (privasi anak).
 //   Di balik layar dibuat alamat sintetis <kode>.<nama>-<hash>@<domain> yang tidak pernah menerima email.
 
-import { supabase, supabaseReady, friendlyError, rpc } from './supabase.js';
+import { supabase, supabaseReady, friendlyError, rpc, recoveryLink } from './supabase.js';
 import { hashString } from '../engine/rng.js';
 import { state, saveProfile, resetAll, notify } from '../state.js';
 import { pullRemoteState, flush } from '../store/sync.js';
@@ -27,7 +27,7 @@ export function studentEmail(classCode, nickname) {
 async function loadProfile(user) {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, role, display_name, avatar, team_id, classroom_id, classrooms:classroom_id (id, name, code)')
+    .select('id, role, display_name, avatar, team_id, classroom_id, classrooms:classroom_id (*)') // * agar aman sebelum/sesudah migrasi 0002 (ai_tutor)
     .eq('id', user.id)
     .single();
   if (error) throw new Error(friendlyError(error));
@@ -44,7 +44,9 @@ async function adoptUser(user) {
     nickname: remote.display_name,
     avatar: remote.avatar,
     teamId: remote.team_id,
-    classroom: remote.classrooms || null,
+    classroom: remote.classrooms
+      ? { id: remote.classrooms.id, name: remote.classrooms.name, code: remote.classrooms.code, ai_tutor: !!remote.classrooms.ai_tutor }
+      : null,
     onboarded: true,
     demo: false,
   };
@@ -68,6 +70,7 @@ export async function initAuth() {
   } catch {
     /* offline: tetap pakai profil yang tersimpan di HP */
   }
+  if (recoveryLink) state.passwordRecovery = true; // dibuka dari email reset password
   supabase.auth.onAuthStateChange((event) => {
     if (event === 'SIGNED_OUT') {
       resetAll().then(notify);
@@ -151,6 +154,33 @@ export async function signOut() {
   if (supabase) await supabase.auth.signOut().catch(() => {});
   await resetAll();
   notify();
+}
+
+/** Guru lupa password: kirim email berisi tautan reset (siswa: password direset guru). */
+export async function requestPasswordReset(email) {
+  if (!supabase) throw new Error('Fitur ini butuh server.');
+  const redirectTo = `${location.origin}${location.pathname}`; // tanpa hash; daftarkan di Supabase > Auth > URL
+  const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo });
+  if (error) throw new Error(friendlyError(error));
+}
+
+/** Simpan password baru untuk pengguna yang sedang masuk (setelah membuka tautan reset). */
+export async function updatePassword(password) {
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) throw new Error(friendlyError(error));
+  state.passwordRecovery = false;
+  notify();
+}
+
+/** Ganti avatar: simpan di HP dulu, lalu ke server bila ada akun. */
+export async function updateAvatar(avatar) {
+  state.profile.avatar = avatar;
+  await saveProfile();
+  notify();
+  if (supabase && !state.profile.demo) {
+    const { error } = await supabase.from('profiles').update({ avatar }).eq('id', state.profile.id);
+    if (error) throw new Error(friendlyError(error));
+  }
 }
 
 export async function refreshProfile() {

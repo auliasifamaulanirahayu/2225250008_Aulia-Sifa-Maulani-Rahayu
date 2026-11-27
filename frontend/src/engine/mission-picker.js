@@ -4,7 +4,7 @@ import { rng } from './rng.js';
 
 export const UNLOCK_RATIO = 0.7;
 
-/** Dunia n terbuka bila ≥ 70% soal dunia n−1 sudah selesai. */
+/** Misi n terbuka bila ≥ 70% soal misi n−1 sudah selesai (field `world` = nomor misi). */
 export function unlockedWorlds(worlds, progress) {
   const open = [];
   for (const w of worlds) {
@@ -32,7 +32,7 @@ export function pickDaily({ day, seed, worlds, progress, focusSign = false }) {
   const active = Math.max(...open);
   const inWorld = (n) => (worlds.find((w) => w.world === n)?.problems ?? []).slice().sort(byOrder);
 
-  // Misi Utama: soal berikutnya yang belum selesai di dunia aktif (lalu dunia sebelumnya)
+  // Misi Utama: soal berikutnya yang belum selesai di misi aktif (lalu misi sebelumnya)
   let main = null;
   for (const n of [...open].sort((a, b) => b - a)) {
     main = inWorld(n).find((p) => !progress[p.id]?.done && p.type !== 'worked') ?? inWorld(n).find((p) => !progress[p.id]?.done);
@@ -43,7 +43,7 @@ export function pickDaily({ day, seed, worlds, progress, focusSign = false }) {
     main = pool[Math.floor(r() * pool.length)];
   }
 
-  // Tantangan Tim: 2 soal latihan dari dunia yang sudah terbuka (bukan contoh)
+  // Tantangan Tim: 2 soal latihan dari misi yang sudah terbuka (bukan contoh)
   const pool = open
     .flatMap(inWorld)
     .filter((p) => p.id !== main.id && p.type !== 'worked' && p.type !== 'faded');

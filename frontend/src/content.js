@@ -9,6 +9,9 @@ export const PROBLEMS = new Map(WORLDS.flatMap((w) => w.problems.map((p) => [p.i
 
 export const worldOf = (n) => WORLDS.find((w) => w.world === n);
 
+/** Label misi untuk tampilan, mis. "Mission 03". Di data, nomor misi tetap bernama `world`. */
+export const missionLabel = (n) => `Mission ${String(n).padStart(2, '0')}`;
+
 export const TYPE_LABEL = {
   worked: 'Contoh',
   faded: 'Contoh bertahap',
@@ -23,5 +26,5 @@ export function worldStats(world, progress) {
   const w = worldOf(world);
   const done = w.problems.filter((p) => progress[p.id]?.done).length;
   const stars = w.problems.reduce((s, p) => s + (progress[p.id]?.bestStars || 0), 0);
-  return { done, total: w.problems.length, stars, maxStars: w.problems.length * 3 };
+  return { done, total: w.problems.length, stars, maxStars: w.problems.length * 3, complete: done === w.problems.length };
 }

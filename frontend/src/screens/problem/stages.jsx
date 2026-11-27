@@ -181,7 +181,7 @@ export function WorkedStage({ ctx }) {
         <Speech>Perhatikan contoh ini langkah demi langkah. Setiap langkah dilakukan pada kedua ruas.</Speech>
       )}
       <h3>Langkah penyelesaian</h3>
-      {p.world <= 3 && <BalanceScale eq={eq} />}
+      {p.ui?.balance && <BalanceScale eq={eq} />}
       <EqLines lines={lines} />
       {finished && (
         <>
@@ -320,12 +320,13 @@ const OPS = [
   ['div', ': Bagi', 'dibagi'],
 ];
 
-export function SolveStage({ ctx }) {
+export function SolveStage({ ctx, isGiven }) {
   const { p, original, answer, isStory, complete, fail, currentEq, cur, hintsUsed } = ctx;
   const init = useMemo(() => {
     let e = original;
     const ls = [{ eq: e, kind: 'start' }];
-    const givenN = p.type === 'faded' && !isStory ? p.given_steps || 0 : 0;
+    // isGiven: tahap ini contoh (mis. Mission 03–04 fokus memahami & memodelkan), semua langkah sudah diisi.
+    const givenN = isGiven ? p.solve.steps.length : p.type === 'faded' && !isStory ? p.given_steps || 0 : 0;
     for (const raw of p.solve.steps.slice(0, givenN)) {
       const st = parseStep(raw);
       const r = applyOp(e, st.op, st.value);
@@ -334,7 +335,7 @@ export function SolveStage({ ctx }) {
     }
     return { eq: e, lines: ls };
   }, [p, original, isStory]);
-  const balanceOnly = p.world <= 2 || p.type === 'balance';
+  const balanceOnly = !!p.ui?.op_only || p.type === 'balance';
   const [eq, setEq] = useState(init.eq);
   const [lines, setLines] = useState(init.lines);
   const [undo, setUndo] = useState([]);
@@ -426,6 +427,7 @@ export function SolveStage({ ctx }) {
           </button>
         )}
       </div>
+      {isGiven && <Feedback kind="info">Contoh: langkah penyelesaian sudah diisi. Pelajari, lalu lanjut ke Periksa.</Feedback>}
       <EqLines lines={lines} />
       {wrongEq ? (
         <BalanceScale eq={wrongEq} tilt={tiltFor(wrongEq, answer) || -1} />
@@ -457,8 +459,8 @@ export function SolveStage({ ctx }) {
               <p className="op-prompt">Kedua ruas {opInfo[2]} …</p>
               <InputPad
                 key={op}
-                layout={p.world >= 4 ? 'term' : 'number'}
-                placeholder={p.world >= 4 ? 'bilangan atau suku x, mis. 2x' : 'bilangan'}
+                layout={p.ui?.term_keypad ? 'term' : 'number'}
+                placeholder={p.ui?.term_keypad ? 'bilangan atau suku x, mis. 2x' : 'bilangan'}
                 okLabel="Terapkan"
                 ariaLabel={`Kedua ruas ${opInfo[2]}`}
                 onSubmit={(v) => {

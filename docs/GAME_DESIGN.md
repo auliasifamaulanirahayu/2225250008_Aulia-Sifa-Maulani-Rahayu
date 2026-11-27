@@ -13,7 +13,7 @@ flowchart LR
     B --> C[Kerjakan misi]
     C --> D[Dapat XP, bintang, lencana]
     D --> E[Sumbang poin ke tim]
-    E --> F[Lihat peringkat tim & peta dunia]
+    E --> F[Lihat peringkat tim & Mission Map]
     F --> B
 ```
 
@@ -24,32 +24,40 @@ Setiap hari pukul 00.00 waktu perangkat, 3 misi baru dibuat oleh `mission-picker
 | Misi | Isi | Durasi | XP |
 |---|---|---|---|
 | **Pemanasan** | 5 soal cepat operasi bilangan bulat / satu langkah PLSV | ± 2 menit | 10 |
-| **Misi Utama** | 1 masalah PBL dari dunia aktif, alur 4 tahap | ± 7–10 menit | 30 (+10 bila tanpa petunjuk) |
-| **Tantangan Tim** | 2 soal dari dunia yang sudah dibuka; poinnya masuk ke target tim minggu ini | ± 5 menit | 20 |
+| **Misi Utama** | 1 masalah PBL dari misi aktif, alur 4 tahap | ± 7–10 menit | 30 (+10 bila tanpa petunjuk) |
+| **Tantangan Tim** | 2 soal dari misi yang sudah dibuka; poinnya masuk ke target tim minggu ini | ± 5 menit | 20 |
 
 Aturan pemilihan:
-- Misi Utama diambil dari dunia aktif, soal yang belum dikerjakan dengan level terendah.
+- Misi Utama diambil dari misi aktif, soal yang belum dikerjakan dengan level terendah.
 - Jika siswa gagal di tahap yang sama 2 hari berturut-turut, Pemanasan berikutnya berisi soal yang melatih tahap itu
   (mis. soal cepat perubahan tanda).
-- Siswa boleh mengerjakan misi tambahan dari Peta Dunia kapan saja (XP tetap didapat, tapi bonus harian hanya sekali).
+- Siswa boleh mengerjakan misi tambahan dari Mission Map kapan saja (XP tetap didapat, tapi bonus harian hanya sekali).
 - Bonus **Misi Lengkap**: +20 XP bila ketiga misi hari itu selesai.
 
-## 3. Peta Dunia (FR-04)
+## 3. Mission Map (FR-04)
 
-| Dunia | Nama | Topik | Syarat buka |
-|---|---|---|---|
-| 1 | Desa Kotak Misteri | Variabel & kalimat terbuka | — |
-| 2 | Pasar Timbangan | Kesetaraan, operasi pada kedua ruas | 70% soal Dunia 1 selesai |
-| 3 | Jembatan Satu Langkah | ax + b = c | 70% soal Dunia 2 selesai |
-| 4 | Menara Dua Ruas | Variabel di kedua ruas | 70% soal Dunia 3 selesai |
-| 5 | Gua Kurung & Pecahan | Distributif dan pecahan | 70% soal Dunia 4 selesai |
-| 6 | Kota Cerita | Pemodelan soal cerita | 70% soal Dunia 5 selesai |
-| 7 | Markas Literasi | Masalah literasi kontekstual | 70% soal Dunia 6 selesai |
+Tujuh misi berurutan sesuai ketentuan aplikasi. Di data, nomor misi disimpan di field `world` (1–7) agar skema
+database dan ekspor penelitian tidak berubah. Tampilan selalu memakai label "Mission 0N".
 
-Syarat buka memakai **soal selesai**, bukan bintang, agar siswa yang sering memakai petunjuk tetap bisa maju.
+| Misi | Nama | Fokus | Bentuk soal | Jumlah |
+|---|---|---|---|---|
+| 01 | Mengenal PLSV | Bentuk PLSV, ruas, timbangan seimbang | x ± a = b (mode timbangan) | 12 |
+| 02 | Memahami Variabel | Variabel, koefisien, konstanta, suku; kalimat → simbol | kalimat → persamaan, ax = b | 13 |
+| 03 | Mengenali Informasi dalam Soal | Diketahui, ditanya, informasi tak terpakai | cerita 1 langkah | 10 |
+| 04 | Soal Cerita menjadi Persamaan | Memisalkan x dan menyusun persamaan | cerita 2 langkah; tahap Selesaikan **diberikan** | 8 |
+| 05 | Menyelesaikan Persamaan | Operasi pada kedua ruas | ax + b = c, x di kedua ruas | 17 |
+| 06 | Memahami Perubahan Tanda | Bilangan negatif; **jalan pintas pindah ruas** | negatif, x di kedua ruas | 15 |
+| 07 | Tantangan PLSV | Kurung, pecahan, masalah literasi | 2(x + 3) = 18, x/4 + 2 = 5, cerita + tabel | 26 |
 
-Setiap dunia: 1 contoh lengkap, 2 contoh bertahap, 12 soal mandiri (Dunia 7: 8 soal literasi). Soal gabungan
-"Misi Bos" direncanakan untuk versi berikutnya.
+- **Unlock berurutan**: misi n terbuka setelah ≥ 70% soal misi n−1 selesai. Syarat memakai **soal selesai**, bukan
+  bintang, agar siswa yang sering memakai petunjuk tetap bisa maju. Misi terkunci selalu menampilkan **alasannya**
+  ("Selesaikan 3 soal lagi di Mission 02"), jadi siswa tidak terjebak tanpa penjelasan.
+- **Setiap misi** punya tujuan pembelajaran (`goal`), materi singkat (`intro`), contoh soal (1 contoh lengkap +
+  contoh bertahap), latihan, umpan balik per tahap, dan status (terkunci / sedang dijelajahi / tuntas).
+- **Mission 03–04** memakai tahap yang sudah diisi (`given_stages`) agar fokus pada memahami dan memodelkan;
+  tahap Periksa tetap wajib (aturan pedagogis 4). Tahap yang diberikan tidak memberi XP.
+- **Reward misi tuntas**: saat semua soal sebuah misi selesai, layar hasil menampilkan planet "Mission 0N tuntas!"
+  dan siswa mendapat lencana planet misi itu.
 
 ## 4. Poin dan progres (FR-13)
 
@@ -86,7 +94,8 @@ oleh trigger database sehingga tidak bisa dicurangi.
 | Lencana | Syarat |
 |---|---|
 | Misi Pertama | Menyelesaikan soal pertama |
-| Penjaga Timbangan | 10 soal Dunia 2 tanpa membuat timbangan miring |
+| Penjaga Timbangan | 10 soal timbangan tanpa membuat timbangan miring |
+| Mission 0N Tuntas (7 lencana planet) | Menyelesaikan semua soal sebuah misi |
 | Detektif Cerita | 10 tahap Pahami benar di percobaan pertama |
 | Pemeriksa Teliti | 20 kali menyelesaikan tahap Periksa |
 | Guru Kecil | 15 kali mengisi Jelaskan ke temanmu |
@@ -113,7 +122,7 @@ oleh trigger database sehingga tidak bisa dicurangi.
 - Mode Guru: membuat kelas, membagikan kode, membagi tim, menetapkan Tantangan Tim, memantau progres (FR-16).
 - **Mode demo** hanya muncul bila aplikasi belum terhubung ke Supabase (mis. saat pengembangan, presentasi, atau
   validasi ahli media):
-  - *Mode Siswa demo*: misi, dunia, XP, dan lencana berjalan lokal; fitur tim tidak tersedia.
+  - *Mode Siswa demo*: misi harian, Mission Map, XP, dan lencana berjalan lokal; fitur tim tidak tersedia.
   - *Mode Guru demo*: dashboard dengan kelas dan siswa **contoh** (diberi label jelas), bisa membuat kelas, membagi
     tim, mengatur tantangan, dan melihat contoh ekspor CSV. Data contoh mengikuti pola temuan wawancara S01
     (tahap Modelkan & Pahami paling sulit, salah tanda paling sering). Sumber data: `frontend/src/lib/teacherApi.js`.

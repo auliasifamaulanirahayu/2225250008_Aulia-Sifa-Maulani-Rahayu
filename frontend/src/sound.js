@@ -1,10 +1,14 @@
 // Efek suara pendek dari WebAudio (tanpa file audio) + getar ringan + bacakan soal.
+// Volume efek suara terpisah dari musik latar (music.js).
 
 import { state } from './state.js';
 
 let ctx = null;
 
 function tone(freq, dur, { type = 'sine', when = 0, gain = 0.08 } = {}) {
+  const vol = state.settings.sfxVolume ?? 0.8;
+  if (vol <= 0) return;
+  gain *= vol;
   try {
     ctx ??= new (window.AudioContext || window.webkitAudioContext)();
     const t0 = ctx.currentTime + when;

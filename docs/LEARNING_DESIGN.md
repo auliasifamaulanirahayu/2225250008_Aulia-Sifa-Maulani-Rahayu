@@ -11,16 +11,15 @@ Rujukan buku: *Matematika SMP/MTs Kelas VII* (Dicky Susanto, dkk., 2022, Kemdikb
 
 ### Tujuan pembelajaran (TP) dan indikator
 
-| TP | Tujuan | Indikator | Dunia |
+| TP | Tujuan | Indikator | Misi |
 |---|---|---|---|
-| TP1 | Memahami variabel sebagai wakil bilangan yang belum diketahui | Menyatakan "suatu bilangan ditambah 3 hasilnya 10" sebagai x + 3 = 10 | 1 |
-| TP2 | Membedakan kalimat terbuka, pernyataan benar, dan pernyataan salah | Mengelompokkan kalimat matematika | 1 |
-| TP3 | Memahami persamaan sebagai keseimbangan | Menentukan operasi yang menjaga timbangan tetap seimbang | 2 |
-| TP4 | Menyelesaikan PLSV bentuk ax + b = c | Menemukan penyelesaian dengan operasi pada kedua ruas | 3 |
-| TP5 | Menyelesaikan PLSV dengan variabel di kedua ruas | Mengumpulkan suku variabel pada satu ruas | 4 |
-| TP6 | Menyelesaikan PLSV yang memuat tanda kurung dan pecahan | Menggunakan sifat distributif dan mengalikan dengan KPK | 5 |
-| TP7 | Memodelkan masalah kontekstual menjadi PLSV | Menentukan variabel, menyusun persamaan, dan menafsirkan jawaban | 6 |
-| TP8 | Menggunakan PLSV untuk memecahkan masalah sehari-hari dan menilai kewajaran jawaban | Menyelesaikan masalah literasi dan memberi alasan | 7 |
+| TP1 | Mengenali bentuk PLSV dan memahami persamaan sebagai keseimbangan | Membedakan PLSV dan bukan PLSV; menentukan operasi yang menjaga timbangan seimbang | 01 |
+| TP2 | Memahami variabel sebagai wakil bilangan yang belum diketahui | Menyatakan "suatu bilangan ditambah 3 hasilnya 10" sebagai x + 3 = 10 | 02 |
+| TP3 | Mengidentifikasi informasi yang diketahui dan ditanyakan | Memilih informasi yang relevan, termasuk mengabaikan informasi tak terpakai | 03 |
+| TP4 | Memodelkan masalah kontekstual menjadi PLSV | Menentukan variabel dan menyusun persamaan | 04 |
+| TP5 | Menyelesaikan PLSV bentuk ax + b = c dan variabel di kedua ruas | Operasi pada kedua ruas; mengumpulkan suku sejenis | 05 |
+| TP6 | Memahami perubahan tanda | Menyelesaikan persamaan dengan bilangan negatif; menjelaskan pindah ruas sebagai hasil operasi kedua ruas | 06 |
+| TP7 | Menyelesaikan PLSV dengan kurung dan pecahan; memecahkan masalah literasi dan menilai kewajaran | Sifat distributif, mengalikan dengan KPK, menafsirkan jawaban | 07 |
 
 ## 2. Problem Based Learning (sintaks Arends) dalam misi
 
@@ -53,8 +52,8 @@ Temuan: siswa harus memahami cerita, memodelkan, dan memindahkan ruas sekaligus 
 
 - **Segmentasi**: soal dipecah menjadi 4 tahap, satu tahap per layar. Hasil tahap sebelumnya tetap tampil
   ringkas di atas layar agar siswa tidak perlu mengingatnya.
-- **Urutan sederhana ke kompleks**: konteks → simbol (Dunia 1), konkret → abstrak (timbangan di Dunia 2 sebelum
-  simbol murni), satu langkah → banyak langkah, cerita pendek → panjang (A4).
+- **Urutan sederhana ke kompleks**: bentuk & makna (Mission 01–02), konkret → abstrak (timbangan di Mission 01–02
+  sebelum simbol murni), memahami & memodelkan cerita (Mission 03–04) sebelum menyelesaikan bentuk sulit, satu langkah → banyak langkah, cerita pendek → panjang (A4).
 - **Pra-pelatihan**: istilah *variabel, ruas, koefisien, konstanta* dikenalkan dengan kartu bergambar sebelum dipakai.
 - **Pemanasan prasyarat** bilangan bulat (A3), karena salah tanda sering berasal dari operasi bilangan negatif.
 
@@ -80,8 +79,8 @@ Temuan: siswa harus memahami cerita, memodelkan, dan memindahkan ruas sekaligus 
 - Bilangan negatif = **balon** (menarik ke atas), sehingga "−5" punya makna fisik.
 - Siswa memilih operasi (tambah/kurang/kali/bagi dengan bilangan) yang **selalu diterapkan ke kedua piring**.
 - Jika siswa hanya menulis operasi di satu ruas (di mode simbol), timbangan **miring** dan umpan balik muncul.
-- Setelah Dunia 2, timbangan menjadi opsional (tombol "Lihat timbangan") agar tidak menjadi beban berlebih.
-- Jembatan ke "pindah ruas": animasi menunjukkan bahwa "+5 di kiri hilang dan −5 muncul di kanan" adalah
+- Setelah Mission 02, timbangan menjadi opsional (tombol "Lihat timbangan") agar tidak menjadi beban berlebih.
+- Jembatan ke "pindah ruas" (mulai Mission 06): animasi menunjukkan bahwa "+5 di kiri hilang dan −5 muncul di kanan" adalah
   hasil mengurangi 5 dari kedua ruas.
 
 ## 6. Miskonsepsi PLSV yang dideteksi

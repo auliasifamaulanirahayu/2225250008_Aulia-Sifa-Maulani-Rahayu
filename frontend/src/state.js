@@ -14,7 +14,18 @@ export const DEFAULT_STATS = {
   recentM1: 0,
 };
 
-export const DEFAULT_SETTINGS = { sound: true, fontScale: 1, contrast: false, seenIntro: {}, installDismissed: false };
+export const DEFAULT_SETTINGS = {
+  sound: true, // efek suara
+  sfxVolume: 0.8,
+  music: false, // musik latar: bawaan MATI, tidak pernah berbunyi sendiri
+  musicVolume: 0.5,
+  musicInProblems: false, // musik di layar soal (bawaan mati: prinsip koherensi)
+  theme: 'galaxy', // 'galaxy' | 'light'
+  fontScale: 1,
+  contrast: false,
+  seenIntro: {},
+  installDismissed: false,
+};
 
 export const state = {
   // {id, role:'student'|'teacher', nickname, avatar, teamId, classroom:{id,name,code}, onboarded, demo}
@@ -24,6 +35,7 @@ export const state = {
   progress: {}, // id -> {id, done, bestStars, plays, lastPlayed}
   daily: null,
   teamCache: null,
+  passwordRecovery: false, // true bila dibuka dari tautan reset password
 };
 
 // ---------------------------------------------------------------- langganan perubahan
@@ -87,6 +99,9 @@ export function applySettings() {
   const root = document.documentElement;
   root.style.setProperty('--font-scale', String(state.settings.fontScale || 1));
   root.classList.toggle('high-contrast', !!state.settings.contrast);
+  if (state.settings.theme === 'light') root.dataset.theme = 'light';
+  else delete root.dataset.theme;
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', state.settings.theme === 'light' ? '#F5F7FF' : '#080B2A');
 }
 
 /** Hapus semua data lokal (dipakai saat keluar akun atau ganti pengguna). Pengaturan tampilan dipertahankan. */

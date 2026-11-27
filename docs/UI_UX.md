@@ -10,25 +10,37 @@
    layar soal tetap bersih (koherensi).
 5. **Ramah kesalahan**: tidak ada warna merah besar atau suara keras saat salah; pesan "Hampir!" + petunjuk.
 
-## 2. Design token (`styles/tokens.css`)
+## 2. Tema galaxy & design token
 
-| Token | Terang | Gelap | Pemakaian |
+Gaya ditulis dengan **Tailwind CSS v4** (`styles/tailwind.css`, tanpa preflight) di atas CSS lama
+(`styles/main.css`, layer `legacy`). Halaman baru memakai utility Tailwind; halaman lama dipindah bertahap.
+Semua warna berasal dari custom properties di `main.css`, jadi Tailwind dan CSS lama selalu memakai tema yang sama.
+
+Palet galaxy: Deep Navy `#080B2A`, Dark Blue `#111A52`, Royal Blue `#3156D9`, Purple `#7652D8`,
+Neon Cyan `#52D9FF`, White `#F5F7FF` (utility Tailwind: `bg-galaxy-navy`, `text-galaxy-cyan`, dst.).
+
+| Token | Galaxy (bawaan) | Terang | Pemakaian |
 |---|---|---|---|
-| `--c-primary` | #3B5BDB (biru) | #748FFC | tombol utama, variabel x |
-| `--c-accent` | #F59F00 (kuning-oranye) | #FFC94D | XP, bintang |
-| `--c-success` | #2B8A3E | #69DB7C | benar, timbangan seimbang |
-| `--c-warn` | #E8590C | #FF922B | hampir/salah (bukan merah) |
-| `--c-team` | #9C36B5 | #DA77F2 | fitur tim |
-| `--c-bg` | #F8F9FB | #141821 | latar |
-| `--c-surface` | #FFFFFF | #1E2430 | kartu |
-| `--c-text` | #1F2430 | #E9ECF2 | teks |
+| `--c-btn` | #3156D9 | #3156D9 | latar tombol utama (teks putih) |
+| `--c-primary` | #8EA6FF | #3156D9 | tautan & teks penekanan (Royal Blue dicerahkan agar kontras di latar gelap) |
+| `--c-accent` | #52D9FF | #7652D8 | fokus, sorotan, XP |
+| `--c-x` | #52D9FF | #3156D9 | variabel x |
+| `--c-success` | #5EE6A0 | #2B8A3E | benar, timbangan seimbang |
+| `--c-warn` | #FFB26B | #D9480F | hampir/salah (bukan merah) |
+| `--c-team` | #B79BFF | #7652D8 | fitur tim |
+| `--c-bg` | #080B2A | #F5F7FF | latar |
+| `--c-surface` | #111A52 | #FFFFFF | kartu |
+| `--c-text` | #F5F7FF | #111A52 | teks |
 
-- Kode warna konsisten: **x selalu biru**, konstanta abu-abu tua, bilangan negatif oranye (sama di timbangan & simbol).
+- Galaxy adalah tema bawaan; tema terang dipilih lewat `data-theme="light"` pada `<html>` (Pengaturan).
+- Efek glow dan animasi secukupnya: bintang berkelip, planet melayang, dan fade-in hanya di landing page, beranda,
+  dan peta. **Layar soal tanpa animasi dekoratif** (aturan pedagogis 9). Semua animasi mati bila pengguna memilih
+  `prefers-reduced-motion`.
+- Kode warna konsisten: **x selalu biru/cyan**, konstanta abu-abu tua, bilangan negatif oranye (sama di timbangan & simbol).
 - Tipografi: "Nunito" (Google Fonts, fallback `system-ui, sans-serif`); teks dasar 18 px, soal 20 px, persamaan
   24 px dengan font monospace angka tabular.
 - Target sentuh ≥ 48×48 px; jarak antar tombol ≥ 8 px.
 - Kontras teks ≥ 4,5:1 (WCAG AA). Mode kontras tinggi dan ukuran huruf besar di Pengaturan.
-- Mendukung tema gelap otomatis (`prefers-color-scheme`).
 
 ## 3. Wireframe layar utama
 
@@ -162,8 +174,21 @@ Bottom sheet setengah layar: "Petunjuk 1 dari 3", tombol "Petunjuk berikutnya", 
 
 ### Dashboard guru (layar lebar)
 Kolom kiri: daftar kelas & kode kelas. Kanan: kartu ringkasan (siswa aktif, rata-rata bintang), grafik batang
-**tingkat kesalahan per tahap**, tabel miskonsepsi terbanyak, tabel siswa (dunia, streak, tahap terlemah),
+**tingkat kesalahan per tahap**, tabel miskonsepsi terbanyak, tabel siswa (misi, streak, tahap terlemah),
 tombol "Bagi tim otomatis", "Atur tantangan", "Ekspor CSV".
+
+### Pengaturan (`#/settings`)
+
+Kartu-kartu bertumpuk: **Profil** (nama panggilan, pilih avatar) → **Musik latar** (saklar, volume, "musik saat
+mengerjakan soal") → **Efek suara** (saklar, volume; bunyi contoh saat slider dilepas) → **Tema & tampilan**
+(Galaxy/Terang, ukuran huruf, kontras tinggi) → **Informasi aplikasi** → **Akun** (keluar).
+
+Audio:
+- Musik dibangkitkan WebAudio (`src/music.js`, tanpa file: hemat kuota, jalan offline). Bawaan **mati**; tidak pernah
+  berbunyi sendiri. Bila sudah dinyalakan, musik baru mulai setelah sentuhan pertama (aturan autoplay browser).
+- Musik otomatis **berhenti di layar soal dan Pemanasan** (prinsip koherensi: musik latar menambah beban
+  ekstrinsik), kecuali siswa menyalakan "Musik saat mengerjakan soal".
+- Volume musik dan efek suara diatur terpisah.
 
 ## 4. Onboarding
 3 kartu: (1) "Kamu Agen Muda MATH-MISSION", (2) "Setiap hari ada 3 misi", (3) "Seimbang si robot akan

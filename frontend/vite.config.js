@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { readFileSync } from 'node:fs';
 
@@ -21,6 +22,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    tailwindcss(),
     VitePWA({
       registerType: 'prompt',
       includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png'],
@@ -33,8 +35,8 @@ export default defineConfig({
         scope: './',
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#F8F9FB',
-        theme_color: '#3B5BDB',
+        background_color: '#080B2A',
+        theme_color: '#080B2A',
         categories: ['education', 'games'],
         icons: [
           { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },

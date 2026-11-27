@@ -47,10 +47,10 @@ export function Mascot({ size = 72, mood = 'happy' }) {
   return (
     <span className="mascot" aria-hidden="true">
       <svg width={size} height={size} viewBox="0 0 68 68">
-        <line x1="34" y1="4" x2="34" y2="14" stroke="#748FFC" strokeWidth="3" />
-        <circle cx="34" cy="5" r="4" fill="#F59F00" />
-        <rect x="10" y="14" width="48" height="40" rx="14" fill="#3B5BDB" />
-        <rect x="16" y="22" width="36" height="26" rx="10" fill="#E7F5FF" />
+        <line x1="34" y1="4" x2="34" y2="14" stroke="#7652D8" strokeWidth="3" />
+        <circle cx="34" cy="5" r="4" fill="#52D9FF" />
+        <rect x="10" y="14" width="48" height="40" rx="14" fill="#3156D9" />
+        <rect x="16" y="22" width="36" height="26" rx="10" fill="#F5F7FF" />
         <circle cx="27" cy="33" r="4" fill="#1F2430" />
         <circle cx="41" cy="33" r="4" fill="#1F2430" />
         {mood === 'think' ? (
@@ -58,9 +58,9 @@ export function Mascot({ size = 72, mood = 'happy' }) {
         ) : (
           <path d="M25 42 q9 8 18 0" stroke="#1F2430" strokeWidth="3" fill="none" strokeLinecap="round" />
         )}
-        <rect x="2" y="28" width="8" height="14" rx="4" fill="#748FFC" />
-        <rect x="58" y="28" width="8" height="14" rx="4" fill="#748FFC" />
-        <rect x="22" y="56" width="24" height="8" rx="4" fill="#F59F00" />
+        <rect x="2" y="28" width="8" height="14" rx="4" fill="#7652D8" />
+        <rect x="58" y="28" width="8" height="14" rx="4" fill="#7652D8" />
+        <rect x="22" y="56" width="24" height="8" rx="4" fill="#52D9FF" />
       </svg>
     </span>
   );

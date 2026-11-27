@@ -6,7 +6,7 @@ import { Fraction, ONE, ZERO } from './fraction.js';
 import { L, linear, flatten, termLinear, parseEquation, solveEq, sameSolution } from './equation.js';
 
 export const FEEDBACK = {
-  M1: 'Hampir! Saat suku pindah ruas, tandanya berubah. Kita mengurangi (atau menambah) bilangan yang sama di kedua ruas.',
+  M1: 'Hampir! Lihat tandanya. Kita mengurangi (atau menambah) bilangan yang sama di kedua ruas.',
   M2: 'Ruas yang satunya juga harus diberi operasi yang sama agar timbangan tetap seimbang.',
   M3: 'Saat membagi, semua suku di ruas itu ikut dibagi, bukan hanya suku x.',
   M4: 'Angka di depan x artinya dikali x. Lawan dari kali adalah bagi, bukan kurang.',

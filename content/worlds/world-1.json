@@ -1,17 +1,29 @@
 {
   "world": 1,
-  "title": "Desa Kotak Misteri",
-  "topic": "Variabel & kalimat terbuka",
-  "emoji": "📦",
-  "color": "#3B5BDB",
+  "title": "Mengenal PLSV",
+  "topic": "Bentuk PLSV dan timbangan seimbang",
+  "emoji": "🪐",
+  "color": "#52D9FF",
+  "goal": [
+    "Mengenali bentuk PLSV.",
+    "Menyelesaikan x + a = b dengan menjaga kedua ruas seimbang."
+  ],
   "intro": [
     {
-      "term": "Variabel",
-      "text": "Huruf seperti x mewakili bilangan yang belum diketahui. Bayangkan x sebagai kotak misteri."
+      "term": "PLSV",
+      "text": "Persamaan Linear Satu Variabel: ada tanda =, satu variabel, dan pangkat variabelnya satu."
     },
     {
-      "term": "Persamaan",
-      "text": "Kalimat matematika dengan tanda =. Nilai ruas kiri sama dengan ruas kanan."
+      "term": "Contoh",
+      "text": "x + 3 = 10 adalah PLSV. x² = 9 bukan PLSV, karena pangkat x dua."
+    },
+    {
+      "term": "Ruas",
+      "text": "Bagian kiri dan kanan tanda = disebut ruas."
+    },
+    {
+      "term": "Seimbang",
+      "text": "Apa pun yang kamu lakukan pada ruas kiri, lakukan juga pada ruas kanan."
     }
   ],
   "problems": [
@@ -41,7 +53,7 @@
           "correct": true
         },
         {
-          "text": "3 pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 3.",
           "correct": false
         },
         {
@@ -58,9 +70,14 @@
         {
           "code": "M1",
           "wrong_step": "x = 13",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
       "id": "w1-p01",
@@ -88,7 +105,7 @@
           "correct": true
         },
         {
-          "text": "4 pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 4.",
           "correct": false
         },
         {
@@ -105,9 +122,14 @@
         {
           "code": "M1",
           "wrong_step": "x = 13",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
       ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
       "given_steps": 1
     },
     {
@@ -153,419 +175,22 @@
         {
           "code": "M1",
           "wrong_step": "x = 4",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
       ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
       "given_steps": 1
     },
     {
       "id": "w1-p03",
       "world": 1,
       "level": 1,
-      "type": "translate",
-      "order": 3,
-      "equation": "x + 5 = 12",
-      "solve": {
-        "answer": "7",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "5",
-            "result": "x = 7"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(7) + 5 = 12"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 5.",
-          "correct": true
-        },
-        {
-          "text": "5 pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Ganti kata \"sebuah bilangan\" dengan x.",
-        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
-        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = 17",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ],
-      "story": [
-        "Sebuah bilangan ditambah 5 hasilnya 12."
-      ],
-      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
-      "model": {
-        "equation": "x + 5 = 12",
-        "equation_options": [
-          "x + 5 = 12",
-          "x - 5 = 12",
-          "5*x = 12"
-        ]
-      },
-      "context": {
-        "pisa": "personal",
-        "setting": "kalimat matematika"
-      },
-      "literacy": [
-        "formulate",
-        "employ"
-      ]
-    },
-    {
-      "id": "w1-p04",
-      "world": 1,
-      "level": 1,
-      "type": "translate",
-      "order": 4,
-      "equation": "x - 4 = 9",
-      "solve": {
-        "answer": "13",
-        "steps": [
-          {
-            "op": "add",
-            "value": "4",
-            "result": "x = 13"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(13) - 4 = 9"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas ditambah 4.",
-          "correct": true
-        },
-        {
-          "text": "Hanya satu ruas yang ditambah 4.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Ganti kata \"sebuah bilangan\" dengan x.",
-        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
-        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = 5",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ],
-      "story": [
-        "Sebuah bilangan dikurangi 4 hasilnya 9."
-      ],
-      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
-      "model": {
-        "equation": "x - 4 = 9",
-        "equation_options": [
-          "x - 4 = 9",
-          "x + 4 = 9",
-          "4 - x = 9"
-        ]
-      },
-      "context": {
-        "pisa": "personal",
-        "setting": "kalimat matematika"
-      },
-      "literacy": [
-        "formulate",
-        "employ"
-      ]
-    },
-    {
-      "id": "w1-p05",
-      "world": 1,
-      "level": 1,
-      "type": "translate",
-      "order": 5,
-      "equation": "2*x = 14",
-      "solve": {
-        "answer": "7",
-        "steps": [
-          {
-            "op": "div",
-            "value": "2",
-            "result": "x = 7"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "2*(7) = 14"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dibagi 2.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dikurangi 2.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Ganti kata \"sebuah bilangan\" dengan x.",
-        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
-        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
-      ],
-      "misconceptions": [
-        {
-          "code": "M4",
-          "wrong_answer": "12",
-          "feedback": "2x artinya 2 dikali x. Lawan dari kali adalah bagi."
-        }
-      ],
-      "story": [
-        "Dua kali sebuah bilangan sama dengan 14."
-      ],
-      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
-      "model": {
-        "equation": "2*x = 14",
-        "equation_options": [
-          "2*x = 14",
-          "x + 2 = 14",
-          "x/2 = 14"
-        ]
-      },
-      "context": {
-        "pisa": "personal",
-        "setting": "kalimat matematika"
-      },
-      "literacy": [
-        "formulate",
-        "employ"
-      ]
-    },
-    {
-      "id": "w1-p06",
-      "world": 1,
-      "level": 2,
-      "type": "translate",
-      "order": 6,
-      "equation": "x + 8 = 20",
-      "solve": {
-        "answer": "12",
-        "steps": [
-          {
-            "op": "sub",
-            "value": "8",
-            "result": "x = 12"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(12) + 8 = 20"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dikurangi 8.",
-          "correct": true
-        },
-        {
-          "text": "8 pindah ke ruas lain tanpa berubah tanda.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Ganti kata \"sebuah bilangan\" dengan x.",
-        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
-        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = 28",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ],
-      "story": [
-        "Sebuah bilangan ditambah 8 sama dengan 20."
-      ],
-      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
-      "model": {
-        "equation": "x + 8 = 20",
-        "equation_options": [
-          "x + 8 = 20",
-          "8*x = 20",
-          "x - 8 = 20"
-        ]
-      },
-      "context": {
-        "pisa": "personal",
-        "setting": "kalimat matematika"
-      },
-      "literacy": [
-        "formulate",
-        "employ"
-      ]
-    },
-    {
-      "id": "w1-p07",
-      "world": 1,
-      "level": 2,
-      "type": "translate",
-      "order": 7,
-      "equation": "3*x = 18",
-      "solve": {
-        "answer": "6",
-        "steps": [
-          {
-            "op": "div",
-            "value": "3",
-            "result": "x = 6"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "3*(6) = 18"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas dibagi 3.",
-          "correct": true
-        },
-        {
-          "text": "Kedua ruas dikurangi 3.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Ganti kata \"sebuah bilangan\" dengan x.",
-        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
-        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
-      ],
-      "misconceptions": [
-        {
-          "code": "M4",
-          "wrong_answer": "15",
-          "feedback": "3x artinya 3 dikali x. Lawan dari kali adalah bagi."
-        }
-      ],
-      "story": [
-        "Tiga kali sebuah bilangan hasilnya 18."
-      ],
-      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
-      "model": {
-        "equation": "3*x = 18",
-        "equation_options": [
-          "3*x = 18",
-          "x + 3 = 18",
-          "x - 3 = 18"
-        ]
-      },
-      "context": {
-        "pisa": "personal",
-        "setting": "kalimat matematika"
-      },
-      "literacy": [
-        "formulate",
-        "employ"
-      ]
-    },
-    {
-      "id": "w1-p08",
-      "world": 1,
-      "level": 2,
-      "type": "translate",
-      "order": 8,
-      "equation": "x - 6 = 1",
-      "solve": {
-        "answer": "7",
-        "steps": [
-          {
-            "op": "add",
-            "value": "6",
-            "result": "x = 7"
-          }
-        ]
-      },
-      "check": {
-        "substitution": "(7) - 6 = 1"
-      },
-      "explain_options": [
-        {
-          "text": "Kedua ruas ditambah 6.",
-          "correct": true
-        },
-        {
-          "text": "Hanya satu ruas yang ditambah 6.",
-          "correct": false
-        },
-        {
-          "text": "Nilai x cukup ditebak tanpa langkah.",
-          "correct": false
-        }
-      ],
-      "hints": [
-        "Ganti kata \"sebuah bilangan\" dengan x.",
-        "\"ditambah\" artinya +, \"dikurangi\" artinya −, \"dua kali\" artinya 2x.",
-        "Contoh: \"Sebuah bilangan dikurangi 2 hasilnya 7\" ditulis x − 2 = 7."
-      ],
-      "misconceptions": [
-        {
-          "code": "M1",
-          "wrong_step": "x = -5",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
-        }
-      ],
-      "story": [
-        "Sebuah bilangan dikurangi 6 hasilnya 1."
-      ],
-      "question": "Pilih bentuk matematikanya, lalu cari nilai x.",
-      "model": {
-        "equation": "x - 6 = 1",
-        "equation_options": [
-          "x - 6 = 1",
-          "6 - x = 1",
-          "x + 6 = 1"
-        ]
-      },
-      "context": {
-        "pisa": "personal",
-        "setting": "kalimat matematika"
-      },
-      "literacy": [
-        "formulate",
-        "employ"
-      ]
-    },
-    {
-      "id": "w1-p09",
-      "world": 1,
-      "level": 1,
       "type": "balance",
-      "order": 9,
+      "order": 3,
       "equation": "x + 7 = 15",
       "solve": {
         "answer": "8",
@@ -586,7 +211,7 @@
           "correct": true
         },
         {
-          "text": "7 pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 7.",
           "correct": false
         },
         {
@@ -603,17 +228,22 @@
         {
           "code": "M1",
           "wrong_step": "x = 22",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
       ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      },
       "source": "Lembar kerja S01 nomor 1"
     },
     {
-      "id": "w1-p10",
+      "id": "w1-p04",
       "world": 1,
       "level": 1,
       "type": "balance",
-      "order": 10,
+      "order": 4,
       "equation": "x + 9 = 11",
       "solve": {
         "answer": "2",
@@ -634,7 +264,7 @@
           "correct": true
         },
         {
-          "text": "9 pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 9.",
           "correct": false
         },
         {
@@ -651,16 +281,21 @@
         {
           "code": "M1",
           "wrong_step": "x = 20",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
-      "id": "w1-p11",
+      "id": "w1-p05",
       "world": 1,
       "level": 1,
       "type": "balance",
-      "order": 11,
+      "order": 5,
       "equation": "x - 3 = 5",
       "solve": {
         "answer": "8",
@@ -698,16 +333,73 @@
         {
           "code": "M1",
           "wrong_step": "x = 2",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
-      "id": "w1-p12",
+      "id": "w1-p06",
+      "world": 1,
+      "level": 1,
+      "type": "balance",
+      "order": 6,
+      "equation": "x + 5 = 12",
+      "solve": {
+        "answer": "7",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "5",
+            "result": "x = 7"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "(7) + 5 = 12"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 5.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang dikurangi 5.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Tujuan kita: membuat x sendirian di satu ruas.",
+        "Langkah pertama: kedua ruas dikurangi 5.",
+        "Contoh: x + 2 = 9 → kurangi 2 di kedua ruas → x = 7."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "x = 17",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
+    },
+    {
+      "id": "w1-p07",
       "world": 1,
       "level": 2,
       "type": "balance",
-      "order": 12,
+      "order": 7,
       "equation": "x - 1 = 10",
       "solve": {
         "answer": "11",
@@ -745,16 +437,21 @@
         {
           "code": "M1",
           "wrong_step": "x = 9",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
-      "id": "w1-p13",
+      "id": "w1-p08",
       "world": 1,
       "level": 2,
       "type": "balance",
-      "order": 13,
+      "order": 8,
       "equation": "x + 12 = 20",
       "solve": {
         "answer": "8",
@@ -775,7 +472,7 @@
           "correct": true
         },
         {
-          "text": "12 pindah ke ruas lain tanpa berubah tanda.",
+          "text": "Hanya satu ruas yang dikurangi 12.",
           "correct": false
         },
         {
@@ -792,16 +489,73 @@
         {
           "code": "M1",
           "wrong_step": "x = 32",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     },
     {
-      "id": "w1-p14",
+      "id": "w1-p09",
       "world": 1,
       "level": 2,
       "type": "balance",
-      "order": 14,
+      "order": 9,
+      "equation": "x - 6 = 3",
+      "solve": {
+        "answer": "9",
+        "steps": [
+          {
+            "op": "add",
+            "value": "6",
+            "result": "x = 9"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "(9) - 6 = 3"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas ditambah 6.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang ditambah 6.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Tujuan kita: membuat x sendirian di satu ruas.",
+        "Langkah pertama: kedua ruas ditambah 6.",
+        "Contoh: x + 2 = 9 → kurangi 2 di kedua ruas → x = 7."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "x = -3",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
+    },
+    {
+      "id": "w1-p10",
+      "world": 1,
+      "level": 2,
+      "type": "balance",
+      "order": 10,
       "equation": "x - 5 = 2",
       "solve": {
         "answer": "7",
@@ -839,9 +593,66 @@
         {
           "code": "M1",
           "wrong_step": "x = -3",
-          "feedback": "Saat suku pindah ruas, tandanya berubah. Ingat: lakukan operasi yang sama di kedua ruas."
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
         }
-      ]
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
+    },
+    {
+      "id": "w1-p11",
+      "world": 1,
+      "level": 2,
+      "type": "balance",
+      "order": 11,
+      "equation": "x + 11 = 15",
+      "solve": {
+        "answer": "4",
+        "steps": [
+          {
+            "op": "sub",
+            "value": "11",
+            "result": "x = 4"
+          }
+        ]
+      },
+      "check": {
+        "substitution": "(4) + 11 = 15"
+      },
+      "explain_options": [
+        {
+          "text": "Kedua ruas dikurangi 11.",
+          "correct": true
+        },
+        {
+          "text": "Hanya satu ruas yang dikurangi 11.",
+          "correct": false
+        },
+        {
+          "text": "Nilai x cukup ditebak tanpa langkah.",
+          "correct": false
+        }
+      ],
+      "hints": [
+        "Tujuan kita: membuat x sendirian di satu ruas.",
+        "Langkah pertama: kedua ruas dikurangi 11.",
+        "Contoh: x + 2 = 9 → kurangi 2 di kedua ruas → x = 7."
+      ],
+      "misconceptions": [
+        {
+          "code": "M1",
+          "wrong_step": "x = 26",
+          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+        }
+      ],
+      "ui": {
+        "balance": true,
+        "op_only": true,
+        "term_keypad": false
+      }
     }
   ]
 }

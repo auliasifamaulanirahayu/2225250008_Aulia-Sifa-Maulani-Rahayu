@@ -118,7 +118,7 @@ def check_problem(p: dict, errors: list[str]) -> None:
     # 7. panjang cerita
     story = p.get("story", [])
     if p.get("type") in STORY_TYPES or (p.get("type") in ("worked", "faded") and story):
-        limit = 5 if p.get("world") == 7 else MAX_SENTENCES[p["level"]]
+        limit = 5 if p.get("type") == "literacy" else MAX_SENTENCES[p["level"]]
         if len(story) > limit:
             err(f"cerita {len(story)} kalimat, maksimal {limit} untuk level {p['level']}")
     for s in story:
@@ -180,6 +180,13 @@ def main() -> int:
     for f in files:
         data = json.loads(f.read_text(encoding="utf-8"))
         orders: set[int] = set()
+        # aturan pedagogis 3: misi dimulai dengan contoh lengkap, lalu contoh bertahap
+        first = sorted(data["problems"], key=lambda q: q["order"])[:2]
+        if [q["type"] for q in first] != ["worked", "faded"]:
+            errors.append(f"{f.name}: misi harus dimulai dengan contoh lengkap (worked) lalu contoh bertahap (faded)")
+        for key in ("title", "goal", "intro"):
+            if not data.get(key):
+                errors.append(f"{f.name}: field misi '{key}' wajib ada")
         for p in data["problems"]:
             total += 1
             if p["id"] in seen:
@@ -196,7 +203,7 @@ def main() -> int:
         for e in errors:
             print("  -", e)
         return 1
-    print(f"OK: {total} soal di {len(files)} dunia lolos validasi.")
+    print(f"OK: {total} soal di {len(files)} misi lolos validasi.")
     return 0
 
 

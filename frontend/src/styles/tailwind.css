@@ -1,0 +1,81 @@
+/* Titik masuk gaya MATH-MISSION.
+   Tailwind v4 dipakai TANPA preflight agar gaya lama tidak ter-reset. CSS lama (main.css) dimasukkan ke layer
+   `legacy` sehingga utility Tailwind selalu bisa menimpanya. Halaman baru: pakai utility Tailwind. */
+
+@layer theme, legacy, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import './main.css' layer(legacy);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* Palet galaxy (tetap) + warna semantik yang mengikuti tema aktif (variabel di main.css). */
+@theme inline {
+  --color-galaxy-navy: #080b2a;
+  --color-galaxy-dark: #111a52;
+  --color-galaxy-royal: #3156d9;
+  --color-galaxy-purple: #7652d8;
+  --color-galaxy-cyan: #52d9ff;
+  --color-galaxy-white: #f5f7ff;
+
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-ink: var(--c-text);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-border);
+  --color-primary: var(--c-primary);
+  --color-btn: var(--c-btn);
+  --color-accent: var(--c-accent);
+  --color-info-soft: var(--c-info-soft);
+
+  --font-sans: var(--font);
+  --shadow-glow: var(--glow);
+}
+
+/* Bintang berkelip pelan, hanya di luar layar soal; dimatikan bila pengguna memilih kurangi gerak. */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@layer utilities {
+  .animate-twinkle {
+    animation: twinkle 3.2s ease-in-out infinite;
+  }
+  .animate-float {
+    animation: float-y 6s ease-in-out infinite;
+  }
+  .animate-fade-up {
+    animation: fade-up 0.45s ease-out both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-twinkle,
+  .animate-float,
+  .animate-fade-up {
+    animation: none;
+  }
+}

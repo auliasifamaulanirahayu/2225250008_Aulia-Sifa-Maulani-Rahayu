@@ -44,6 +44,9 @@ function TeacherHeader({ title, back }) {
           {s.profile?.demo ? ' · demo' : ''}
         </small>
       </div>
+      <Link className="icon-btn" to="/settings" aria-label="Pengaturan">
+        ⚙️
+      </Link>
       <button
         type="button"
         className="btn btn-ghost btn-small"
@@ -177,6 +180,64 @@ export function TeacherHome() {
 }
 
 // ---------------------------------------------------------------- detail kelas
+/** Percakapan AI Tutor siswa (dibaca guru untuk mengetahui kesulitan siswa). */
+function TutorChats({ students, api }) {
+  const [rows, setRows] = useState(null);
+  const [err, setErr] = useState(null);
+  const byId = Object.fromEntries(students.map((st) => [st.id, st]));
+  const show = async () => {
+    try {
+      setRows(await api.tutorChats(students.map((st) => st.id)));
+      setErr(null);
+    } catch (e) {
+      setErr(e.message);
+    }
+  };
+  const sessions = [];
+  if (rows) {
+    const map = new Map();
+    for (const r of [...rows].sort((a, b) => a.id - b.id)) {
+      if (!map.has(r.session_id)) map.set(r.session_id, []);
+      map.get(r.session_id).push(r);
+    }
+    sessions.push(...[...map.values()].reverse());
+  }
+  return (
+    <section className="card">
+      <h2>🤖 Percakapan AI Tutor</h2>
+      <p className="muted small">Lihat bagian yang membuat siswa bingung. Siswa diberi tahu bahwa gurunya bisa membaca percakapan ini.</p>
+      {!rows ? (
+        <button type="button" className="btn" onClick={show}>
+          Tampilkan percakapan terbaru
+        </button>
+      ) : sessions.length === 0 ? (
+        <p className="muted">Belum ada percakapan.</p>
+      ) : (
+        sessions.slice(0, 20).map((msgs) => {
+          const st = byId[msgs[0].student_id];
+          return (
+            <details key={msgs[0].session_id} className="mt-2 rounded-xl border border-line p-2">
+              <summary className="cursor-pointer">
+                {st?.avatar} <strong>{st?.nickname || 'Siswa'}</strong> · {new Date(msgs[0].created_at).toLocaleString('id-ID')} ·{' '}
+                {msgs.filter((m) => m.role === 'student').length} pertanyaan
+                {msgs.some((m) => m.mode === 'full') ? ' · minta pembahasan lengkap' : ''}
+              </summary>
+              <ul className="m-0 mt-2 list-none p-0">
+                {msgs.map((m) => (
+                  <li key={m.id} className="py-1 text-sm whitespace-pre-line">
+                    <strong>{m.role === 'student' ? 'Siswa' : 'Tutor'}:</strong> {m.content}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          );
+        })
+      )}
+      {err && <Feedback kind="warn">{err}</Feedback>}
+    </section>
+  );
+}
+
 export function TeacherClass() {
   const id = Number(useParams().id);
   const navigate = useNavigate();
@@ -252,6 +313,19 @@ export function TeacherClass() {
           <span>🔬 Mode penelitian</span>
           <input id="research" type="checkbox" checked={cls.research_mode} onChange={(e) => act(() => api.setResearch(id, e.target.checked))} />
         </label>
+        <label className="toggle">
+          <span>🤖 AI Tutor (Gemini)</span>
+          <input
+            id="ai-tutor"
+            type="checkbox"
+            checked={!!cls.ai_tutor}
+            onChange={(e) => act(() => api.setAiTutor(id, e.target.checked), e.target.checked ? 'AI Tutor dinyalakan untuk kelas ini.' : 'AI Tutor dimatikan. Siswa memakai tutor bawaan.')}
+          />
+        </label>
+        <p className="muted small">
+          Nyalakan setelah ada izin sekolah/orang tua. Pesan siswa (tanpa nama) dikirim ke layanan AI Google. Bila mati,
+          siswa tetap dibantu tutor bawaan tanpa AI.
+        </p>
       </section>
 
       <section className="stat-grid">
@@ -474,6 +548,8 @@ export function TeacherClass() {
           )}
         </section>
       </div>
+
+      <TutorChats students={prog.students} api={api} />
 
       <section className="card">
         <h2>Data penelitian</h2>
