@@ -37,6 +37,11 @@ function dailyRows(days, uid) {
   ]);
 }
 
+/** Error Postgres yang tidak akan hilang dengan mencoba ulang (data, constraint, skema/izin). */
+export function isPermanentError(error) {
+  return typeof error?.code === 'string' && /^(22|23|42)/.test(error.code);
+}
+
 export async function flush() {
   if (syncing || !canSync()) return null;
   const { data: sess } = await supabase.auth.getSession();
@@ -44,11 +49,23 @@ export async function flush() {
   if (!uid) return null;
   syncing = true;
   try {
+    const held = new Set(); // ditolak permanen di flush ini: tetap disimpan, dicoba lagi lain kali
+    const send = (rows) => supabase.from('attempts').upsert(rows, { onConflict: 'client_id', ignoreDuplicates: true });
     for (;;) {
-      const items = (await db.getAll('outbox')).slice(0, BATCH);
+      const items = (await db.getAll('outbox')).filter((it) => !held.has(it.client_id)).slice(0, BATCH);
       if (!items.length) break;
-      const { error } = await supabase.from('attempts').upsert(items, { onConflict: 'client_id', ignoreDuplicates: true });
-      if (error) throw error;
+      const { error } = await send(items);
+      if (error) {
+        if (!isPermanentError(error)) throw error; // jaringan dsb.: coba lagi nanti
+        // Satu baris ditolak (mis. migrasi 0003 belum dijalankan) tidak boleh menahan baris lain & cadangan progres.
+        for (const it of items) {
+          const { error: e1 } = await send([it]);
+          if (!e1) await db.del('outbox', it.client_id);
+          else if (isPermanentError(e1)) held.add(it.client_id);
+          else throw e1;
+        }
+        continue;
+      }
       for (const it of items) await db.del('outbox', it.client_id);
       if (items.length < BATCH) break;
     }

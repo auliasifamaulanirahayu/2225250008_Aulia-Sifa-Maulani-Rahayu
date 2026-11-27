@@ -47,7 +47,8 @@ flowchart TB
 | Ekspor penelitian | Python (pustaka standar) | CSV + ringkasan per tahap untuk analisis |
 | Uji | Vitest (unit), puppeteer-core (uji asap e2e) | Cepat, memakai Chrome/Edge yang terpasang |
 
-Ukuran bundel produksi ± 170 KB gzip (React 54 KB, Supabase 60 KB, aplikasi 53 KB) — memenuhi NFR-02.
+Ukuran bundel produksi ± 205 KB gzip (React 54 KB, Supabase 60 KB, aplikasi + bank soal + materi 82 KB, CSS 8 KB)
+— memenuhi NFR-02 (< 500 KB).
 
 ## 3. Struktur folder
 
@@ -95,6 +96,8 @@ Ukuran bundel produksi ± 170 KB gzip (React 54 KB, Supabase 60 KB, aplikasi 53 
 | `#/warmup` | Pemanasan (FR-12) | siswa |
 | `#/map`, `#/world/:n` | Mission Map & halaman misi: tujuan, materi singkat, contoh, latihan (FR-04) | siswa |
 | `#/tutor` | AI Math Tutor umum; dari layar soal lewat tombol 🤖 (lembar bawah, tahu soalnya) | siswa |
+| `#/learn`, `#/learn/:id` | Learning Zone: daftar 8 materi & satu materi (satu bagian per layar) | siswa |
+| `#/challenge`, `#/challenge/:level` | Challenge Zone: pilih level & sesi 10 soal | siswa |
 | `#/play/:id?m=main\|team` | Layar soal bertahap (FR-05–FR-11) | siswa |
 | `#/result` | Hasil: bintang, XP, lencana | siswa |
 | `#/team` | Tim & leaderboard (FR-14, FR-15) | siswa |

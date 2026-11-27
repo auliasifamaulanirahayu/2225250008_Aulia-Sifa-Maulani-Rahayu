@@ -135,3 +135,18 @@ oleh trigger database sehingga tidak bisa dicurangi.
 ## 8. Orisinalitas
 Semua karakter, kota, nama, ilustrasi, dan musik dibuat orisinal atau memakai aset berlisensi bebas (mis. CC0)
 dengan atribusi dicatat di `frontend/public/CREDITS.md`.
+
+## Learning Zone & Challenge Zone
+
+| Aktivitas | XP | Catatan |
+|---|---|---|
+| Materi Learning Zone tuntas (semua latihan pemahaman benar) | 10 | sekali per materi; lencana **Pembelajar Tekun** setelah 8 materi |
+| Soal Challenge Zone benar di percobaan pertama | 3 | sekali per soal |
+| Soal Challenge Zone benar setelah mencoba ulang | 1 | sekali per soal |
+
+- Aturan XP ada di `engine/xp.js → ZONE_XP` dan harus sama dengan `clamp_attempt` di `0003_zones.sql`
+  (`lesson` ≤ 10, `challenge` ≤ 3). Jawaban salah dicatat dengan XP 0 (data penelitian).
+- Lencana **Penantang Advanced**: 10 soal Advanced benar.
+- Sesi Challenge menampilkan soal yang belum benar lebih dulu. Setelah 2 kali salah muncul tombol **Lewati dulu**,
+  sehingga siswa tidak terjebak. Jawaban akhir tidak pernah ditampilkan (aturan 6); petunjuk muncul setelah 2 kali salah.
+- Musik latar ikut berhenti saat mengerjakan latihan materi dan soal tantangan (prinsip koherensi).

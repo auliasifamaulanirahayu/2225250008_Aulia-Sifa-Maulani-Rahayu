@@ -889,6 +889,412 @@ WORLD7_STORIES: list[dict] = [
 ]
 
 
+# =====================================================================================================
+# LEARNING ZONE & CHALLENGE ZONE  →  content/zones/learning.json, content/zones/challenge.json
+# Skema pertanyaan (dipakai keduanya):
+#   mc    : {prompt, eq?, options:[{text? | eq?, correct, why?}]}         why = alasan untuk pilihan salah
+#   short : {prompt, eq?, answer}                                         verify=solution → answer = penyelesaian eq
+#   step  : {prompt, eq, steps:[{options:[{eq, correct, why?}]}], answer} pilih langkah berikutnya sampai x = …
+#   story : {story, question, eq, answer, unit, hint, template, check}     soal cerita + tahap Periksa (aturan 4)
+# =====================================================================================================
+ZONES_DIR = Path(__file__).resolve().parents[1] / "zones"
+OP_WORD = {"add": "ditambah", "sub": "dikurangi", "mul": "dikali", "div": "dibagi"}
+OPPOSITE = {"add": "sub", "sub": "add", "mul": "div", "div": "mul"}
+
+
+def apply_op(s: tuple, op: str, v: Any) -> tuple:
+    a, b = s
+    va, vb = lin(sym(v)) if isinstance(v, str) else (sp.Rational(0), sp.Rational(v))
+    if op == "add":
+        return a + va, b + vb
+    if op == "sub":
+        return a - va, b - vb
+    if op == "mul":
+        return a * vb, b * vb
+    return a / vb, b / vb
+
+
+def step_question(qid: str, level: str, eq: str, prompt: str = "Pilih langkah berikutnya sampai x sendirian.") -> dict:
+    """Soal 'menentukan langkah': setiap langkah baku + 2 pengecoh (salah tanda di ruas kanan, hanya satu ruas)."""
+    steps, states = gen_steps(eq)
+    out = []
+    for st, before in zip(steps, states):
+        if st["op"] == "expand":
+            raise ValueError(f"{qid}: soal langkah tidak boleh memuat kurung")
+        aL, bL, aR, bR = before
+        left = apply_op((aL, bL), st["op"], st["value"])
+        wrong_sign = apply_op((aR, bR), OPPOSITE[st["op"]], st["value"])
+        v = disp(st["value"])
+        word = OP_WORD[st["op"]]
+        opts = [{"eq": st["result"], "correct": True}]
+        cand = [
+            (f"{fmt_lin(*left)} = {fmt_lin(*wrong_sign)}",
+             f"Hampir! Ruas kanan juga harus {word} {v}, bukan {OP_WORD[OPPOSITE[st['op']]]} {v}."),
+            (f"{fmt_lin(*left)} = {fmt_lin(aR, bR)}",
+             f"Hampir! Ruas kanan juga harus {word} {v} agar timbangan tetap seimbang."),
+        ]
+        for e, why in cand:
+            if e != st["result"] and all(e != o["eq"] for o in opts):
+                opts.append({"eq": e, "correct": False, "why": why})
+        out.append({"from": fmt_state(before), "options": opts})
+    return {"id": qid, "type": "step", "level": level, "prompt": prompt, "eq": eq, "steps": out,
+            "answer": fmt_num(solve(eq)), "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."}
+
+
+def short_solve(qid: str, level: str, eq: str, hint: str, prompt: str = "Berapa nilai x?") -> dict:
+    return {"id": qid, "type": "short", "level": level, "prompt": prompt, "eq": eq, "verify": "solution",
+            "answer": fmt_num(solve(eq)), "hint": hint}
+
+
+def short_fact(qid: str, level: str, prompt: str, answer: str, hint: str, eq: str | None = None) -> dict:
+    q = {"id": qid, "type": "short", "level": level, "prompt": prompt, "answer": answer, "hint": hint}
+    if eq:
+        q["eq"] = eq
+    return q
+
+
+def mc(qid: str, level: str, prompt: str, options: list[tuple], eq: str | None = None, explain: str = "") -> dict:
+    """options: (teks | {'eq': …}, benar?, alasan-bila-salah)."""
+    opts = []
+    for o, ok, *why in options:
+        item = {"eq": o["eq"]} if isinstance(o, dict) else {"text": o}
+        item["correct"] = ok
+        if not ok:
+            item["why"] = why[0]
+        opts.append(item)
+    q = {"id": qid, "type": "mc", "level": level, "prompt": prompt, "options": opts}
+    if eq:
+        q["eq"] = eq
+    if explain:
+        q["explain"] = explain
+    return q
+
+
+def story_q(qid: str, level: str, lines: list[str], question: str, eq: str, unit: str, hint: str, template: str) -> dict:
+    ans = solve(eq)
+    left, right = eq.split("=")
+    return {"id": qid, "type": "story", "level": level, "story": lines, "question": question, "eq": eq,
+            "answer": fmt_num(ans), "unit": unit, "hint": hint, "template": template,
+            "answer_sentence": template.replace("{jawaban}", fmt_answer(ans, unit)),
+            "check": {"left_value": fmt_num(sym(left).subs(X, ans)), "right_value": fmt_num(sym(right).subs(X, ans))}}
+
+
+def worked_lines(eq: str) -> list[dict]:
+    """Contoh dikerjakan bertahap dari langkah baku (sama dengan Misi)."""
+    steps, _ = gen_steps(eq)
+    lines = [{"text": "Mulai dari persamaan ini.", "eq": eq}]
+    for st in steps:
+        lines.append({"text": explain_text(st)[0], "eq": st["result"]})
+    ans = solve(eq)
+    left = eq.split("=")[0]
+    lines.append({"text": f"Periksa: ganti x dengan {disp(fmt_num(ans))}. Ruas kiri = {disp(fmt_num(sym(left).subs(X, ans)))}, sama dengan ruas kanan. Benar!"})
+    return lines
+
+
+# ---------------------------------------------------------------- Learning Zone: 8 materi
+def lessons() -> list[dict]:
+    return [
+        {"id": "L1", "title": "Pengertian PLSV", "emoji": "🪐", "mission": 1, "pages": [
+            {"kind": "explain", "title": "Apa itu PLSV?", "text": [
+                "PLSV adalah Persamaan Linear Satu Variabel.",
+                "Persamaan adalah kalimat matematika dengan tanda sama dengan (=).",
+                "Linear artinya pangkat variabelnya satu.",
+                "Satu variabel artinya hanya ada satu huruf, misalnya x."],
+             "visual": {"type": "table", "headers": ["Kalimat", "PLSV?", "Alasan"], "rows": [
+                 ["x + 3 = 10", "Ya", "satu variabel, pangkat satu"],
+                 ["x² = 9", "Bukan", "pangkat x dua"],
+                 ["x + y = 5", "Bukan", "ada dua variabel"],
+                 ["3 + 4 = 7", "Bukan", "tidak ada variabel"]]}},
+            {"kind": "example", "title": "Contoh: mengenali PLSV", "lines": [
+                {"text": "Perhatikan persamaan ini.", "eq": "2*x - 1 = 7"},
+                {"text": "Ada tanda =. Jadi ini persamaan."},
+                {"text": "Hanya ada satu variabel, yaitu x."},
+                {"text": "Pangkat x adalah satu. Jadi 2x − 1 = 7 adalah PLSV."}]},
+            {"kind": "summary", "points": ["PLSV punya tanda =.", "PLSV punya tepat satu variabel.",
+                                           "Pangkat variabelnya satu."]},
+            {"kind": "quiz", "questions": [
+                mc("L1-q1", "easy", "Manakah yang termasuk PLSV?", [
+                    ({"eq": "4*x + 1 = 9"}, True),
+                    ("x² + 1 = 5", False, "Pangkat x pada x² adalah dua, jadi bukan linear."),
+                    ("x + y = 8", False, "Ada dua variabel, yaitu x dan y."),
+                    ("5 + 2 = 7", False, "Tidak ada variabelnya, jadi bukan PLSV.")]),
+                mc("L1-q2", "easy", "Mengapa x² = 16 bukan PLSV?", [
+                    ("Pangkat x adalah dua", True),
+                    ("Tidak ada tanda =", False, "Ada tanda = pada x² = 16. Coba lihat pangkat x."),
+                    ("Ada dua variabel", False, "Hanya ada satu variabel, yaitu x. Coba lihat pangkatnya.")]),
+            ]},
+        ]},
+        {"id": "L2", "title": "Unsur-unsur PLSV", "emoji": "🧩", "mission": 2, "pages": [
+            {"kind": "explain", "title": "Bagian-bagian PLSV", "text": [
+                "Setiap PLSV punya beberapa bagian.",
+                "Ada variabel, koefisien, konstanta, dan tanda sama dengan.",
+                "Warna di bawah menunjukkan setiap bagian."],
+             "visual": {"type": "parts", "tokens": [["3", "coef"], ["x", "var"], ["+", "op"], ["5", "const"],
+                                                    ["=", "eq"], ["20", "const"]]}},
+            {"kind": "explain", "title": "Ruas kiri dan ruas kanan", "text": [
+                "Bagian sebelum tanda = disebut ruas kiri.",
+                "Bagian sesudah tanda = disebut ruas kanan.",
+                "Pada 3x + 5 = 20, ruas kirinya 3x + 5 dan ruas kanannya 20."],
+             "visual": {"type": "balance", "eq": "3*x + 5 = 20"}},
+            {"kind": "example", "title": "Contoh: menyebut unsur", "lines": [
+                {"text": "Perhatikan persamaan ini.", "eq": "4*x - 7 = 9"},
+                {"text": "Variabelnya adalah x."},
+                {"text": "Koefisien x adalah 4."},
+                {"text": "Konstanta di ruas kiri adalah −7."},
+                {"text": "Ruas kanannya adalah 9."}]},
+            {"kind": "summary", "points": ["Variabel: huruf yang mewakili bilangan.", "Koefisien: angka di depan variabel.",
+                                           "Konstanta: bilangan tanpa variabel.", "Tanda = memisahkan ruas kiri dan ruas kanan."]},
+            {"kind": "quiz", "questions": [
+                short_fact("L2-q1", "easy", "Berapa koefisien x pada persamaan ini?", "6",
+                           "Koefisien adalah angka yang menempel di depan x.", eq="6*x - 2 = 10"),
+                mc("L2-q2", "easy", "Pada 5x + 8 = 23, manakah ruas kanannya?", [
+                    ("23", True),
+                    ("5x + 8", False, "5x + 8 ada di sebelah kiri tanda =, jadi itu ruas kiri."),
+                    ("8", False, "8 adalah konstanta di ruas kiri, bukan ruas kanan.")]),
+            ]},
+        ]},
+        {"id": "L3", "title": "Variabel, Koefisien, Konstanta, dan Suku", "emoji": "🔤", "mission": 2, "pages": [
+            {"kind": "explain", "title": "Variabel", "text": [
+                "Variabel adalah huruf yang mewakili bilangan yang belum diketahui.",
+                "Bayangkan x sebagai kotak misteri berisi sebuah bilangan.",
+                "Huruf lain seperti a, n, atau y juga bisa menjadi variabel."]},
+            {"kind": "explain", "title": "Koefisien, konstanta, dan suku", "text": [
+                "Koefisien adalah angka di depan variabel.",
+                "Konstanta adalah bilangan tanpa variabel.",
+                "Suku adalah bagian yang dipisah tanda + atau −.",
+                "3x artinya 3 dikali x."],
+             "visual": {"type": "parts", "tokens": [["2", "coef"], ["x", "var"], ["−", "op"], ["7", "const"],
+                                                    ["=", "eq"], ["11", "const"]]}},
+            {"kind": "example", "title": "Contoh: mencari suku", "lines": [
+                {"text": "Perhatikan persamaan ini.", "eq": "7 + 3*x = 19"},
+                {"text": "Suku-sukunya adalah 7, 3x, dan 19."},
+                {"text": "Koefisien x adalah 3."},
+                {"text": "Konstantanya adalah 7 dan 19."}]},
+            {"kind": "summary", "points": ["Variabel = kotak misteri.", "Koefisien menempel di depan variabel.",
+                                           "Konstanta tidak punya variabel.", "Tanda − di depan suku ikut dihitung."]},
+            {"kind": "quiz", "questions": [
+                mc("L3-q1", "medium", "Pada 9 − 2x = 1, berapa koefisien x?", [
+                    ("−2", True),
+                    ("2", False, "Tanda − di depan 2x ikut dihitung. Jadi koefisiennya negatif."),
+                    ("9", False, "9 tidak menempel pada x, jadi 9 adalah konstanta.")]),
+                short_fact("L3-q2", "easy", "Ada berapa suku di ruas kiri 4x + 3?", "2",
+                           "Hitung bagian yang dipisah tanda + atau −."),
+            ]},
+        ]},
+        {"id": "L4", "title": "Kesetaraan Persamaan", "emoji": "⚖️", "mission": 1, "pages": [
+            {"kind": "explain", "title": "Persamaan seperti timbangan", "text": [
+                "Persamaan seperti timbangan yang seimbang.",
+                "Nilai ruas kiri sama dengan nilai ruas kanan.",
+                "Jika x = 4, maka x + 3 = 7 bernilai benar."],
+             "visual": {"type": "balance", "eq": "x + 3 = 7"}},
+            {"kind": "explain", "title": "Persamaan yang setara", "text": [
+                "Dua persamaan setara jika penyelesaiannya sama.",
+                "x + 3 = 7 dan x = 4 adalah persamaan setara.",
+                "Keduanya benar untuk x = 4."]},
+            {"kind": "example", "title": "Contoh: membuat persamaan setara", "lines": [
+                {"text": "Mulai dari persamaan ini.", "eq": "x + 3 = 7"},
+                {"text": "Kurangi 3 di kedua ruas.", "eq": "x = 4"},
+                {"text": "x + 3 = 7 dan x = 4 setara, karena penyelesaiannya sama."}]},
+            {"kind": "summary", "points": ["Persamaan = timbangan seimbang.",
+                                           "Persamaan setara punya penyelesaian yang sama.",
+                                           "Operasi yang sama di kedua ruas menghasilkan persamaan setara."]},
+            {"kind": "quiz", "questions": [
+                mc("L4-q1", "easy", "Persamaan mana yang setara dengan x + 5 = 12?", [
+                    ({"eq": "x = 7"}, True),
+                    ({"eq": "x = 17"}, False, "Jika x = 17, maka 17 + 5 = 22, bukan 12."),
+                    ({"eq": "x + 5 = 17"}, False, "Ruas kanan berubah tanpa operasi di ruas kiri, jadi tidak setara.")],
+                   eq="x + 5 = 12"),
+                short_fact("L4-q2", "easy", "Jika x = 3, berapa nilai ruas kiri 4x + 2?", "14",
+                           "Ganti x dengan 3. Kerjakan perkalian dulu, baru penjumlahan."),
+            ]},
+        ]},
+        {"id": "L5", "title": "Langkah Menyelesaikan PLSV", "emoji": "🪜", "mission": 5, "pages": [
+            {"kind": "explain", "title": "Tujuannya: x sendirian", "text": [
+                "Menyelesaikan PLSV artinya mencari nilai x.",
+                "Tujuannya membuat x sendirian di satu ruas.",
+                "Setiap langkah dilakukan pada kedua ruas."]},
+            {"kind": "explain", "title": "Urutan langkah", "text": [
+                "1. Hilangkan konstanta di ruas yang ada x.",
+                "2. Bagi kedua ruas dengan koefisien x.",
+                "3. Periksa dengan substitusi."]},
+            {"kind": "example", "title": "Contoh dikerjakan bertahap", "lines": worked_lines("3*x - 5 = 16")},
+            {"kind": "summary", "points": ["Tujuan: x sendirian di satu ruas.", "Hilangkan konstanta dulu, lalu bagi koefisien.",
+                                           "Selalu periksa dengan substitusi."]},
+            {"kind": "quiz", "questions": [
+                step_question("L5-q1", "easy", "2*x + 3 = 11"),
+                short_solve("L5-q2", "easy", "5*x - 4 = 21", "Tambahkan 4 di kedua ruas dulu."),
+            ]},
+        ]},
+        {"id": "L6", "title": "Operasi pada Kedua Ruas", "emoji": "🔁", "mission": 5, "pages": [
+            {"kind": "explain", "title": "Lakukan hal yang sama", "text": [
+                "Agar timbangan tetap seimbang, lakukan operasi yang sama pada kedua ruas.",
+                "Kamu boleh menambah, mengurangi, mengali, atau membagi.",
+                "Membagi dengan nol tidak boleh."],
+             "visual": {"type": "balance", "eq": "2*x + 3 = 9"}},
+            {"kind": "explain", "title": "Memilih operasi", "text": [
+                "Pilih lawan dari operasi yang menempel pada x.",
+                "Lawan dari tambah adalah kurang.",
+                "Lawan dari kali adalah bagi."]},
+            {"kind": "example", "title": "Contoh dikerjakan bertahap", "lines": worked_lines("2*x + 3 = 9")},
+            {"kind": "summary", "points": ["Operasi selalu pada KEDUA ruas.", "Pakai lawan operasinya.",
+                                           "Jangan membagi dengan nol."]},
+            {"kind": "quiz", "questions": [
+                mc("L6-q1", "easy", "Pada x + 9 = 15, operasi apa yang dilakukan pada kedua ruas?", [
+                    ("Kurangi 9", True),
+                    ("Tambah 9", False, "Menambah 9 membuat x makin jauh dari sendirian. Lawan dari +9 adalah −9."),
+                    ("Kurangi 9 di ruas kiri saja", False, "Ruas kanan juga harus dikurangi 9 agar tetap seimbang.")],
+                   eq="x + 9 = 15"),
+                step_question("L6-q2", "easy", "3*x + 2 = 20"),
+            ]},
+        ]},
+        {"id": "L7", "title": "Perubahan Tanda", "emoji": "🔄", "mission": 6, "requires": "L6", "pages": [
+            {"kind": "explain", "title": "Dari mana perubahan tanda?", "text": [
+                "Perhatikan x + 5 = 9.",
+                "Kurangi 5 di kedua ruas, hasilnya x = 9 − 5.",
+                "Kelihatannya +5 pindah ke kanan menjadi −5.",
+                "Itu jalan pintas dari operasi kedua ruas, disebut pindah ruas."],
+             "visual": {"type": "balance", "eq": "x + 5 = 9"}},
+            {"kind": "explain", "title": "Aturan jalan pintas", "text": [
+                "Suku + yang pindah ruas menjadi −.",
+                "Suku − yang pindah ruas menjadi +.",
+                "Koefisien kali yang pindah ruas menjadi bagi.",
+                "Ingat, ini hanya jalan pintas dari operasi kedua ruas."]},
+            {"kind": "explain", "title": "Hasil negatif", "text": [
+                "Nilai x bisa negatif.",
+                "x + 8 = 3 menghasilkan x = 3 − 8 = −5.",
+                "−2x = 6 dibagi −2 di kedua ruas, jadi x = −3."],
+             "visual": {"type": "balance", "eq": "x + 8 = 3"}},
+            {"kind": "example", "title": "Contoh dikerjakan bertahap", "lines": worked_lines("-2*x + 5 = 11")},
+            {"kind": "summary", "points": ["Perubahan tanda berasal dari operasi kedua ruas.", "+ menjadi −, − menjadi +.",
+                                           "Bagi dengan bilangan negatif: tanda ikut berubah."]},
+            {"kind": "quiz", "questions": [
+                mc("L7-q1", "medium", "Dengan jalan pintas, x − 6 = 10 menjadi …", [
+                    ("x = 10 + 6", True),
+                    ("x = 10 − 6", False, "−6 pindah ruas menjadi +6, karena kita menambah 6 di kedua ruas."),
+                    ("x = −10 + 6", False, "Ruas kanan tetap 10. Hanya −6 yang berubah tanda menjadi +6.")],
+                   eq="x - 6 = 10"),
+                short_solve("L7-q2", "medium", "-3*x + 4 = 19", "Kurangi 4 di kedua ruas, lalu bagi dengan −3."),
+                step_question("L7-q3", "medium", "x + 9 = 2"),
+            ]},
+        ]},
+        {"id": "L8", "title": "PLSV dalam Soal Cerita", "emoji": "🛰️", "mission": 4, "pages": [
+            {"kind": "explain", "title": "4 langkah soal cerita", "text": [
+                "1. Pahami: apa yang diketahui dan ditanya?",
+                "2. Modelkan: misalkan yang ditanya dengan x.",
+                "3. Selesaikan persamaannya.",
+                "4. Periksa: apakah jawabannya masuk akal?"]},
+            {"kind": "example", "title": "Contoh: harga buku", "lines": [
+                {"text": "Rani membeli 4 buku yang harganya sama. Ia membayar Rp24.000."},
+                {"text": "Diketahui: 4 buku dan total Rp24.000. Ditanya: harga 1 buku."},
+                {"text": "Misalkan harga 1 buku = x. Modelnya:", "eq": "4*x = 24000"},
+                {"text": "Bagi kedua ruas dengan 4.", "eq": "x = 6000"},
+                {"text": "Periksa: 4 × Rp6.000 = Rp24.000. Masuk akal untuk harga buku!"}]},
+            {"kind": "summary", "points": ["Pahami → Modelkan → Selesaikan → Periksa.",
+                                           "x adalah hal yang ditanya, lengkap dengan satuannya.",
+                                           "Jawaban harus masuk akal dengan cerita."]},
+            {"kind": "quiz", "questions": [
+                mc("L8-q1", "medium",
+                   "Doni punya 3 kotak pensil yang isinya sama. Ada juga 2 pensil lepas. Semuanya 20 pensil. Persamaan yang tepat adalah …",
+                   [({"eq": "3*x + 2 = 20"}, True),
+                    ({"eq": "3*x = 20 + 2"}, False, "2 pensil lepas sudah termasuk dalam 20. Jadi 2 ditambahkan di ruas kiri."),
+                    ({"eq": "x + 3 + 2 = 20"}, False, "3 kotak berarti 3 dikali isi 1 kotak, jadi 3x.")]),
+                story_q("L8-q2", "easy", ["Harga 1 tiket bus Rp5.000.", "Bu Sari membayar Rp35.000 untuk tiket keluarganya."],
+                        "Berapa tiket yang dibeli Bu Sari?", "5000*x = 35000", "tiket",
+                        "Harga 1 tiket × banyak tiket = total bayar.", "Jadi, Bu Sari membeli {jawaban}."),
+            ]},
+        ]},
+    ]
+
+
+# ---------------------------------------------------------------- Challenge Zone: Easy / Medium / Advanced
+def challenge() -> list[dict]:
+    e, m, a = "easy", "medium", "advanced"
+    return [
+        # ------------------------------------------------ Easy
+        mc("ch-e01", e, "Manakah yang BUKAN PLSV?", [
+            ("x² − 1 = 8", True),
+            ({"eq": "x - 1 = 8"}, False, "Ini PLSV: satu variabel dan pangkatnya satu."),
+            ({"eq": "2*x = 8"}, False, "Ini PLSV: satu variabel dan pangkatnya satu.")]),
+        short_solve("ch-e02", e, "x + 6 = 15", "Kurangi 6 di kedua ruas."),
+        short_solve("ch-e03", e, "x - 4 = 7", "Tambahkan 4 di kedua ruas."),
+        short_solve("ch-e04", e, "3*x = 21", "3x artinya 3 dikali x. Bagi kedua ruas dengan 3."),
+        mc("ch-e05", e, "Langkah yang tepat untuk menyelesaikan persamaan ini adalah …", [
+            ("Bagi kedua ruas dengan 5", True),
+            ("Kurangi 5 di kedua ruas", False, "5x artinya 5 dikali x. Lawan dari kali adalah bagi."),
+            ("Kali kedua ruas dengan 5", False, "Mengali dengan 5 membuat x makin besar. Lawan dari kali adalah bagi.")],
+           eq="5*x = 30"),
+        step_question("ch-e06", e, "x + 7 = 12"),
+        step_question("ch-e07", e, "2*x = 18"),
+        mc("ch-e08", e, "\"Sebuah bilangan dikurangi 3 hasilnya 10.\" Persamaannya adalah …", [
+            ({"eq": "x - 3 = 10"}, True),
+            ({"eq": "3 - x = 10"}, False, "Yang dikurangi adalah bilangannya, jadi x ditulis dulu: x − 3."),
+            ({"eq": "x + 3 = 10"}, False, "\"Dikurangi\" artinya tanda −, bukan +.")]),
+        story_q("ch-e09", e, ["Harga 1 pulpen Rp3.000.", "Lia membayar Rp15.000 untuk beberapa pulpen."],
+                "Berapa pulpen yang dibeli Lia?", "3000*x = 15000", "pulpen",
+                "Harga 1 pulpen × banyak pulpen = total bayar.", "Jadi, Lia membeli {jawaban}."),
+        story_q("ch-e10", e, ["Kiko 4 tahun lebih tua dari adiknya.", "Umur Kiko sekarang 12 tahun."],
+                "Berapa umur adik Kiko?", "x + 4 = 12", "tahun",
+                "Umur adik + 4 tahun = umur Kiko.", "Jadi, umur adik Kiko {jawaban}."),
+        # ------------------------------------------------ Medium
+        short_solve("ch-m01", m, "2*x + 5 = 17", "Kurangi 5 di kedua ruas, lalu bagi dengan 2."),
+        short_solve("ch-m02", m, "4*x - 3 = 25", "Tambahkan 3 di kedua ruas, lalu bagi dengan 4."),
+        short_solve("ch-m03", m, "5*x - 8 = 2*x + 7", "Kumpulkan suku x di satu ruas dulu: kurangi 2x di kedua ruas."),
+        step_question("ch-m04", m, "3*x - 4 = 11"),
+        step_question("ch-m05", m, "6*x + 1 = 2*x + 13"),
+        mc("ch-m06", m, "Raka mengubah 3x + 4 = 19 menjadi 3x = 19 + 4. Apa kesalahannya?", [
+            ("Ruas kanan seharusnya dikurangi 4", True),
+            ("Seharusnya dibagi 3 lebih dulu", False, "Membagi dulu juga boleh jika semua suku dibagi. Kesalahan Raka ada pada tanda 4."),
+            ("Tidak ada yang salah", False, "Kedua ruas harus sama-sama dikurangi 4. Periksa tanda di ruas kanan.")]),
+        mc("ch-m07", m, "Apakah x = 4 penyelesaian dari 3x − 2 = 10?", [
+            ("Ya, karena 3 × 4 − 2 = 10", True),
+            ("Tidak, karena 3 + 4 − 2 = 5", False, "3x artinya 3 dikali x, bukan 3 ditambah x."),
+            ("Tidak, karena 10 − 2 = 8", False, "Untuk memeriksa, ganti x dengan 4 di ruas kiri. Lalu bandingkan dengan 10.")]),
+        story_q("ch-m08", m, ["Bimo membeli 2 buku tulis yang harganya sama.", "Ia juga membeli penghapus Rp2.000.",
+                             "Bimo membayar Rp14.000 seluruhnya."],
+                "Berapa harga 1 buku tulis?", "2*x + 2000 = 14000", "rp",
+                "Harga 2 buku + harga penghapus = total bayar.", "Jadi, harga 1 buku tulis {jawaban}."),
+        story_q("ch-m09", m, ["Tabungan Ani awalnya Rp30.000.", "Setiap minggu ia menabung Rp10.000.",
+                             "Sekarang tabungannya Rp90.000."],
+                "Sudah berapa minggu Ani menabung?", "30000 + 10000*x = 90000", "minggu",
+                "Tabungan awal + Rp10.000 × banyak minggu = tabungan sekarang.", "Jadi, Ani sudah menabung {jawaban}."),
+        mc("ch-m10", m, "\"Dua kali sebuah bilangan ditambah 5 hasilnya 21.\" Persamaannya adalah …", [
+            ({"eq": "2*x + 5 = 21"}, True),
+            ({"eq": "2*(x + 5) = 21"}, False, "Yang dikali dua hanya bilangannya, baru setelah itu ditambah 5."),
+            ({"eq": "x + 2 + 5 = 21"}, False, "\"Dua kali\" artinya dikali 2, jadi ditulis 2x.")]),
+        # ------------------------------------------------ Advanced
+        short_solve("ch-a01", a, "3*(x + 2) = 24", "Jabarkan dulu: 3 dikali x dan 3 dikali 2."),
+        short_solve("ch-a02", a, "x/4 + 3 = 7", "Kurangi 3 di kedua ruas, lalu kali kedua ruas dengan 4."),
+        short_solve("ch-a03", a, "2*(x - 1) = x + 9", "Jabarkan kurungnya, lalu kumpulkan suku x di satu ruas."),
+        short_solve("ch-a04", a, "-3*x + 7 = 22", "Kurangi 7 di kedua ruas. Hati-hati saat membagi dengan bilangan negatif."),
+        step_question("ch-a05", a, "7*x - 6 = 3*x + 10"),
+        step_question("ch-a06", a, "-2*x + 9 = 3"),
+        mc("ch-a07", a, "Tia mengubah 4(x + 3) = 20 menjadi 4x + 3 = 20. Apa kesalahannya?", [
+            ("4 harus dikalikan ke x dan ke 3", True),
+            ("4 seharusnya dikurangkan", False, "Angka di depan kurung artinya dikali, bukan dikurangi."),
+            ("Tidak ada kesalahan", False, "Coba jabarkan lagi. Angka 4 dikalikan ke setiap suku di dalam kurung.")]),
+        story_q("ch-a08", a, ["Keliling sebuah taman persegi panjang 50 meter.", "Panjang taman itu 15 meter."],
+                "Berapa meter lebar taman?", "2*(15 + x) = 50", "meter",
+                "Keliling persegi panjang = 2 × (panjang + lebar).", "Jadi, lebar taman {jawaban}."),
+        story_q("ch-a09", a, ["Tarif ojek Rp6.000 untuk 2 km pertama.", "Setiap 1 km berikutnya dikenai Rp2.500.",
+                             "Ongkos Sinta seluruhnya Rp21.000."],
+                "Berapa km yang ditempuh Sinta setelah 2 km pertama?", "6000 + 2500*x = 21000", "km",
+                "Tarif 2 km pertama + Rp2.500 × km berikutnya = total ongkos.", "Jadi, Sinta menempuh {jawaban} lagi."),
+        story_q("ch-a10", a, ["Sebuah kolam berisi 120 liter air.", "Setiap menit, 8 liter air dibuang.",
+                             "Sekarang air di kolam tinggal 40 liter."],
+                "Sudah berapa menit air dibuang?", "120 - 8*x = 40", "menit",
+                "Isi awal − 8 × banyak menit = sisa air.", "Jadi, air sudah dibuang selama {jawaban}."),
+    ]
+
+
+def build_zones() -> None:
+    ZONES_DIR.mkdir(parents=True, exist_ok=True)
+    ls = lessons()
+    ch = challenge()
+    (ZONES_DIR / "learning.json").write_text(json.dumps({"lessons": ls}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (ZONES_DIR / "challenge.json").write_text(json.dumps({"questions": ch}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"zones: {len(ls)} materi Learning Zone, {len(ch)} soal Challenge Zone")
+
+
 S: dict[str, dict] = {d["id"]: d for d in WORLD6_STORIES}
 LITERACY: list[dict] = WORLD7_STORIES
 
@@ -907,6 +1313,7 @@ def main() -> None:
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"{path.name}: Mission {n:02d} {WORLD_META[n]['title']} — {len(problems)} soal")
     print(f"Total: {total} soal")
+    build_zones()
 
 
 if __name__ == "__main__":

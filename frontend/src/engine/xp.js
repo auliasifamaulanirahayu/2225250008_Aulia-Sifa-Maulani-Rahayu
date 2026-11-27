@@ -3,6 +3,15 @@
 export const STAGE_XP = { understand: 2, model: 3, solve: 3, check: 5, interpret: 5, explain: 5 };
 export const MISSION_XP = { warmup: 10, main: 30, mainNoHint: 10, team: 20, full: 20 };
 export const MAX_SHIELDS = 2;
+// Learning Zone & Challenge Zone. HARUS sama dengan clamp_attempt di supabase/migrations/0003_zones.sql.
+// XP hanya diberikan sekali: materi pertama kali tuntas, soal tantangan pertama kali benar.
+export const ZONE_XP = { lesson: 10, challengeFirstTry: 3, challengeRetry: 1 };
+
+/** XP satu soal Challenge Zone (0 bila sudah pernah benar). */
+export function challengeXp({ firstTry, alreadySolved }) {
+  if (alreadySolved) return 0;
+  return firstTry ? ZONE_XP.challengeFirstTry : ZONE_XP.challengeRetry;
+}
 
 /** XP satu tahap; pengulangan soal yang sudah selesai mendapat setengahnya. */
 export function stageXp(stage, { replay = false } = {}) {

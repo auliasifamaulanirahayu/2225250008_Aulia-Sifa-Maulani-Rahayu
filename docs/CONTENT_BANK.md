@@ -185,3 +185,27 @@ w6-p01 (M1, M4, M8), w6-p04 (M7: memaknai x sebagai "adik", bukan "umur adik").
 - Setiap soal cerita harus punya pertanyaan kewajaran di tahap Periksa.
 - Soal yang diadaptasi dari buku atau lembar kerja ditulis sumbernya di field `source`.
 - Setiap soal baru ditinjau minimal oleh 1 rekan atau dosen sebelum masuk rilis.
+
+## Learning Zone & Challenge Zone (`content/zones/`)
+
+Ditulis di `content/tools/build_worlds.py` (bagian *LEARNING ZONE & CHALLENGE ZONE*), dihasilkan ke
+`content/zones/learning.json` dan `challenge.json`, lalu divalidasi `validate_content.py`.
+
+**Materi** (`lessons[]`): `{id, title, emoji, mission, requires?, pages[]}`. Jenis halaman:
+`explain {title, text[], visual?}` (visual: `balance {eq}`, `parts {tokens:[[teks, var|coef|const|op|eq]]}`,
+`table {headers, rows}`), `example {title, lines:[{text, eq?}]}` (dibuka satu per satu), `summary {points[]}`,
+`quiz {questions[]}`. Contoh dikerjakan dibangkitkan dari `gen_steps` (`worked_lines`), jadi sama dengan langkah baku.
+
+**Soal** (dipakai latihan materi & Challenge Zone), `level`: `easy | medium | advanced`:
+
+| type | Isi | Kunci dihitung |
+|---|---|---|
+| `mc` | `prompt, eq?, options[{text|eq, correct, why}]` | bila `eq` & semua opsi persamaan: hanya opsi benar yang setara |
+| `short` | `prompt, eq?, answer, hint` | `verify: "solution"` → `answer` = penyelesaian `eq` (SymPy) |
+| `step` | `eq, steps[{from, options[{eq, correct, why}]}], answer` | dari `gen_steps`; pengecoh otomatis: salah tanda di ruas kanan & hanya satu ruas |
+| `story` | `story[], question, eq, answer, unit, hint, template, check{left_value,right_value}` | SymPy; tahap **Periksa** wajib |
+
+Aturan validator tambahan: setiap pilihan salah punya `why` ≤ 2 kalimat; `hint` tidak memuat `x = <jawaban>`;
+cerita: kalimat ≤ 15 kata, jumlah kalimat easy ≤ 2 / medium ≤ 3 / advanced ≤ 4, jawaban positif, harga kelipatan
+Rp500; pengecoh soal langkah tidak boleh setara dengan soal; 8 materi; minimal 8 soal per level.
+`engine.test.js` juga mencocokkan setiap kunci dengan mesin aljabar aplikasi.

@@ -1,0 +1,697 @@
+{
+  "questions": [
+    {
+      "id": "ch-e01",
+      "type": "mc",
+      "level": "easy",
+      "prompt": "Manakah yang BUKAN PLSV?",
+      "options": [
+        {
+          "text": "x² − 1 = 8",
+          "correct": true
+        },
+        {
+          "eq": "x - 1 = 8",
+          "correct": false,
+          "why": "Ini PLSV: satu variabel dan pangkatnya satu."
+        },
+        {
+          "eq": "2*x = 8",
+          "correct": false,
+          "why": "Ini PLSV: satu variabel dan pangkatnya satu."
+        }
+      ]
+    },
+    {
+      "id": "ch-e02",
+      "type": "short",
+      "level": "easy",
+      "prompt": "Berapa nilai x?",
+      "eq": "x + 6 = 15",
+      "verify": "solution",
+      "answer": "9",
+      "hint": "Kurangi 6 di kedua ruas."
+    },
+    {
+      "id": "ch-e03",
+      "type": "short",
+      "level": "easy",
+      "prompt": "Berapa nilai x?",
+      "eq": "x - 4 = 7",
+      "verify": "solution",
+      "answer": "11",
+      "hint": "Tambahkan 4 di kedua ruas."
+    },
+    {
+      "id": "ch-e04",
+      "type": "short",
+      "level": "easy",
+      "prompt": "Berapa nilai x?",
+      "eq": "3*x = 21",
+      "verify": "solution",
+      "answer": "7",
+      "hint": "3x artinya 3 dikali x. Bagi kedua ruas dengan 3."
+    },
+    {
+      "id": "ch-e05",
+      "type": "mc",
+      "level": "easy",
+      "prompt": "Langkah yang tepat untuk menyelesaikan persamaan ini adalah …",
+      "options": [
+        {
+          "text": "Bagi kedua ruas dengan 5",
+          "correct": true
+        },
+        {
+          "text": "Kurangi 5 di kedua ruas",
+          "correct": false,
+          "why": "5x artinya 5 dikali x. Lawan dari kali adalah bagi."
+        },
+        {
+          "text": "Kali kedua ruas dengan 5",
+          "correct": false,
+          "why": "Mengali dengan 5 membuat x makin besar. Lawan dari kali adalah bagi."
+        }
+      ],
+      "eq": "5*x = 30"
+    },
+    {
+      "id": "ch-e06",
+      "type": "step",
+      "level": "easy",
+      "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+      "eq": "x + 7 = 12",
+      "steps": [
+        {
+          "from": "x + 7 = 12",
+          "options": [
+            {
+              "eq": "x = 5",
+              "correct": true
+            },
+            {
+              "eq": "x = 19",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 7, bukan ditambah 7."
+            },
+            {
+              "eq": "x = 12",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 7 agar timbangan tetap seimbang."
+            }
+          ]
+        }
+      ],
+      "answer": "5",
+      "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+    },
+    {
+      "id": "ch-e07",
+      "type": "step",
+      "level": "easy",
+      "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+      "eq": "2*x = 18",
+      "steps": [
+        {
+          "from": "2*x = 18",
+          "options": [
+            {
+              "eq": "x = 9",
+              "correct": true
+            },
+            {
+              "eq": "x = 36",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi 2, bukan dikali 2."
+            },
+            {
+              "eq": "x = 18",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi 2 agar timbangan tetap seimbang."
+            }
+          ]
+        }
+      ],
+      "answer": "9",
+      "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+    },
+    {
+      "id": "ch-e08",
+      "type": "mc",
+      "level": "easy",
+      "prompt": "\"Sebuah bilangan dikurangi 3 hasilnya 10.\" Persamaannya adalah …",
+      "options": [
+        {
+          "eq": "x - 3 = 10",
+          "correct": true
+        },
+        {
+          "eq": "3 - x = 10",
+          "correct": false,
+          "why": "Yang dikurangi adalah bilangannya, jadi x ditulis dulu: x − 3."
+        },
+        {
+          "eq": "x + 3 = 10",
+          "correct": false,
+          "why": "\"Dikurangi\" artinya tanda −, bukan +."
+        }
+      ]
+    },
+    {
+      "id": "ch-e09",
+      "type": "story",
+      "level": "easy",
+      "story": [
+        "Harga 1 pulpen Rp3.000.",
+        "Lia membayar Rp15.000 untuk beberapa pulpen."
+      ],
+      "question": "Berapa pulpen yang dibeli Lia?",
+      "eq": "3000*x = 15000",
+      "answer": "5",
+      "unit": "pulpen",
+      "hint": "Harga 1 pulpen × banyak pulpen = total bayar.",
+      "template": "Jadi, Lia membeli {jawaban}.",
+      "answer_sentence": "Jadi, Lia membeli 5 pulpen.",
+      "check": {
+        "left_value": "15000",
+        "right_value": "15000"
+      }
+    },
+    {
+      "id": "ch-e10",
+      "type": "story",
+      "level": "easy",
+      "story": [
+        "Kiko 4 tahun lebih tua dari adiknya.",
+        "Umur Kiko sekarang 12 tahun."
+      ],
+      "question": "Berapa umur adik Kiko?",
+      "eq": "x + 4 = 12",
+      "answer": "8",
+      "unit": "tahun",
+      "hint": "Umur adik + 4 tahun = umur Kiko.",
+      "template": "Jadi, umur adik Kiko {jawaban}.",
+      "answer_sentence": "Jadi, umur adik Kiko 8 tahun.",
+      "check": {
+        "left_value": "12",
+        "right_value": "12"
+      }
+    },
+    {
+      "id": "ch-m01",
+      "type": "short",
+      "level": "medium",
+      "prompt": "Berapa nilai x?",
+      "eq": "2*x + 5 = 17",
+      "verify": "solution",
+      "answer": "6",
+      "hint": "Kurangi 5 di kedua ruas, lalu bagi dengan 2."
+    },
+    {
+      "id": "ch-m02",
+      "type": "short",
+      "level": "medium",
+      "prompt": "Berapa nilai x?",
+      "eq": "4*x - 3 = 25",
+      "verify": "solution",
+      "answer": "7",
+      "hint": "Tambahkan 3 di kedua ruas, lalu bagi dengan 4."
+    },
+    {
+      "id": "ch-m03",
+      "type": "short",
+      "level": "medium",
+      "prompt": "Berapa nilai x?",
+      "eq": "5*x - 8 = 2*x + 7",
+      "verify": "solution",
+      "answer": "5",
+      "hint": "Kumpulkan suku x di satu ruas dulu: kurangi 2x di kedua ruas."
+    },
+    {
+      "id": "ch-m04",
+      "type": "step",
+      "level": "medium",
+      "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+      "eq": "3*x - 4 = 11",
+      "steps": [
+        {
+          "from": "3*x - 4 = 11",
+          "options": [
+            {
+              "eq": "3*x = 15",
+              "correct": true
+            },
+            {
+              "eq": "3*x = 7",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus ditambah 4, bukan dikurangi 4."
+            },
+            {
+              "eq": "3*x = 11",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus ditambah 4 agar timbangan tetap seimbang."
+            }
+          ]
+        },
+        {
+          "from": "3*x = 15",
+          "options": [
+            {
+              "eq": "x = 5",
+              "correct": true
+            },
+            {
+              "eq": "x = 45",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi 3, bukan dikali 3."
+            },
+            {
+              "eq": "x = 15",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi 3 agar timbangan tetap seimbang."
+            }
+          ]
+        }
+      ],
+      "answer": "5",
+      "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+    },
+    {
+      "id": "ch-m05",
+      "type": "step",
+      "level": "medium",
+      "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+      "eq": "6*x + 1 = 2*x + 13",
+      "steps": [
+        {
+          "from": "6*x + 1 = 2*x + 13",
+          "options": [
+            {
+              "eq": "4*x + 1 = 13",
+              "correct": true
+            },
+            {
+              "eq": "4*x + 1 = 4*x + 13",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 2x, bukan ditambah 2x."
+            },
+            {
+              "eq": "4*x + 1 = 2*x + 13",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 2x agar timbangan tetap seimbang."
+            }
+          ]
+        },
+        {
+          "from": "4*x + 1 = 13",
+          "options": [
+            {
+              "eq": "4*x = 12",
+              "correct": true
+            },
+            {
+              "eq": "4*x = 14",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 1, bukan ditambah 1."
+            },
+            {
+              "eq": "4*x = 13",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 1 agar timbangan tetap seimbang."
+            }
+          ]
+        },
+        {
+          "from": "4*x = 12",
+          "options": [
+            {
+              "eq": "x = 3",
+              "correct": true
+            },
+            {
+              "eq": "x = 48",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi 4, bukan dikali 4."
+            },
+            {
+              "eq": "x = 12",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi 4 agar timbangan tetap seimbang."
+            }
+          ]
+        }
+      ],
+      "answer": "3",
+      "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+    },
+    {
+      "id": "ch-m06",
+      "type": "mc",
+      "level": "medium",
+      "prompt": "Raka mengubah 3x + 4 = 19 menjadi 3x = 19 + 4. Apa kesalahannya?",
+      "options": [
+        {
+          "text": "Ruas kanan seharusnya dikurangi 4",
+          "correct": true
+        },
+        {
+          "text": "Seharusnya dibagi 3 lebih dulu",
+          "correct": false,
+          "why": "Membagi dulu juga boleh jika semua suku dibagi. Kesalahan Raka ada pada tanda 4."
+        },
+        {
+          "text": "Tidak ada yang salah",
+          "correct": false,
+          "why": "Kedua ruas harus sama-sama dikurangi 4. Periksa tanda di ruas kanan."
+        }
+      ]
+    },
+    {
+      "id": "ch-m07",
+      "type": "mc",
+      "level": "medium",
+      "prompt": "Apakah x = 4 penyelesaian dari 3x − 2 = 10?",
+      "options": [
+        {
+          "text": "Ya, karena 3 × 4 − 2 = 10",
+          "correct": true
+        },
+        {
+          "text": "Tidak, karena 3 + 4 − 2 = 5",
+          "correct": false,
+          "why": "3x artinya 3 dikali x, bukan 3 ditambah x."
+        },
+        {
+          "text": "Tidak, karena 10 − 2 = 8",
+          "correct": false,
+          "why": "Untuk memeriksa, ganti x dengan 4 di ruas kiri. Lalu bandingkan dengan 10."
+        }
+      ]
+    },
+    {
+      "id": "ch-m08",
+      "type": "story",
+      "level": "medium",
+      "story": [
+        "Bimo membeli 2 buku tulis yang harganya sama.",
+        "Ia juga membeli penghapus Rp2.000.",
+        "Bimo membayar Rp14.000 seluruhnya."
+      ],
+      "question": "Berapa harga 1 buku tulis?",
+      "eq": "2*x + 2000 = 14000",
+      "answer": "6000",
+      "unit": "rp",
+      "hint": "Harga 2 buku + harga penghapus = total bayar.",
+      "template": "Jadi, harga 1 buku tulis {jawaban}.",
+      "answer_sentence": "Jadi, harga 1 buku tulis Rp6.000.",
+      "check": {
+        "left_value": "14000",
+        "right_value": "14000"
+      }
+    },
+    {
+      "id": "ch-m09",
+      "type": "story",
+      "level": "medium",
+      "story": [
+        "Tabungan Ani awalnya Rp30.000.",
+        "Setiap minggu ia menabung Rp10.000.",
+        "Sekarang tabungannya Rp90.000."
+      ],
+      "question": "Sudah berapa minggu Ani menabung?",
+      "eq": "30000 + 10000*x = 90000",
+      "answer": "6",
+      "unit": "minggu",
+      "hint": "Tabungan awal + Rp10.000 × banyak minggu = tabungan sekarang.",
+      "template": "Jadi, Ani sudah menabung {jawaban}.",
+      "answer_sentence": "Jadi, Ani sudah menabung 6 minggu.",
+      "check": {
+        "left_value": "90000",
+        "right_value": "90000"
+      }
+    },
+    {
+      "id": "ch-m10",
+      "type": "mc",
+      "level": "medium",
+      "prompt": "\"Dua kali sebuah bilangan ditambah 5 hasilnya 21.\" Persamaannya adalah …",
+      "options": [
+        {
+          "eq": "2*x + 5 = 21",
+          "correct": true
+        },
+        {
+          "eq": "2*(x + 5) = 21",
+          "correct": false,
+          "why": "Yang dikali dua hanya bilangannya, baru setelah itu ditambah 5."
+        },
+        {
+          "eq": "x + 2 + 5 = 21",
+          "correct": false,
+          "why": "\"Dua kali\" artinya dikali 2, jadi ditulis 2x."
+        }
+      ]
+    },
+    {
+      "id": "ch-a01",
+      "type": "short",
+      "level": "advanced",
+      "prompt": "Berapa nilai x?",
+      "eq": "3*(x + 2) = 24",
+      "verify": "solution",
+      "answer": "6",
+      "hint": "Jabarkan dulu: 3 dikali x dan 3 dikali 2."
+    },
+    {
+      "id": "ch-a02",
+      "type": "short",
+      "level": "advanced",
+      "prompt": "Berapa nilai x?",
+      "eq": "x/4 + 3 = 7",
+      "verify": "solution",
+      "answer": "16",
+      "hint": "Kurangi 3 di kedua ruas, lalu kali kedua ruas dengan 4."
+    },
+    {
+      "id": "ch-a03",
+      "type": "short",
+      "level": "advanced",
+      "prompt": "Berapa nilai x?",
+      "eq": "2*(x - 1) = x + 9",
+      "verify": "solution",
+      "answer": "11",
+      "hint": "Jabarkan kurungnya, lalu kumpulkan suku x di satu ruas."
+    },
+    {
+      "id": "ch-a04",
+      "type": "short",
+      "level": "advanced",
+      "prompt": "Berapa nilai x?",
+      "eq": "-3*x + 7 = 22",
+      "verify": "solution",
+      "answer": "-5",
+      "hint": "Kurangi 7 di kedua ruas. Hati-hati saat membagi dengan bilangan negatif."
+    },
+    {
+      "id": "ch-a05",
+      "type": "step",
+      "level": "advanced",
+      "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+      "eq": "7*x - 6 = 3*x + 10",
+      "steps": [
+        {
+          "from": "7*x - 6 = 3*x + 10",
+          "options": [
+            {
+              "eq": "4*x - 6 = 10",
+              "correct": true
+            },
+            {
+              "eq": "4*x - 6 = 6*x + 10",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 3x, bukan ditambah 3x."
+            },
+            {
+              "eq": "4*x - 6 = 3*x + 10",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 3x agar timbangan tetap seimbang."
+            }
+          ]
+        },
+        {
+          "from": "4*x - 6 = 10",
+          "options": [
+            {
+              "eq": "4*x = 16",
+              "correct": true
+            },
+            {
+              "eq": "4*x = 4",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus ditambah 6, bukan dikurangi 6."
+            },
+            {
+              "eq": "4*x = 10",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus ditambah 6 agar timbangan tetap seimbang."
+            }
+          ]
+        },
+        {
+          "from": "4*x = 16",
+          "options": [
+            {
+              "eq": "x = 4",
+              "correct": true
+            },
+            {
+              "eq": "x = 64",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi 4, bukan dikali 4."
+            },
+            {
+              "eq": "x = 16",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi 4 agar timbangan tetap seimbang."
+            }
+          ]
+        }
+      ],
+      "answer": "4",
+      "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+    },
+    {
+      "id": "ch-a06",
+      "type": "step",
+      "level": "advanced",
+      "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+      "eq": "-2*x + 9 = 3",
+      "steps": [
+        {
+          "from": "-2*x + 9 = 3",
+          "options": [
+            {
+              "eq": "-2*x = -6",
+              "correct": true
+            },
+            {
+              "eq": "-2*x = 12",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 9, bukan ditambah 9."
+            },
+            {
+              "eq": "-2*x = 3",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dikurangi 9 agar timbangan tetap seimbang."
+            }
+          ]
+        },
+        {
+          "from": "-2*x = -6",
+          "options": [
+            {
+              "eq": "x = 3",
+              "correct": true
+            },
+            {
+              "eq": "x = 12",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi −2, bukan dikali −2."
+            },
+            {
+              "eq": "x = -6",
+              "correct": false,
+              "why": "Hampir! Ruas kanan juga harus dibagi −2 agar timbangan tetap seimbang."
+            }
+          ]
+        }
+      ],
+      "answer": "3",
+      "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+    },
+    {
+      "id": "ch-a07",
+      "type": "mc",
+      "level": "advanced",
+      "prompt": "Tia mengubah 4(x + 3) = 20 menjadi 4x + 3 = 20. Apa kesalahannya?",
+      "options": [
+        {
+          "text": "4 harus dikalikan ke x dan ke 3",
+          "correct": true
+        },
+        {
+          "text": "4 seharusnya dikurangkan",
+          "correct": false,
+          "why": "Angka di depan kurung artinya dikali, bukan dikurangi."
+        },
+        {
+          "text": "Tidak ada kesalahan",
+          "correct": false,
+          "why": "Coba jabarkan lagi. Angka 4 dikalikan ke setiap suku di dalam kurung."
+        }
+      ]
+    },
+    {
+      "id": "ch-a08",
+      "type": "story",
+      "level": "advanced",
+      "story": [
+        "Keliling sebuah taman persegi panjang 50 meter.",
+        "Panjang taman itu 15 meter."
+      ],
+      "question": "Berapa meter lebar taman?",
+      "eq": "2*(15 + x) = 50",
+      "answer": "10",
+      "unit": "meter",
+      "hint": "Keliling persegi panjang = 2 × (panjang + lebar).",
+      "template": "Jadi, lebar taman {jawaban}.",
+      "answer_sentence": "Jadi, lebar taman 10 meter.",
+      "check": {
+        "left_value": "50",
+        "right_value": "50"
+      }
+    },
+    {
+      "id": "ch-a09",
+      "type": "story",
+      "level": "advanced",
+      "story": [
+        "Tarif ojek Rp6.000 untuk 2 km pertama.",
+        "Setiap 1 km berikutnya dikenai Rp2.500.",
+        "Ongkos Sinta seluruhnya Rp21.000."
+      ],
+      "question": "Berapa km yang ditempuh Sinta setelah 2 km pertama?",
+      "eq": "6000 + 2500*x = 21000",
+      "answer": "6",
+      "unit": "km",
+      "hint": "Tarif 2 km pertama + Rp2.500 × km berikutnya = total ongkos.",
+      "template": "Jadi, Sinta menempuh {jawaban} lagi.",
+      "answer_sentence": "Jadi, Sinta menempuh 6 km lagi.",
+      "check": {
+        "left_value": "21000",
+        "right_value": "21000"
+      }
+    },
+    {
+      "id": "ch-a10",
+      "type": "story",
+      "level": "advanced",
+      "story": [
+        "Sebuah kolam berisi 120 liter air.",
+        "Setiap menit, 8 liter air dibuang.",
+        "Sekarang air di kolam tinggal 40 liter."
+      ],
+      "question": "Sudah berapa menit air dibuang?",
+      "eq": "120 - 8*x = 40",
+      "answer": "10",
+      "unit": "menit",
+      "hint": "Isi awal − 8 × banyak menit = sisa air.",
+      "template": "Jadi, air sudah dibuang selama {jawaban}.",
+      "answer_sentence": "Jadi, air sudah dibuang selama 10 menit.",
+      "check": {
+        "left_value": "40",
+        "right_value": "40"
+      }
+    }
+  ]
+}

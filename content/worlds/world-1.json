@@ -70,7 +70,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 13",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -122,7 +122,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 13",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -175,7 +175,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 4",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -228,7 +228,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 22",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -281,7 +281,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 20",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -333,7 +333,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 2",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -385,7 +385,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 17",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -437,7 +437,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 9",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -489,7 +489,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 32",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -541,7 +541,7 @@
         {
           "code": "M1",
           "wrong_step": "x = -3",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -593,7 +593,7 @@
         {
           "code": "M1",
           "wrong_step": "x = -3",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {
@@ -645,7 +645,7 @@
         {
           "code": "M1",
           "wrong_step": "x = 26",
-          "feedback": "Lihat tandanya. Jika kedua ruas dikurangi 5, maka +5 hilang di kiri dan −5 muncul di kanan."
+          "feedback": "Hampir! Lihat tandanya. Lakukan operasi yang sama di kedua ruas, lalu hitung lagi."
         }
       ],
       "ui": {

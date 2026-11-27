@@ -16,7 +16,7 @@ export function Profile() {
   const navigate = useNavigate();
   const { profile, stats, progress } = s;
   const lvl = levelInfo(stats.xp);
-  const done = Object.values(progress).filter((p) => p.done).length;
+  const done = Object.values(progress).filter((p) => p.done && !p.id.startsWith('lz-')).length; // materi bukan soal
   const starsTotal = Object.values(progress).reduce((a, p) => a + (p.bestStars || 0), 0);
   const have = new Set(stats.badges);
 

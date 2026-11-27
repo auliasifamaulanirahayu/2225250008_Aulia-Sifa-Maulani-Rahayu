@@ -1,0 +1,963 @@
+{
+  "lessons": [
+    {
+      "id": "L1",
+      "title": "Pengertian PLSV",
+      "emoji": "🪐",
+      "mission": 1,
+      "pages": [
+        {
+          "kind": "explain",
+          "title": "Apa itu PLSV?",
+          "text": [
+            "PLSV adalah Persamaan Linear Satu Variabel.",
+            "Persamaan adalah kalimat matematika dengan tanda sama dengan (=).",
+            "Linear artinya pangkat variabelnya satu.",
+            "Satu variabel artinya hanya ada satu huruf, misalnya x."
+          ],
+          "visual": {
+            "type": "table",
+            "headers": [
+              "Kalimat",
+              "PLSV?",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "x + 3 = 10",
+                "Ya",
+                "satu variabel, pangkat satu"
+              ],
+              [
+                "x² = 9",
+                "Bukan",
+                "pangkat x dua"
+              ],
+              [
+                "x + y = 5",
+                "Bukan",
+                "ada dua variabel"
+              ],
+              [
+                "3 + 4 = 7",
+                "Bukan",
+                "tidak ada variabel"
+              ]
+            ]
+          }
+        },
+        {
+          "kind": "example",
+          "title": "Contoh: mengenali PLSV",
+          "lines": [
+            {
+              "text": "Perhatikan persamaan ini.",
+              "eq": "2*x - 1 = 7"
+            },
+            {
+              "text": "Ada tanda =. Jadi ini persamaan."
+            },
+            {
+              "text": "Hanya ada satu variabel, yaitu x."
+            },
+            {
+              "text": "Pangkat x adalah satu. Jadi 2x − 1 = 7 adalah PLSV."
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "points": [
+            "PLSV punya tanda =.",
+            "PLSV punya tepat satu variabel.",
+            "Pangkat variabelnya satu."
+          ]
+        },
+        {
+          "kind": "quiz",
+          "questions": [
+            {
+              "id": "L1-q1",
+              "type": "mc",
+              "level": "easy",
+              "prompt": "Manakah yang termasuk PLSV?",
+              "options": [
+                {
+                  "eq": "4*x + 1 = 9",
+                  "correct": true
+                },
+                {
+                  "text": "x² + 1 = 5",
+                  "correct": false,
+                  "why": "Pangkat x pada x² adalah dua, jadi bukan linear."
+                },
+                {
+                  "text": "x + y = 8",
+                  "correct": false,
+                  "why": "Ada dua variabel, yaitu x dan y."
+                },
+                {
+                  "text": "5 + 2 = 7",
+                  "correct": false,
+                  "why": "Tidak ada variabelnya, jadi bukan PLSV."
+                }
+              ]
+            },
+            {
+              "id": "L1-q2",
+              "type": "mc",
+              "level": "easy",
+              "prompt": "Mengapa x² = 16 bukan PLSV?",
+              "options": [
+                {
+                  "text": "Pangkat x adalah dua",
+                  "correct": true
+                },
+                {
+                  "text": "Tidak ada tanda =",
+                  "correct": false,
+                  "why": "Ada tanda = pada x² = 16. Coba lihat pangkat x."
+                },
+                {
+                  "text": "Ada dua variabel",
+                  "correct": false,
+                  "why": "Hanya ada satu variabel, yaitu x. Coba lihat pangkatnya."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L2",
+      "title": "Unsur-unsur PLSV",
+      "emoji": "🧩",
+      "mission": 2,
+      "pages": [
+        {
+          "kind": "explain",
+          "title": "Bagian-bagian PLSV",
+          "text": [
+            "Setiap PLSV punya beberapa bagian.",
+            "Ada variabel, koefisien, konstanta, dan tanda sama dengan.",
+            "Warna di bawah menunjukkan setiap bagian."
+          ],
+          "visual": {
+            "type": "parts",
+            "tokens": [
+              [
+                "3",
+                "coef"
+              ],
+              [
+                "x",
+                "var"
+              ],
+              [
+                "+",
+                "op"
+              ],
+              [
+                "5",
+                "const"
+              ],
+              [
+                "=",
+                "eq"
+              ],
+              [
+                "20",
+                "const"
+              ]
+            ]
+          }
+        },
+        {
+          "kind": "explain",
+          "title": "Ruas kiri dan ruas kanan",
+          "text": [
+            "Bagian sebelum tanda = disebut ruas kiri.",
+            "Bagian sesudah tanda = disebut ruas kanan.",
+            "Pada 3x + 5 = 20, ruas kirinya 3x + 5 dan ruas kanannya 20."
+          ],
+          "visual": {
+            "type": "balance",
+            "eq": "3*x + 5 = 20"
+          }
+        },
+        {
+          "kind": "example",
+          "title": "Contoh: menyebut unsur",
+          "lines": [
+            {
+              "text": "Perhatikan persamaan ini.",
+              "eq": "4*x - 7 = 9"
+            },
+            {
+              "text": "Variabelnya adalah x."
+            },
+            {
+              "text": "Koefisien x adalah 4."
+            },
+            {
+              "text": "Konstanta di ruas kiri adalah −7."
+            },
+            {
+              "text": "Ruas kanannya adalah 9."
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "points": [
+            "Variabel: huruf yang mewakili bilangan.",
+            "Koefisien: angka di depan variabel.",
+            "Konstanta: bilangan tanpa variabel.",
+            "Tanda = memisahkan ruas kiri dan ruas kanan."
+          ]
+        },
+        {
+          "kind": "quiz",
+          "questions": [
+            {
+              "id": "L2-q1",
+              "type": "short",
+              "level": "easy",
+              "prompt": "Berapa koefisien x pada persamaan ini?",
+              "answer": "6",
+              "hint": "Koefisien adalah angka yang menempel di depan x.",
+              "eq": "6*x - 2 = 10"
+            },
+            {
+              "id": "L2-q2",
+              "type": "mc",
+              "level": "easy",
+              "prompt": "Pada 5x + 8 = 23, manakah ruas kanannya?",
+              "options": [
+                {
+                  "text": "23",
+                  "correct": true
+                },
+                {
+                  "text": "5x + 8",
+                  "correct": false,
+                  "why": "5x + 8 ada di sebelah kiri tanda =, jadi itu ruas kiri."
+                },
+                {
+                  "text": "8",
+                  "correct": false,
+                  "why": "8 adalah konstanta di ruas kiri, bukan ruas kanan."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L3",
+      "title": "Variabel, Koefisien, Konstanta, dan Suku",
+      "emoji": "🔤",
+      "mission": 2,
+      "pages": [
+        {
+          "kind": "explain",
+          "title": "Variabel",
+          "text": [
+            "Variabel adalah huruf yang mewakili bilangan yang belum diketahui.",
+            "Bayangkan x sebagai kotak misteri berisi sebuah bilangan.",
+            "Huruf lain seperti a, n, atau y juga bisa menjadi variabel."
+          ]
+        },
+        {
+          "kind": "explain",
+          "title": "Koefisien, konstanta, dan suku",
+          "text": [
+            "Koefisien adalah angka di depan variabel.",
+            "Konstanta adalah bilangan tanpa variabel.",
+            "Suku adalah bagian yang dipisah tanda + atau −.",
+            "3x artinya 3 dikali x."
+          ],
+          "visual": {
+            "type": "parts",
+            "tokens": [
+              [
+                "2",
+                "coef"
+              ],
+              [
+                "x",
+                "var"
+              ],
+              [
+                "−",
+                "op"
+              ],
+              [
+                "7",
+                "const"
+              ],
+              [
+                "=",
+                "eq"
+              ],
+              [
+                "11",
+                "const"
+              ]
+            ]
+          }
+        },
+        {
+          "kind": "example",
+          "title": "Contoh: mencari suku",
+          "lines": [
+            {
+              "text": "Perhatikan persamaan ini.",
+              "eq": "7 + 3*x = 19"
+            },
+            {
+              "text": "Suku-sukunya adalah 7, 3x, dan 19."
+            },
+            {
+              "text": "Koefisien x adalah 3."
+            },
+            {
+              "text": "Konstantanya adalah 7 dan 19."
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "points": [
+            "Variabel = kotak misteri.",
+            "Koefisien menempel di depan variabel.",
+            "Konstanta tidak punya variabel.",
+            "Tanda − di depan suku ikut dihitung."
+          ]
+        },
+        {
+          "kind": "quiz",
+          "questions": [
+            {
+              "id": "L3-q1",
+              "type": "mc",
+              "level": "medium",
+              "prompt": "Pada 9 − 2x = 1, berapa koefisien x?",
+              "options": [
+                {
+                  "text": "−2",
+                  "correct": true
+                },
+                {
+                  "text": "2",
+                  "correct": false,
+                  "why": "Tanda − di depan 2x ikut dihitung. Jadi koefisiennya negatif."
+                },
+                {
+                  "text": "9",
+                  "correct": false,
+                  "why": "9 tidak menempel pada x, jadi 9 adalah konstanta."
+                }
+              ]
+            },
+            {
+              "id": "L3-q2",
+              "type": "short",
+              "level": "easy",
+              "prompt": "Ada berapa suku di ruas kiri 4x + 3?",
+              "answer": "2",
+              "hint": "Hitung bagian yang dipisah tanda + atau −."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L4",
+      "title": "Kesetaraan Persamaan",
+      "emoji": "⚖️",
+      "mission": 1,
+      "pages": [
+        {
+          "kind": "explain",
+          "title": "Persamaan seperti timbangan",
+          "text": [
+            "Persamaan seperti timbangan yang seimbang.",
+            "Nilai ruas kiri sama dengan nilai ruas kanan.",
+            "Jika x = 4, maka x + 3 = 7 bernilai benar."
+          ],
+          "visual": {
+            "type": "balance",
+            "eq": "x + 3 = 7"
+          }
+        },
+        {
+          "kind": "explain",
+          "title": "Persamaan yang setara",
+          "text": [
+            "Dua persamaan setara jika penyelesaiannya sama.",
+            "x + 3 = 7 dan x = 4 adalah persamaan setara.",
+            "Keduanya benar untuk x = 4."
+          ]
+        },
+        {
+          "kind": "example",
+          "title": "Contoh: membuat persamaan setara",
+          "lines": [
+            {
+              "text": "Mulai dari persamaan ini.",
+              "eq": "x + 3 = 7"
+            },
+            {
+              "text": "Kurangi 3 di kedua ruas.",
+              "eq": "x = 4"
+            },
+            {
+              "text": "x + 3 = 7 dan x = 4 setara, karena penyelesaiannya sama."
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "points": [
+            "Persamaan = timbangan seimbang.",
+            "Persamaan setara punya penyelesaian yang sama.",
+            "Operasi yang sama di kedua ruas menghasilkan persamaan setara."
+          ]
+        },
+        {
+          "kind": "quiz",
+          "questions": [
+            {
+              "id": "L4-q1",
+              "type": "mc",
+              "level": "easy",
+              "prompt": "Persamaan mana yang setara dengan x + 5 = 12?",
+              "options": [
+                {
+                  "eq": "x = 7",
+                  "correct": true
+                },
+                {
+                  "eq": "x = 17",
+                  "correct": false,
+                  "why": "Jika x = 17, maka 17 + 5 = 22, bukan 12."
+                },
+                {
+                  "eq": "x + 5 = 17",
+                  "correct": false,
+                  "why": "Ruas kanan berubah tanpa operasi di ruas kiri, jadi tidak setara."
+                }
+              ],
+              "eq": "x + 5 = 12"
+            },
+            {
+              "id": "L4-q2",
+              "type": "short",
+              "level": "easy",
+              "prompt": "Jika x = 3, berapa nilai ruas kiri 4x + 2?",
+              "answer": "14",
+              "hint": "Ganti x dengan 3. Kerjakan perkalian dulu, baru penjumlahan."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L5",
+      "title": "Langkah Menyelesaikan PLSV",
+      "emoji": "🪜",
+      "mission": 5,
+      "pages": [
+        {
+          "kind": "explain",
+          "title": "Tujuannya: x sendirian",
+          "text": [
+            "Menyelesaikan PLSV artinya mencari nilai x.",
+            "Tujuannya membuat x sendirian di satu ruas.",
+            "Setiap langkah dilakukan pada kedua ruas."
+          ]
+        },
+        {
+          "kind": "explain",
+          "title": "Urutan langkah",
+          "text": [
+            "1. Hilangkan konstanta di ruas yang ada x.",
+            "2. Bagi kedua ruas dengan koefisien x.",
+            "3. Periksa dengan substitusi."
+          ]
+        },
+        {
+          "kind": "example",
+          "title": "Contoh dikerjakan bertahap",
+          "lines": [
+            {
+              "text": "Mulai dari persamaan ini.",
+              "eq": "3*x - 5 = 16"
+            },
+            {
+              "text": "Kedua ruas ditambah 5.",
+              "eq": "3*x = 21"
+            },
+            {
+              "text": "Kedua ruas dibagi 3.",
+              "eq": "x = 7"
+            },
+            {
+              "text": "Periksa: ganti x dengan 7. Ruas kiri = 16, sama dengan ruas kanan. Benar!"
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "points": [
+            "Tujuan: x sendirian di satu ruas.",
+            "Hilangkan konstanta dulu, lalu bagi koefisien.",
+            "Selalu periksa dengan substitusi."
+          ]
+        },
+        {
+          "kind": "quiz",
+          "questions": [
+            {
+              "id": "L5-q1",
+              "type": "step",
+              "level": "easy",
+              "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+              "eq": "2*x + 3 = 11",
+              "steps": [
+                {
+                  "from": "2*x + 3 = 11",
+                  "options": [
+                    {
+                      "eq": "2*x = 8",
+                      "correct": true
+                    },
+                    {
+                      "eq": "2*x = 14",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dikurangi 3, bukan ditambah 3."
+                    },
+                    {
+                      "eq": "2*x = 11",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dikurangi 3 agar timbangan tetap seimbang."
+                    }
+                  ]
+                },
+                {
+                  "from": "2*x = 8",
+                  "options": [
+                    {
+                      "eq": "x = 4",
+                      "correct": true
+                    },
+                    {
+                      "eq": "x = 16",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dibagi 2, bukan dikali 2."
+                    },
+                    {
+                      "eq": "x = 8",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dibagi 2 agar timbangan tetap seimbang."
+                    }
+                  ]
+                }
+              ],
+              "answer": "4",
+              "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+            },
+            {
+              "id": "L5-q2",
+              "type": "short",
+              "level": "easy",
+              "prompt": "Berapa nilai x?",
+              "eq": "5*x - 4 = 21",
+              "verify": "solution",
+              "answer": "5",
+              "hint": "Tambahkan 4 di kedua ruas dulu."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L6",
+      "title": "Operasi pada Kedua Ruas",
+      "emoji": "🔁",
+      "mission": 5,
+      "pages": [
+        {
+          "kind": "explain",
+          "title": "Lakukan hal yang sama",
+          "text": [
+            "Agar timbangan tetap seimbang, lakukan operasi yang sama pada kedua ruas.",
+            "Kamu boleh menambah, mengurangi, mengali, atau membagi.",
+            "Membagi dengan nol tidak boleh."
+          ],
+          "visual": {
+            "type": "balance",
+            "eq": "2*x + 3 = 9"
+          }
+        },
+        {
+          "kind": "explain",
+          "title": "Memilih operasi",
+          "text": [
+            "Pilih lawan dari operasi yang menempel pada x.",
+            "Lawan dari tambah adalah kurang.",
+            "Lawan dari kali adalah bagi."
+          ]
+        },
+        {
+          "kind": "example",
+          "title": "Contoh dikerjakan bertahap",
+          "lines": [
+            {
+              "text": "Mulai dari persamaan ini.",
+              "eq": "2*x + 3 = 9"
+            },
+            {
+              "text": "Kedua ruas dikurangi 3.",
+              "eq": "2*x = 6"
+            },
+            {
+              "text": "Kedua ruas dibagi 2.",
+              "eq": "x = 3"
+            },
+            {
+              "text": "Periksa: ganti x dengan 3. Ruas kiri = 9, sama dengan ruas kanan. Benar!"
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "points": [
+            "Operasi selalu pada KEDUA ruas.",
+            "Pakai lawan operasinya.",
+            "Jangan membagi dengan nol."
+          ]
+        },
+        {
+          "kind": "quiz",
+          "questions": [
+            {
+              "id": "L6-q1",
+              "type": "mc",
+              "level": "easy",
+              "prompt": "Pada x + 9 = 15, operasi apa yang dilakukan pada kedua ruas?",
+              "options": [
+                {
+                  "text": "Kurangi 9",
+                  "correct": true
+                },
+                {
+                  "text": "Tambah 9",
+                  "correct": false,
+                  "why": "Menambah 9 membuat x makin jauh dari sendirian. Lawan dari +9 adalah −9."
+                },
+                {
+                  "text": "Kurangi 9 di ruas kiri saja",
+                  "correct": false,
+                  "why": "Ruas kanan juga harus dikurangi 9 agar tetap seimbang."
+                }
+              ],
+              "eq": "x + 9 = 15"
+            },
+            {
+              "id": "L6-q2",
+              "type": "step",
+              "level": "easy",
+              "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+              "eq": "3*x + 2 = 20",
+              "steps": [
+                {
+                  "from": "3*x + 2 = 20",
+                  "options": [
+                    {
+                      "eq": "3*x = 18",
+                      "correct": true
+                    },
+                    {
+                      "eq": "3*x = 22",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dikurangi 2, bukan ditambah 2."
+                    },
+                    {
+                      "eq": "3*x = 20",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dikurangi 2 agar timbangan tetap seimbang."
+                    }
+                  ]
+                },
+                {
+                  "from": "3*x = 18",
+                  "options": [
+                    {
+                      "eq": "x = 6",
+                      "correct": true
+                    },
+                    {
+                      "eq": "x = 54",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dibagi 3, bukan dikali 3."
+                    },
+                    {
+                      "eq": "x = 18",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dibagi 3 agar timbangan tetap seimbang."
+                    }
+                  ]
+                }
+              ],
+              "answer": "6",
+              "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L7",
+      "title": "Perubahan Tanda",
+      "emoji": "🔄",
+      "mission": 6,
+      "requires": "L6",
+      "pages": [
+        {
+          "kind": "explain",
+          "title": "Dari mana perubahan tanda?",
+          "text": [
+            "Perhatikan x + 5 = 9.",
+            "Kurangi 5 di kedua ruas, hasilnya x = 9 − 5.",
+            "Kelihatannya +5 pindah ke kanan menjadi −5.",
+            "Itu jalan pintas dari operasi kedua ruas, disebut pindah ruas."
+          ],
+          "visual": {
+            "type": "balance",
+            "eq": "x + 5 = 9"
+          }
+        },
+        {
+          "kind": "explain",
+          "title": "Aturan jalan pintas",
+          "text": [
+            "Suku + yang pindah ruas menjadi −.",
+            "Suku − yang pindah ruas menjadi +.",
+            "Koefisien kali yang pindah ruas menjadi bagi.",
+            "Ingat, ini hanya jalan pintas dari operasi kedua ruas."
+          ]
+        },
+        {
+          "kind": "explain",
+          "title": "Hasil negatif",
+          "text": [
+            "Nilai x bisa negatif.",
+            "x + 8 = 3 menghasilkan x = 3 − 8 = −5.",
+            "−2x = 6 dibagi −2 di kedua ruas, jadi x = −3."
+          ],
+          "visual": {
+            "type": "balance",
+            "eq": "x + 8 = 3"
+          }
+        },
+        {
+          "kind": "example",
+          "title": "Contoh dikerjakan bertahap",
+          "lines": [
+            {
+              "text": "Mulai dari persamaan ini.",
+              "eq": "-2*x + 5 = 11"
+            },
+            {
+              "text": "Kedua ruas dikurangi 5.",
+              "eq": "-2*x = 6"
+            },
+            {
+              "text": "Kedua ruas dibagi −2.",
+              "eq": "x = -3"
+            },
+            {
+              "text": "Periksa: ganti x dengan −3. Ruas kiri = 11, sama dengan ruas kanan. Benar!"
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "points": [
+            "Perubahan tanda berasal dari operasi kedua ruas.",
+            "+ menjadi −, − menjadi +.",
+            "Bagi dengan bilangan negatif: tanda ikut berubah."
+          ]
+        },
+        {
+          "kind": "quiz",
+          "questions": [
+            {
+              "id": "L7-q1",
+              "type": "mc",
+              "level": "medium",
+              "prompt": "Dengan jalan pintas, x − 6 = 10 menjadi …",
+              "options": [
+                {
+                  "text": "x = 10 + 6",
+                  "correct": true
+                },
+                {
+                  "text": "x = 10 − 6",
+                  "correct": false,
+                  "why": "−6 pindah ruas menjadi +6, karena kita menambah 6 di kedua ruas."
+                },
+                {
+                  "text": "x = −10 + 6",
+                  "correct": false,
+                  "why": "Ruas kanan tetap 10. Hanya −6 yang berubah tanda menjadi +6."
+                }
+              ],
+              "eq": "x - 6 = 10"
+            },
+            {
+              "id": "L7-q2",
+              "type": "short",
+              "level": "medium",
+              "prompt": "Berapa nilai x?",
+              "eq": "-3*x + 4 = 19",
+              "verify": "solution",
+              "answer": "-5",
+              "hint": "Kurangi 4 di kedua ruas, lalu bagi dengan −3."
+            },
+            {
+              "id": "L7-q3",
+              "type": "step",
+              "level": "medium",
+              "prompt": "Pilih langkah berikutnya sampai x sendirian.",
+              "eq": "x + 9 = 2",
+              "steps": [
+                {
+                  "from": "x + 9 = 2",
+                  "options": [
+                    {
+                      "eq": "x = -7",
+                      "correct": true
+                    },
+                    {
+                      "eq": "x = 11",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dikurangi 9, bukan ditambah 9."
+                    },
+                    {
+                      "eq": "x = 2",
+                      "correct": false,
+                      "why": "Hampir! Ruas kanan juga harus dikurangi 9 agar timbangan tetap seimbang."
+                    }
+                  ]
+                }
+              ],
+              "answer": "-7",
+              "hint": "Lihat bilangan yang menempel pada x. Pakai lawan operasinya di kedua ruas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L8",
+      "title": "PLSV dalam Soal Cerita",
+      "emoji": "🛰️",
+      "mission": 4,
+      "pages": [
+        {
+          "kind": "explain",
+          "title": "4 langkah soal cerita",
+          "text": [
+            "1. Pahami: apa yang diketahui dan ditanya?",
+            "2. Modelkan: misalkan yang ditanya dengan x.",
+            "3. Selesaikan persamaannya.",
+            "4. Periksa: apakah jawabannya masuk akal?"
+          ]
+        },
+        {
+          "kind": "example",
+          "title": "Contoh: harga buku",
+          "lines": [
+            {
+              "text": "Rani membeli 4 buku yang harganya sama. Ia membayar Rp24.000."
+            },
+            {
+              "text": "Diketahui: 4 buku dan total Rp24.000. Ditanya: harga 1 buku."
+            },
+            {
+              "text": "Misalkan harga 1 buku = x. Modelnya:",
+              "eq": "4*x = 24000"
+            },
+            {
+              "text": "Bagi kedua ruas dengan 4.",
+              "eq": "x = 6000"
+            },
+            {
+              "text": "Periksa: 4 × Rp6.000 = Rp24.000. Masuk akal untuk harga buku!"
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "points": [
+            "Pahami → Modelkan → Selesaikan → Periksa.",
+            "x adalah hal yang ditanya, lengkap dengan satuannya.",
+            "Jawaban harus masuk akal dengan cerita."
+          ]
+        },
+        {
+          "kind": "quiz",
+          "questions": [
+            {
+              "id": "L8-q1",
+              "type": "mc",
+              "level": "medium",
+              "prompt": "Doni punya 3 kotak pensil yang isinya sama. Ada juga 2 pensil lepas. Semuanya 20 pensil. Persamaan yang tepat adalah …",
+              "options": [
+                {
+                  "eq": "3*x + 2 = 20",
+                  "correct": true
+                },
+                {
+                  "eq": "3*x = 20 + 2",
+                  "correct": false,
+                  "why": "2 pensil lepas sudah termasuk dalam 20. Jadi 2 ditambahkan di ruas kiri."
+                },
+                {
+                  "eq": "x + 3 + 2 = 20",
+                  "correct": false,
+                  "why": "3 kotak berarti 3 dikali isi 1 kotak, jadi 3x."
+                }
+              ]
+            },
+            {
+              "id": "L8-q2",
+              "type": "story",
+              "level": "easy",
+              "story": [
+                "Harga 1 tiket bus Rp5.000.",
+                "Bu Sari membayar Rp35.000 untuk tiket keluarganya."
+              ],
+              "question": "Berapa tiket yang dibeli Bu Sari?",
+              "eq": "5000*x = 35000",
+              "answer": "7",
+              "unit": "tiket",
+              "hint": "Harga 1 tiket × banyak tiket = total bayar.",
+              "template": "Jadi, Bu Sari membeli {jawaban}.",
+              "answer_sentence": "Jadi, Bu Sari membeli 7 tiket.",
+              "check": {
+                "left_value": "35000",
+                "right_value": "35000"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

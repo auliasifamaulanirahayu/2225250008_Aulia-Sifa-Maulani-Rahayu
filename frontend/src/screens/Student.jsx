@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useAppState, saveSettings } from '../state.js';
-import { PROBLEMS, WORLDS, worldOf, worldStats, missionLabel, TYPE_LABEL } from '../content.js';
+import { PROBLEMS, WORLDS, LESSONS, worldOf, worldStats, missionLabel, TYPE_LABEL } from '../content.js';
 import { ensureDaily, finishWarmup, recordAttempt, unlocked, lastResult, recommendation } from '../game.js';
 import { Planet } from '../components/GalaxyArt.jsx';
 import { TutorChat } from '../components/TutorChat.jsx';
@@ -189,6 +189,20 @@ export function Home() {
           </Link>
         </div>
       )}
+
+      {/* Zona belajar */}
+      <div className="mt-3 grid grid-cols-2 gap-3">
+        <Link to="/learn" className={`${card} text-ink no-underline hover:border-galaxy-cyan`}>
+          <span className="text-2xl" aria-hidden="true">📚</span>
+          <strong className="mt-1 block">Learning Zone</strong>
+          <span className="text-sm text-muted">8 materi PLSV</span>
+        </Link>
+        <Link to="/challenge" className={`${card} text-ink no-underline hover:border-galaxy-cyan`}>
+          <span className="text-2xl" aria-hidden="true">🎯</span>
+          <strong className="mt-1 block">Challenge Zone</strong>
+          <span className="text-sm text-muted">Easy · Medium · Advanced</span>
+        </Link>
+      </div>
 
       {/* AI Tutor */}
       <Link to="/tutor" className={`${card} mt-3 flex items-center gap-3 text-ink no-underline hover:border-galaxy-cyan`}>
@@ -449,9 +463,16 @@ export function World() {
             <li key={g}>{g}</li>
           ))}
         </ul>
-        <button type="button" className="btn btn-ghost btn-small mt-3" onClick={() => setIntroOpen(true)}>
-          📇 Materi singkat
-        </button>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button type="button" className="btn btn-ghost btn-small" onClick={() => setIntroOpen(true)}>
+            📇 Materi singkat
+          </button>
+          {LESSONS.filter((l) => l.mission === n).map((l) => (
+            <Link key={l.id} className="btn btn-ghost btn-small" to="/learn">
+              📚 {l.title}
+            </Link>
+          ))}
+        </div>
       </section>
 
       {next && (

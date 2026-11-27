@@ -5,7 +5,7 @@ import { enqueue, flush } from './store/sync.js';
 import { state, saveStats, saveProgress, uuid, notify } from './state.js';
 import { WORLDS, PROBLEMS } from './content.js';
 import { pickDaily, missionComplete, unlockedWorlds } from './engine/mission-picker.js';
-import { stageXp, starsFor, MISSION_XP, levelFromXp, todayStr, updateStreak } from './engine/xp.js';
+import { stageXp, starsFor, MISSION_XP, ZONE_XP, challengeXp, levelFromXp, todayStr, updateStreak } from './engine/xp.js';
 import { newBadges } from './engine/badges.js';
 
 export let lastResult = null;
@@ -205,6 +205,49 @@ export function nextProblemId(p) {
 }
 
 export const problemById = (id) => PROBLEMS.get(id);
+
+// ---------------------------------------------------------------- Learning Zone & Challenge Zone
+// Kunci progres: "lz-<idMateri>" untuk materi, id soal ("ch-e01") untuk tantangan. Ikut dicadangkan ke server.
+
+async function award({ key, xp, counters = {} }) {
+  for (const [k, by] of Object.entries(counters)) bump(k, by);
+  const levelUp = addXp(xp);
+  const badges = newBadges(state.stats);
+  state.stats.badges = [...state.stats.badges, ...badges.map((b) => b.code)];
+  const prev = state.progress[key];
+  await saveProgress({ id: key, done: true, bestStars: prev?.bestStars || 0, plays: (prev?.plays || 0) + 1, lastPlayed: new Date().toISOString() });
+  await saveStats();
+  notify();
+  return { xp, levelUp, badges };
+}
+
+/** Catat satu jawaban (benar/salah) dari Learning Zone ('lesson') atau Challenge Zone ('challenge'). */
+export function recordZoneAnswer({ id, stage, correct, attemptNo, answer, durationMs, xp = 0 }) {
+  return recordAttempt({ problemId: id, world: 0, stage, correct, attemptNo, answer, durationMs, xp });
+}
+
+export const lessonDone = (id) => !!state.progress[`lz-${id}`]?.done;
+
+/** Materi tuntas (semua latihan pemahaman benar). XP hanya pertama kali. */
+export async function completeLesson(lesson) {
+  const key = `lz-${lesson.id}`;
+  if (state.progress[key]?.done) return { xp: 0, levelUp: false, badges: [] };
+  const r = await award({ key, xp: ZONE_XP.lesson, counters: { lessonsDone: 1 } });
+  await recordZoneAnswer({ id: key, stage: 'lesson', correct: true, xp: ZONE_XP.lesson });
+  flush();
+  return r;
+}
+
+/** Soal tantangan dijawab benar. Mengembalikan XP yang didapat (0 bila sudah pernah benar). */
+export async function solveChallenge(q, { firstTry, attemptNo, answer, durationMs }) {
+  const alreadySolved = !!state.progress[q.id]?.done;
+  const xp = challengeXp({ firstTry, alreadySolved });
+  await recordZoneAnswer({ id: q.id, stage: 'challenge', correct: true, attemptNo, answer, durationMs, xp });
+  let r = { xp: 0, levelUp: false, badges: [] };
+  if (!alreadySolved) r = await award({ key: q.id, xp, counters: q.level === 'advanced' ? { challengeAdvanced: 1 } : {} });
+  flush();
+  return r;
+}
 
 /**
  * Rekomendasi aktivitas berikutnya untuk Dashboard.

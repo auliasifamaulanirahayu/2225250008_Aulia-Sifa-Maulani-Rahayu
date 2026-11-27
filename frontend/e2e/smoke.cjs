@@ -211,6 +211,65 @@ function findBrowser() {
   await page.setOfflineMode(false);
 
   // 10. Mode Guru demo
+  // 8b. Learning Zone: materi 1 sampai tuntas
+  await page.goto(base + '#/learn', { waitUntil: 'networkidle0' });
+  await waitText('Learning Zone');
+  await waitText('Tuntaskan materi 1 dulu');
+  await click('Pengertian PLSV');
+  await waitText('Apa itu PLSV?');
+  await click('Lanjut ▸', true);
+  for (let k = 0; k < 3; k++) await click('Langkah berikutnya ▾', true);
+  await waitText('adalah PLSV');
+  await click('Lanjut ▸', true);
+  await waitText('Ringkasan');
+  await click('Mulai latihan ▸', true);
+  await click('5 + 2 = 7', true);
+  await waitText('Tidak ada variabelnya');
+  await click('4x + 1 = 9', true);
+  await click('Lanjut ▸', true);
+  await click('Pangkat x adalah dua', true);
+  await click('Lanjut ▸', true);
+  await waitText('Materi tuntas!');
+  await waitText('+10 XP');
+  await shot('16b-lesson-done');
+  log('Learning Zone: materi 1 (penjelasan → contoh bertahap → ringkasan → latihan) tuntas, +10 XP');
+
+  // 8c. Challenge Zone: Easy Mission penuh (pilihan ganda, isian, langkah, cerita + Periksa)
+  await page.goto(base + '#/challenge', { waitUntil: 'networkidle0' });
+  await click('Easy Mission');
+  await click('x² − 1 = 8', true);
+  await click('Lanjut ▸', true);
+  await typeLine('8');
+  await waitText('Hampir!');
+  await typeLine('9');
+  await click('Lanjut ▸', true);
+  await typeLine('11');
+  await click('Lanjut ▸', true);
+  await typeLine('7');
+  await click('Lanjut ▸', true);
+  await click('Bagi kedua ruas dengan 5', true);
+  await click('Lanjut ▸', true);
+  await click('x = 19', true);
+  await waitText('Ruas kanan juga harus');
+  await click('x = 5', true);
+  await click('Lanjut ▸', true);
+  await click('x = 9', true);
+  await click('Lanjut ▸', true);
+  await click('x − 3 = 10', true);
+  await click('Lanjut ▸', true);
+  await typeLine('5');
+  await waitText('Periksa dengan substitusi');
+  await typeLine('15000');
+  await waitText('Seimbang!');
+  await shot('16c-challenge-story');
+  await click('Lanjut ▸', true);
+  await typeLine('8');
+  await typeLine('12');
+  await click('Lanjut ▸', true);
+  await waitText('Benar 10 dari 10');
+  await shot('16d-challenge-done');
+  log('Challenge Zone: Easy 10/10 — umpan balik salah + coba lagi, langkah, cerita + Periksa: OK');
+
   // 9a. AI Math Tutor (mode demo -> tutor bawaan, tanpa jaringan)
   await page.goto(base + '#/tutor', { waitUntil: 'networkidle0' });
   await waitText('Kak Orbit');

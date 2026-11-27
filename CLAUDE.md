@@ -31,7 +31,7 @@ Jika kode bertentangan dengan dokumen, tanyakan ke user dulu, lalu perbarui doku
 | CI | GitHub Actions (`.github/workflows/ci.yml`) |
 
 Tidak ada server backend sendiri selain Supabase Edge Functions. Jangan menambah framework UI lain, pustaka state global,
-atau pustaka CSS lain (selain Tailwind) tanpa persetujuan user: bundel harus tetap kecil (NFR-02, saat ini ± 170 KB gzip).
+atau pustaka CSS lain (selain Tailwind) tanpa persetujuan user: bundel harus tetap kecil (NFR-02 < 500 KB; saat ini ± 205 KB gzip).
 
 ### Keputusan ketentuan baru (2026-11-27)
 - **Login**: siswa memakai nama panggilan + kode kelas + password (Supabase Auth asli, email sintetis); lupa password
@@ -48,13 +48,16 @@ atau pustaka CSS lain (selain Tailwind) tanpa persetujuan user: bundel harus tet
 - **Mission Map**: 7 misi sesuai ketentuan — 01 Mengenal PLSV, 02 Memahami Variabel, 03 Mengenali Informasi dalam Soal,
   04 Soal Cerita → Persamaan, 05 Menyelesaikan Persamaan, 06 Memahami Perubahan Tanda, 07 Tantangan PLSV. Soal lama
   dipindah ke misi yang cocok lewat `build_worlds.py`; unlock berurutan.
-- **Zona**: Learning Zone (8 materi kecil, satu bagian per layar), Challenge Zone (Easy/Medium/Advanced), AI Tutor.
+- **Zona**: Learning Zone (8 materi kecil, satu bagian per layar; materi n terbuka setelah materi n−1 tuntas, jadi
+  "Perubahan Tanda" baru terbuka setelah "Operasi pada Kedua Ruas"), Challenge Zone (Easy/Medium/Advanced, 10 soal
+  per level; soal cerita tetap ada Periksa), AI Tutor.
 - **Chat AI Tutor** disimpan di database; dapat dibaca siswa pemiliknya dan guru kelasnya (siswa diberi tahu di layar).
 - **Deployment**: Vercel atau Netlify, harus bisa dibuka di browser desktop dan HP.
 
 ## Struktur folder (ringkas)
 ```
 content/worlds/*.json        DIHASILKAN oleh content/tools/build_worlds.py — jangan diedit manual
+content/zones/*.json         Learning Zone (8 materi) & Challenge Zone (30 soal); juga DIHASILKAN build_worlds.py
 content/tools/               build_worlds.py, validate_content.py, export_research.py
 supabase/migrations/         skema SQL; perubahan skema = file migrasi BARU (0003_..., dst.)
 supabase/functions/ai-tutor/  Edge Function AI Tutor (Gemini; satu-satunya tempat GEMINI_API_KEY)
@@ -86,7 +89,8 @@ npm run dev | npm test | npm run build | npm run preview | npm run e2e
 - Semua akses Supabase lewat `lib/supabase.js` (`rpc()`, `friendlyError()`); jangan menyebar kunci atau URL.
 - Data siswa ditulis ke IndexedDB dulu, lalu dikirim oleh `store/sync.js`. Layar tidak boleh menunggu jaringan untuk
   bisa dimainkan.
-- Perubahan aturan XP harus sama di `engine/xp.js` dan trigger `clamp_attempt` (SQL).
+- Perubahan aturan XP harus sama di `engine/xp.js` (`STAGE_XP`, `MISSION_XP`, `ZONE_XP`) dan trigger `clamp_attempt`
+  (SQL; versi terbaru di `0003_zones.sql`).
 - Logika langkah baku harus sama di `engine/equation.js → nextStep` dan `build_worlds.py → gen_steps`.
 - Python: type hints, fungsi kecil.
 - Jangan menyimpan rahasia di repo. `.env` diabaikan git; contoh di `frontend/.env.example`. Kunci `service_role`

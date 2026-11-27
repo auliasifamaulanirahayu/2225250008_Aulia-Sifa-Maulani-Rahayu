@@ -5,6 +5,17 @@ const modules = import.meta.glob('../../content/worlds/world-*.json', { eager: t
 export const WORLDS = Object.values(modules).sort((a, b) => a.world - b.world);
 for (const w of WORLDS) w.problems.sort((a, b) => a.order - b.order);
 
+// Learning Zone & Challenge Zone (content/zones/*.json, dihasilkan build_worlds.py)
+import learning from '../../content/zones/learning.json';
+import challenge from '../../content/zones/challenge.json';
+export const LESSONS = learning.lessons;
+export const CHALLENGE = challenge.questions;
+export const CHALLENGE_LEVELS = [
+  { key: 'easy', name: 'Easy Mission', emoji: '🌱', desc: 'Satu langkah, bilangan kecil, cerita pendek.' },
+  { key: 'medium', name: 'Medium Mission', emoji: '🚀', desc: 'Dua langkah, x di kedua ruas, mencari kesalahan.' },
+  { key: 'advanced', name: 'Advanced Mission', emoji: '🌌', desc: 'Kurung, pecahan, negatif, dan masalah sehari-hari.' },
+];
+
 export const PROBLEMS = new Map(WORLDS.flatMap((w) => w.problems.map((p) => [p.id, p])));
 
 export const worldOf = (n) => WORLDS.find((w) => w.world === n);

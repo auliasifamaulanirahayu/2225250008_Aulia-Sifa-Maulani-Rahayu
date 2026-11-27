@@ -169,6 +169,133 @@ def check_problem(p: dict, errors: list[str]) -> None:
         err("explain_options harus punya minimal 1 pilihan salah")
 
 
+# ---------------------------------------------------------------- Learning Zone & Challenge Zone
+ZONES_DIR = Path(__file__).resolve().parents[1] / "zones"
+ZONE_LEVEL = {"easy": 1, "medium": 2, "advanced": 3}
+ZONE_TYPES = {"mc", "short", "step", "story"}
+
+
+def sentences(text: str) -> int:
+    return len([x for x in text.replace("!", ".").replace("?", ".").split(".") if x.strip()])
+
+
+def equivalent(e1: str, e2: str) -> bool:
+    s1, s2 = solutions(e1), solutions(e2)
+    return len(s1) == 1 and len(s2) == 1 and sp.Rational(s1[0]) == sp.Rational(s2[0])
+
+
+def check_question(q: dict, errors: list[str]) -> None:
+    qid = q.get("id", "?")
+
+    def err(msg: str) -> None:
+        errors.append(f"{qid}: {msg}")
+
+    t = q.get("type")
+    if t not in ZONE_TYPES:
+        return err(f"type tidak dikenal: {t}")
+    if q.get("level") not in ZONE_LEVEL:
+        err("level harus easy/medium/advanced")
+    # umpan balik salah: menjelaskan mengapa, maksimal 2 kalimat (aturan pedagogis 5)
+    for o in q.get("options", []) + [o for st in q.get("steps", []) for o in st["options"]]:
+        if not o.get("correct"):
+            why = o.get("why", "")
+            if not why:
+                err("pilihan salah wajib punya alasan (why)")
+            elif sentences(why) > 2:
+                err(f"alasan lebih dari 2 kalimat: {why!r}")
+    if t == "mc":
+        opts = q["options"]
+        if sum(bool(o["correct"]) for o in opts) != 1:
+            err("pilihan ganda harus punya tepat 1 jawaban benar")
+        eq_opts = [o for o in opts if "eq" in o]
+        if q.get("eq") and len(eq_opts) == len(opts):
+            for o in opts:
+                if equivalent(o["eq"], q["eq"]) != bool(o["correct"]):
+                    err(f"pilihan {o['eq']!r}: kesetaraan dengan {q['eq']!r} tidak sesuai kunci")
+        elif len(eq_opts) > 1:
+            for i, o1 in enumerate(eq_opts):
+                for o2 in eq_opts[i + 1:]:
+                    if equivalent(o1["eq"], o2["eq"]):
+                        err(f"pilihan {o1['eq']!r} dan {o2['eq']!r} setara (pengecoh tidak membedakan)")
+    if t in ("short", "step", "story"):
+        try:
+            ans = sp.Rational(q["answer"])
+        except Exception:  # noqa: BLE001
+            return err(f"answer bukan bilangan: {q.get('answer')!r}")
+        if q.get("verify") == "solution" or t in ("step", "story"):
+            sol = solutions(q["eq"])
+            if len(sol) != 1 or sp.Rational(sol[0]) != ans:
+                err(f"kunci {ans} tidak cocok dengan penyelesaian {sol}")
+        hint = q.get("hint", "")
+        if not hint:
+            err("hint wajib ada")
+        if f"x = {q['answer']}" in hint or f"x={q['answer']}" in hint:
+            err("hint tidak boleh memberi jawaban akhir (aturan 6)")
+    if t == "step":
+        prev = q["eq"]
+        for i, st in enumerate(q["steps"]):
+            if st["from"].replace(" ", "") != prev.replace(" ", "") and not equivalent(st["from"], prev):
+                err(f"langkah {i + 1}: 'from' tidak sama dengan hasil langkah sebelumnya")
+            good = [o for o in st["options"] if o["correct"]]
+            if len(good) != 1:
+                err(f"langkah {i + 1}: harus tepat 1 pilihan benar")
+                continue
+            for o in st["options"]:
+                eqv = equivalent(o["eq"], q["eq"])
+                if eqv != bool(o["correct"]):
+                    err(f"langkah {i + 1}: pilihan {o['eq']!r} {'tidak ' if o['correct'] else ''}setara dengan soal")
+            prev = good[0]["eq"]
+        l, r = sides(prev)
+        if not ((l == X and r == ans) or (r == X and l == ans)):
+            err(f"langkah terakhir harus x = {ans}")
+    if t == "story":
+        lines = q.get("story", [])
+        if len(lines) > MAX_SENTENCES[ZONE_LEVEL[q["level"]]]:
+            err(f"cerita {len(lines)} kalimat, terlalu panjang untuk level {q['level']}")
+        for line in lines:
+            if len(line.split()) > MAX_WORDS:
+                err(f"kalimat lebih dari {MAX_WORDS} kata: {line!r}")
+        if ans <= 0:
+            err("jawaban soal cerita harus positif")
+        if q.get("unit") == "rp" and ans % 500 != 0:
+            err("harga harus kelipatan Rp500")
+        if q["check"]["left_value"] != q["check"]["right_value"]:
+            err("substitusi tidak seimbang")
+
+
+def check_zones(errors: list[str]) -> tuple[int, int]:
+    lp, cp = ZONES_DIR / "learning.json", ZONES_DIR / "challenge.json"
+    if not lp.exists() or not cp.exists():
+        errors.append("content/zones/*.json belum ada. Jalankan build_worlds.py dulu.")
+        return 0, 0
+    lessons = json.loads(lp.read_text(encoding="utf-8"))["lessons"]
+    questions = json.loads(cp.read_text(encoding="utf-8"))["questions"]
+    seen: set[str] = set()
+    if len(lessons) != 8:
+        errors.append(f"Learning Zone harus 8 materi (ada {len(lessons)})")
+    for ls in lessons:
+        kinds = [pg["kind"] for pg in ls["pages"]]
+        for k in ("explain", "example", "summary", "quiz"):
+            if k not in kinds:
+                errors.append(f"{ls['id']}: materi wajib punya halaman {k}")
+        for pg in ls["pages"]:
+            for q in pg.get("questions", []):
+                if q["id"] in seen:
+                    errors.append(f"{q['id']}: id ganda")
+                seen.add(q["id"])
+                check_question(q, errors)
+    for lv in ZONE_LEVEL:
+        n = sum(q["level"] == lv for q in questions)
+        if n < 8:
+            errors.append(f"Challenge Zone level {lv} minimal 8 soal (ada {n})")
+    for q in questions:
+        if q["id"] in seen:
+            errors.append(f"{q['id']}: id ganda")
+        seen.add(q["id"])
+        check_question(q, errors)
+    return len(lessons), len(questions)
+
+
 def main() -> int:
     files = sorted(WORLDS_DIR.glob("world-*.json"))
     if not files:
@@ -198,12 +325,14 @@ def main() -> int:
                 errors.append(f"{p['id']}: order ganda di {f.name}")
             orders.add(p["order"])
             check_problem(p, errors)
+    n_lessons, n_challenge = check_zones(errors)
     if errors:
         print(f"GAGAL: {len(errors)} kesalahan pada {total} soal")
         for e in errors:
             print("  -", e)
         return 1
-    print(f"OK: {total} soal di {len(files)} misi lolos validasi.")
+    print(f"OK: {total} soal di {len(files)} misi, {n_lessons} materi Learning Zone, "
+          f"{n_challenge} soal Challenge Zone lolos validasi.")
     return 0
 
 

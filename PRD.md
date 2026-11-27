@@ -130,6 +130,8 @@ efektivitas dan beban kognitif.
 | FR-26 | AI Math Tutor | Tutor "Kak Orbit" (Gemini via Edge Function) membimbing 6 tahap (pahami, informasi, model, langkah, hitung, periksa), satu petunjuk per giliran, tanpa jawaban akhir; pembahasan lengkap hanya setelah siswa mencoba & meminta; dibuka dari Dashboard atau layar soal | Wajib |
 | FR-27 | Fallback tutor | Tutor bawaan di HP saat AI mati/offline/kuota habis/demo, sehingga materi & latihan tetap jalan | Wajib |
 | FR-28 | Kendali guru AI | Guru menyalakan AI Tutor per kelas (bawaan mati) dan membaca percakapan siswanya | Wajib |
+| FR-29 | Learning Zone | 8 materi PLSV (pengertian, unsur, variabel/koefisien/konstanta/suku, kesetaraan, langkah, kedua ruas, perubahan tanda, soal cerita); tiap materi: penjelasan sederhana + visual, contoh bertahap, ringkasan, latihan pemahaman; satu bagian per layar; terbuka berurutan | Wajib |
+| FR-30 | Challenge Zone | Easy/Medium/Advanced (10 soal per level): pilihan ganda, isian singkat, menentukan langkah, soal cerita + Periksa; umpan balik salah menjelaskan bagian yang perlu dicek, boleh mencoba lagi atau melewati; XP sekali per soal | Wajib |
 
 ## 8. Kebutuhan non-fungsional
 

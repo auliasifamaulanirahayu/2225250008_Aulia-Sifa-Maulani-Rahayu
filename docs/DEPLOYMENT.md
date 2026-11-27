@@ -130,3 +130,10 @@ Hasil: CSV anonim + ringkasan tingkat kesalahan dan median waktu per tahap.
 5. Tanpa langkah 2–4, tutor tetap berjalan sebagai **tutor bawaan** (tanpa AI).
 
 Catatan privasi free tier: lihat [PRIVACY_ETHICS.md §7](PRIVACY_ETHICS.md).
+
+## Learning Zone & Challenge Zone
+
+Jalankan **`supabase/migrations/0003_zones.sql`** di SQL Editor (setelah 0001/0002). Tanpa migrasi ini, server
+menolak jawaban Learning Zone dan Challenge Zone (tahap `lesson`/`challenge` belum dikenal), jadi XP-nya belum masuk
+leaderboard. Fitur tetap jalan di HP. Jawaban yang ditolak tetap disimpan di HP dan terkirim otomatis setelah migrasi
+dijalankan. Data lain (soal misi, cadangan progres) tetap terkirim seperti biasa (`store/sync.js → isPermanentError`).

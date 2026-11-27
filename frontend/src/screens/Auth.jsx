@@ -22,8 +22,8 @@ export function validNickname(n) {
 const FEATURES = [
   { icon: '🪐', title: 'Mission Map', text: '7 misi PLSV berurutan, dari mengenal PLSV sampai tantangan.' },
   { icon: '⚖️', title: 'Timbangan Seimbang', text: 'Lakukan hal yang sama pada kedua ruas, persamaan tetap seimbang.' },
-  { icon: '📚', title: 'Learning Zone', text: 'Materi singkat bertahap dengan contoh dan ringkasan.', soon: true },
-  { icon: '🎯', title: 'Challenge Zone', text: 'Latihan Easy, Medium, dan Advanced dengan umpan balik.', soon: true },
+  { icon: '📚', title: 'Learning Zone', text: '8 materi singkat bertahap dengan contoh, ringkasan, dan latihan.' },
+  { icon: '🎯', title: 'Challenge Zone', text: 'Latihan Easy, Medium, dan Advanced dengan umpan balik.' },
   { icon: '🤖', title: 'AI Math Tutor', text: 'Dibimbing satu petunjuk demi satu petunjuk, bukan diberi jawaban.' },
   { icon: '👥', title: 'Belajar Bersama', text: 'Kumpulkan XP bersama tim kelasmu.' },
 ];

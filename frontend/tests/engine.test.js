@@ -23,6 +23,8 @@ import { pickDaily, unlockedWorlds, missionComplete } from '../src/engine/missio
 import { makeWarmup } from '../src/engine/warmup.js';
 import { newBadges } from '../src/engine/badges.js';
 import { fallbackReply, leaksAnswer, fullSolution } from '../src/engine/tutorFallback.js';
+import { challengeXp, ZONE_XP } from '../src/engine/xp.js';
+import { equivalent as eqEquivalent } from '../src/engine/equation.js';
 
 const contentDir = resolve(__dirname, '../../content/worlds');
 const WORLDS = readdirSync(contentDir)
@@ -324,5 +326,59 @@ describe('AI Tutor: tutor bawaan & pengaman', () => {
     expect(leaksAnswer('Kurangi 4.000 di kedua ruas: 3x = 21.000', '7000')).toBe(false);
     expect(leaksAnswer('x = 70', '7')).toBe(false);
     expect(leaksAnswer('x = 7', '-7')).toBe(false);
+  });
+});
+
+describe('Learning Zone & Challenge Zone', () => {
+  const zonesDir = resolve(__dirname, '../../content/zones');
+  const LESSONS = JSON.parse(readFileSync(resolve(zonesDir, 'learning.json'), 'utf8')).lessons;
+  const CH = JSON.parse(readFileSync(resolve(zonesDir, 'challenge.json'), 'utf8')).questions;
+  const quizQs = LESSONS.flatMap((l) => l.pages.flatMap((p) => p.questions || []));
+  const ALLQ = [...quizQs, ...CH];
+  const sol = (e) => solveEq(parseEquation(e));
+
+  it('8 materi, masing-masing satu bagian per layar dengan latihan', () => {
+    expect(LESSONS).toHaveLength(8);
+    for (const l of LESSONS) expect(l.pages.at(-1).kind).toBe('quiz');
+    expect(LESSONS[6].requires).toBe('L6'); // perubahan tanda setelah kedua ruas
+  });
+  it('Challenge: 10 soal per level, 4 jenis soal', () => {
+    for (const lv of ['easy', 'medium', 'advanced']) expect(CH.filter((q) => q.level === lv)).toHaveLength(10);
+    expect(new Set(CH.map((q) => q.type))).toEqual(new Set(['mc', 'short', 'step', 'story']));
+  });
+  it('kunci jawaban sama dengan mesin aljabar aplikasi', () => {
+    for (const q of ALLQ) {
+      if (q.verify === 'solution' || q.type === 'step' || q.type === 'story') {
+        const s = sol(q.eq);
+        expect(s.kind, q.id).toBe('one');
+        expect(s.x.equals(frac(...q.answer.split('/').map(Number))), q.id).toBe(true);
+      }
+    }
+  });
+  it('langkah benar setara dengan soal, pengecoh tidak', () => {
+    for (const q of ALLQ.filter((x) => x.type === 'step')) {
+      for (const st of q.steps) for (const o of st.options) expect(eqEquivalent(parseEquation(o.eq), parseEquation(q.eq)), `${q.id} ${o.eq}`).toBe(!!o.correct);
+    }
+  });
+  it('substitusi soal cerita seimbang', () => {
+    for (const q of ALLQ.filter((x) => x.type === 'story')) {
+      const e = parseEquation(q.eq);
+      const x = sol(q.eq).x;
+      expect(evaluate(e.left, x).equals(evaluate(e.right, x)), q.id).toBe(true);
+      expect(String(evaluate(e.left, x))).toBe(q.check.left_value);
+    }
+  });
+  it('umpan balik salah menjelaskan, petunjuk tidak memberi jawaban', () => {
+    for (const q of ALLQ) {
+      for (const o of [...(q.options || []), ...(q.steps || []).flatMap((s) => s.options)]) if (!o.correct) expect(o.why, q.id).toBeTruthy();
+      if (q.hint && q.answer) expect(leaksAnswer(q.hint, q.answer), q.id).toBe(false);
+    }
+  });
+  it('XP zona hanya sekali dan sesuai batas SQL', () => {
+    expect(challengeXp({ firstTry: true, alreadySolved: false })).toBe(ZONE_XP.challengeFirstTry);
+    expect(challengeXp({ firstTry: false, alreadySolved: false })).toBe(ZONE_XP.challengeRetry);
+    expect(challengeXp({ firstTry: true, alreadySolved: true })).toBe(0);
+    expect(ZONE_XP.challengeFirstTry).toBeLessThanOrEqual(3); // clamp_attempt: challenge ≤ 3
+    expect(ZONE_XP.lesson).toBeLessThanOrEqual(10); // clamp_attempt: lesson ≤ 10
   });
 });

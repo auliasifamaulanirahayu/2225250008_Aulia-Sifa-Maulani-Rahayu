@@ -11,6 +11,7 @@ import { Team } from './screens/Team.jsx';
 import { Profile, Install, About } from './screens/Profile.jsx';
 import { TeacherHome, TeacherClass } from './screens/Teacher.jsx';
 import SettingsScreen from './screens/Settings.jsx';
+import { LearningZone, Lesson, ChallengeZone, ChallengeRun } from './screens/Zones.jsx';
 import { ResetPassword } from './screens/Auth.jsx';
 import { startMusic, stopMusic } from './music.js';
 
@@ -32,7 +33,7 @@ function RequireLogin({ children }) {
 function MusicController() {
   const { settings } = useAppState();
   const { pathname } = useLocation();
-  const inProblem = pathname.startsWith('/play') || pathname === '/warmup';
+  const inProblem = pathname.startsWith('/play') || pathname === '/warmup' || pathname.startsWith('/challenge/') || pathname.startsWith('/learn/');
   const want = !!settings.music && (!inProblem || !!settings.musicInProblems);
   const vol = settings.musicVolume ?? 0.5;
   useEffect(() => {
@@ -72,6 +73,10 @@ export default function App() {
         <Route path="/result" element={student(<Result />)} />
         <Route path="/team" element={student(<Team />)} />
         <Route path="/tutor" element={student(<Tutor />)} />
+        <Route path="/learn" element={student(<LearningZone />)} />
+        <Route path="/learn/:id" element={student(<Lesson />)} />
+        <Route path="/challenge" element={student(<ChallengeZone />)} />
+        <Route path="/challenge/:level" element={student(<ChallengeRun />)} />
         <Route path="/profile" element={student(<Profile />)} />
 
         <Route path="/teacher" element={teacher(<TeacherHome />)} />

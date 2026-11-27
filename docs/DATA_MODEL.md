@@ -73,7 +73,7 @@ erDiagram
         uuid student_id FK "diisi auth.uid()"
         text problem_id
         smallint world
-        text stage "understand|model|solve|check|interpret|explain|warmup|complete|bonus"
+        text stage "understand|model|solve|check|interpret|explain|warmup|complete|bonus|lesson|challenge (0003)"
         bool correct
         text misconception_code "M1-M8"
         smallint hints_used
@@ -143,6 +143,8 @@ erDiagram
 - Menghapus siswa = menghapus baris `auth.users`; semua datanya ikut terhapus (cascade). Lihat
   [PRIVACY_ETHICS.md](PRIVACY_ETHICS.md).
 - `research_mode` pada kelas mengizinkan ekspor data anonim (`export_attempts`).
+- Learning Zone & Challenge Zone memakai `ATTEMPTS` dengan stage `lesson` / `challenge` (migrasi 0003);
+  `problem_id` = id soal (`ch-e01`, `L5-q1`) atau `lz-L1` untuk materi tuntas. Progresnya ikut `STUDENT_STATE.progress`.
 - `ai_tutor` pada kelas menyalakan AI Tutor (Gemini). Bawaan **mati**: guru menyalakannya setelah ada izin.
 - `AI_CHAT_MESSAGES` hanya ditulis Edge Function `ai-tutor` (service role) agar balasan tutor tidak bisa dipalsukan.
   Balasan tutor bawaan (tanpa AI) tidak disimpan. Kuota harian per siswa dihitung dari baris `role = 'student'`.
